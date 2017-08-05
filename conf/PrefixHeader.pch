@@ -46,6 +46,8 @@
 
 #define img(name) [UIImage imageNamed:(name)]
 
+#define iStr(key) NSLocalizedString((key),0)
+
 #define iNotiCenter [NSNotificationCenter defaultCenter]
 #define iMainQueue [NSOperationQueue mainQueue]
 #define iEmptyStr(str) (!(str)||[(str) isEqualToString:@""])
