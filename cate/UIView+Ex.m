@@ -68,9 +68,9 @@
 }
 
 -(void)setSize:(CGSize)size{
-    CGRect bounds=self.bounds;
-    bounds.size=size;
-    self.bounds=bounds;
+    CGRect frame=self.frame;
+    frame.size=size;
+    self.frame=frame;
 }
 
 
@@ -236,6 +236,11 @@ UIView *layoutView(UIView *sup,NSArray *subs,NSInteger colNum,BOOL full){
 
 
 
+-(void)measurePriority:(float)level hor:(BOOL)hor{
+    UILayoutConstraintAxis axis = hor?UILayoutConstraintAxisHorizontal:UILayoutConstraintAxisVertical;
+    [self setContentHuggingPriority:level forAxis:axis];
+    [self setContentCompressionResistancePriority:level forAxis:axis];
+}
 @end
 
 
@@ -311,9 +316,9 @@ UIView *layoutView(UIView *sup,NSArray *subs,NSInteger colNum,BOOL full){
 }
 
 -(void)setSize:(CGSize)size{
-    CGRect bounds=self.bounds;
-    bounds.size=size;
-    self.bounds=bounds;
+    CGRect frame=self.frame;
+    frame.size=size;
+    self.frame=frame;
 }
 
 
@@ -397,4 +402,13 @@ UIView *layoutView(UIView *sup,NSArray *subs,NSInteger colNum,BOOL full){
     frame.size.height=frame.origin.y-y+frame.size.height;
     self.frame=frame;
 }
+
+
+
+
+
+
+
+
+
 @end

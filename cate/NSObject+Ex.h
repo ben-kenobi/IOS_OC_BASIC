@@ -9,5 +9,7 @@
 
 
 +(instancetype)setDict:(NSDictionary *)dict;
+-(void)setDict:(NSDictionary *)dict;
+
 -(NSDictionary *)dict;
 @end

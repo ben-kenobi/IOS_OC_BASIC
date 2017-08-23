@@ -9,10 +9,15 @@ CGMutablePathRef shapePath(CGRect rect,NSInteger count,NSInteger step,NSInteger 
 @interface UIImage (Ex)
 +(instancetype)shapeImgWithSize:(CGSize)size color:(UIColor *)color count:(NSInteger)count multi:(NSInteger)multi step:(NSInteger)step drawType:(int)type;
 -(instancetype)resizableStretchImg;
+-(instancetype)alwaysTemplate;
+-(instancetype)alwaysOrigin;
 -(instancetype)clipBy:(int)idx count:(int)count scale:(CGFloat)scale;
 
 +(instancetype)imgFromV:(UIView *)view;
++(instancetype)imgFromLayer:(CALayer*)layer;
+
 -(UIImage *)scaleImg2size:(CGSize)size;
+-(instancetype)roundImg:(CGFloat)ivW boderColor:(UIColor*)color borderW:(CGFloat)borderW;
 
 +(UIImage *)gifImg:(NSData *)data;
 +(UIImage *)gifImgF:(NSString *)path;
@@ -21,4 +26,14 @@ CGMutablePathRef shapePath(CGRect rect,NSInteger count,NSInteger step,NSInteger 
 +(instancetype)imgFromH264Data:(NSData *)data;
 +(instancetype)imgFromH264File:(NSString *)path;
 
+
+
+-(CGFloat)h;
+-(CGFloat)w;
+
+
+-(instancetype) scale2w:(CGFloat)wid;
++(instancetype)launchImg;
+-(instancetype)convertAndroidPointNine;
++(void)generateVideoImage:(NSURL*)url cb:(void (^)(UIImage *img))cb;
 @end

@@ -2,8 +2,8 @@
 
 #import <Foundation/Foundation.h>
 
-#define ScaleTopMargin 35
-#define ScaleRight .14
+#define ScaleTopMargin 84
+#define ScaleRight .32
 
 #define iGlobalGreen iColor(33, 197, 180,1)
 

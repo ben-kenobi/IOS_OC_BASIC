@@ -19,6 +19,7 @@
 #define iScreenH iScreen.bounds.size.height
 #define iBundle [NSBundle mainBundle]
 
+
 #define iPref(name)[[NSUserDefaults alloc] initWithSuiteName:(name)]
 
 
@@ -45,7 +46,6 @@
 #define imgFromF(name) [UIImage imageWithContentsOfFile:(name)]
 
 #define img(name) [UIImage imageNamed:(name)]
-
 #define iStr(key) NSLocalizedString((key),0)
 
 #define iNotiCenter [NSNotificationCenter defaultCenter]
@@ -71,7 +71,8 @@
                             }
 #define iColor(r,g,b,a) [UIColor colorWithRed:(r)/255.0 green:(g)/255.0 blue:(b)/255.0 alpha:(a)]
 
-#define iGlobalBG iColor(230,230,230,1)
+#define iGlobalBG iColor(245,245,245,1)
+#define iGlobalFocusColor iColor(0x2D, 0xc8, 0xff, 1)
 #define iFont(size) [UIFont systemFontOfSize:(size)]
 #define iBFont(size) [UIFont boldSystemFontOfSize:(size)]
 
@@ -113,6 +114,6 @@ iLog(@"\nclass:%@\nline:%d\ndesc:%@",[self class],__LINE__,desc);
 #ifdef  __OBJC__
 #import "YFCate.h"
 #import "YFConst.h"
-#import "CameraUtil.h"
 #import "AppDelegate.h"
+#import "IProUtil.h"
 #endif

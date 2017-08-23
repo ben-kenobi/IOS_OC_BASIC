@@ -24,6 +24,23 @@
     return 0;
 }
 
++(NSString *)formatedFileSize3:(long long)size{
+    NSString *strs[5]={@"B",@"K",@"M",@"G",@"T"};
+    int idx=0;
+    double resul=size;
+    while (idx<4&&resul>1000) {
+        if(idx==0)
+            resul=size/1000.0;
+        else
+            resul=resul/1000.0;
+        idx++;
+    }
+    if(idx==0)
+        return [NSString stringWithFormat:@"%lld%@",size,strs[idx]];
+    else
+        return [NSString stringWithFormat:@"%.1f%@",resul,strs[idx]];
+}
+
 +(NSString *)formatedFileSize2:(long long)size{
     NSString *strs[5]={@"B",@"K",@"M",@"G",@"T"};
     int idx=0;

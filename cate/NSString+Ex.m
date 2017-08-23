@@ -32,5 +32,11 @@
 -(UInt8)toHexByte{
     return (UInt8)[self toHexValue];
 }
+-(CGSize)sizeBy:(UIFont *)font{
+    return [self boundingRectWithSize:(CGSize){CGFLOAT_MAX,CGFLOAT_MAX} options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName:font} context:nil].size;
+}
+-(CGSize)sizeBy:(CGSize)size font:(UIFont *)font{
+    return [self boundingRectWithSize:size options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName:font} context:nil].size;
+}
 
 @end

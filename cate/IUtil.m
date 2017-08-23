@@ -42,6 +42,15 @@
     }
     return obj;
 }
++(void)setValues:(NSDictionary *)dict forObj:(NSObject *)obj{
+    NSArray *ary=[self prosWithClz:obj.class];
+    for(NSString *key in ary){
+        if(dict[key]){
+            [obj setValue:dict[key] forKey:key];
+        }
+    }
+}
+
 
 
 +(NSArray *)aryWithClz:(Class)clz fromFile:(NSString *)file{

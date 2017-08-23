@@ -10,9 +10,31 @@
 -(NSString *)dateFormat;
 -(NSString *)timeFormat;
 -(NSString *)timeFormat2;
+-(NSString *)timeFormat3;
+-(NSString *)timeFormat4;
 -(NSString *)timeMilliFormat;
 +(instancetype)dateFromStr:(NSString *)str;
 +(instancetype)timeFromStr:(NSString *)str;
 +(instancetype)timeMilliFromStr:(NSString *)str;
 +(NSInteger)curTimeMilli;
+
+
++(instancetype)fromCommonDateFormat:(NSString*)datestr;
+-(NSString *)toCommonDateFormat;
+
+-(NSString *)postDateString ;
+
+-(BOOL)isThisYear;
+-(BOOL)isToday;
+-(BOOL)isWeekend;
+-(BOOL)isTomorrow;
+-(BOOL)isYesterday;
+-(BOOL)isSameDay:(NSDate *)date;
+-(BOOL)isSameWeek:(NSDate *)date;
+-(BOOL)isSameMonth:(NSDate *)date;
+-(BOOL)isSameYear:(NSDate *)date;
+-(BOOL)isSameHour:(NSDate *)date;
+-(BOOL)isSameMinute:(NSDate *)date;
+
+
 @end

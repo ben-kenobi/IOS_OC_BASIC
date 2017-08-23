@@ -13,4 +13,6 @@
 -(BOOL)ignorecaseEqualTo:(NSString *) str;
 -(unsigned int)toHexValue;
 -(UInt8)toHexByte;
+-(CGSize)sizeBy:(UIFont *)font;
+-(CGSize)sizeBy:(CGSize)size font:(UIFont *)font;
 @end

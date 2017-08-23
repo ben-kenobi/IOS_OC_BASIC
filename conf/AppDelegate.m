@@ -4,62 +4,94 @@
 
 //
 #import "AppDelegate.h"
-#import "BaseCommon.h"
-
+#import <ViewDeck/ViewDeck.h>
+#import "MainViewController.h"
+#import "LocalDataSource.h"
+#import "SourceSelectionTableViewController.h"
+#import "BCMenuVC.h"
 #define FIELD_CNT       4
 
-@interface AppDelegate ()
-
+@interface AppDelegate ()<SourceSelectionTableViewControllerDelegate>
+@property(nonatomic,strong)IIViewDeckController *viewDeckController;
 @end
 
 @implementation AppDelegate
--(void)dealloc{
-    [iNotiCenter removeObserver:self];
-}
+
 
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
 
     self.window=[[UIWindow alloc] initWithFrame:iScreen.bounds];
-    [self setNavRoot:iRes4ary(@"mainvcs.plist")[0]];
+    
+    self.window.rootViewController=[self setupMainVC];
+    [self setNavigationBarStyle];
     [self.window setBackgroundColor:[UIColor whiteColor]];
     [self.window makeKeyAndVisible];
-    [application setStatusBarStyle:UIStatusBarStyleLightContent];
-    [application setStatusBarHidden:YES];
     
-    
-//    [[UINavigationBar appearance] setTintColor:iColor(21,188, 173, 1)];
-//    [[UINavigationBar appearance] setTitleTextAttributes:@{NSForegroundColorAttributeName:iColor(21,188, 173, 1)}];
-//    [[UIBarButtonItem appearance] setTitleTextAttributes:@{NSForegroundColorAttributeName:[UIColor grayColor]} forState:UIControlStateDisabled];
-//    [iNotiCenter addObserver:self selector:@selector(setRootVC) name:GUIDENOTI object:0];
-   
-
-    
-    [self setNavigationBarStyle];
     
     return YES;
 }
--(void)setNavRoot:(NSDictionary *)dict{
-    UIViewController *vc= [NSClassFromString(dict[@"clz"]).alloc init];
-    UINavigationController *nav=nil;
-    nav=[NSClassFromString(dict[@"nav"]).alloc initWithRootViewController:vc];
-    vc.title=dict[@"title"];
-    self.window.rootViewController=nav;
+
+-(UIViewController *)setupMainVC{
+    self.mainVC =[[NSClassFromString(iRes4dict(@"conf.plist")[@"rootVC"]) alloc] init];
+    return self.mainVC;
 }
+
+
+-(UIViewController *)setupViewDeck{
+    NSDictionary *dict = iRes4dict(@"conf.plist");
+    UIViewController *vc= [NSClassFromString(dict[@"rootVC"]).alloc init];
+    UINavigationController *nav= [NSClassFromString(dict[@"navVC"]).alloc initWithRootViewController:vc];
+    
+    
+    SourceSelectionTableViewController *sourceVC = [[SourceSelectionTableViewController alloc] initWithStyle:UITableViewStyleGrouped];
+    sourceVC.delegate=self;
+    
+    BCMenuVC *menuVC =[[BCMenuVC alloc] init];
+    
+    self.viewDeckController=[[IIViewDeckController alloc]initWithCenterViewController:nav leftViewController:menuVC];
+    
+    return self.viewDeckController;
+
+}
+
+
+-(void)sourceSelectionTableViewController:(SourceSelectionTableViewController *)termTableViewController didSelectDataSource:(id<ItemDataSource>)dataSource{
+    
+    [self.viewDeckController closeSide:YES];
+}
+
+
+
+
+
 - (void)setNavigationBarStyle
 {
-    //设置状态栏的颜色
-    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
-    //
+    
+    [iApp setStatusBarStyle:UIStatusBarStyleDefault];
     UINavigationBar *bar = [UINavigationBar appearance];
-    //设置显示的颜色
-    bar.barTintColor = [UIColor colorWithRed:39/255.0 green:38/255.0 blue:54/255.0 alpha:1.0];
-    //设置字体颜色
-    bar.tintColor = [UIColor whiteColor];
+    bar.shadowImage=[UIImage img4Color:iColor(0xe6, 0xe6, 0xe6, 1)];
+    bar.barTintColor =[UIColor whiteColor];
+    [bar setBackgroundImage:[[UIImage alloc] init] forBarMetrics:UIBarMetricsDefault];
+    bar.tintColor = iColor(0x44, 0x44, 0x44, 1);
     bar.translucent=NO;
-    [bar setTitleTextAttributes:@{NSForegroundColorAttributeName : [UIColor whiteColor]}];
+    
+    [bar setTitleTextAttributes:@{NSForegroundColorAttributeName : iColor(0x11, 0x11, 0x11, 1),NSFontAttributeName:iFont(18)}];
 }
-//
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 // get Device Token
 - (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(nonnull NSData *)deviceToken {
     NSLog(@"Registration successful, bundle identifier: %@, device token: %@",
@@ -75,9 +107,7 @@
 //
 -(void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo {
     application.applicationIconBadgeNumber += 1;
-    
     NSLog(@"didReceiveRemoteNotification:%@", userInfo);
-    
 }
 
 
@@ -89,47 +119,6 @@
 
 
 
-
-
-
-//-----------------------former---------------
-
-//invoke by external app
-- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation
-{
-//    NSLog(@"callback----%@",url);
-//    BOOL result = [UMSocialSnsService handleOpenURL:url];
-//    if (result == FALSE) {
-//        
-//    }
-//    return result;
-    return nil;
-}
-
-
-
--(void)setRootVC{
-    self.window.rootViewController=[AppDelegate vc];
-}
-
-+(UIViewController *)vc{
-    NSString *ver=[iPref(0) objectForKey:@"appVersion"];
-    NSString *curver=[iBundle infoDictionary][@"CFBundleShortVersionString"];
-    if([ver isEqualToString:curver]){
-        return [self rootVC:YES];
-    }else{
-        [iPref(0) setObject:curver forKey:@"appVersion"];
-        [iPref(0) synchronize];
-        return [[NSClassFromString(iRes4dict(@"conf.plist")[@"introVC"]) alloc] init];
-    }
-}
-+(UIViewController *)rootVC:(BOOL)lock{
-    if( [iPref(@"settingPref") boolForKey:@"lockScreen"]&&lock){
-        return [[NSClassFromString(iRes4dict(@"conf.plist")[@"lockVC"]) alloc] init];
-    }else{
-        return  [[NSClassFromString(iRes4dict(@"conf.plist")[@"rootVC"]) alloc] init];
-    }
-}
 
 
 

@@ -3,12 +3,12 @@
 <plist version="1.0">
 <dict>
 	<key>rootVC</key>
-	<string>ComCtrlDeleTabVC</string>
+	<string>YFMainVC</string>
 	<key>navVC</key>
 	<string>YFNavVC</string>
 	<key>introVC</key>
-	<string>ComCtrlDeleTabVC</string>
+	<string>MainViewController</string>
 	<key>lockVC</key>
-	<string>ComCtrlDeleTabVC</string>
+	<string>MainViewController</string>
 </dict>
 </plist>

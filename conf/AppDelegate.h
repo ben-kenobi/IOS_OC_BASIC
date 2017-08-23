@@ -5,12 +5,12 @@
 //
 
 #import <UIKit/UIKit.h>
-
+#import "YFMainVC.h"
 @interface AppDelegate : UIResponder <UIApplicationDelegate>
 
 @property (strong, nonatomic) UIWindow *window;
+@property (strong,nonatomic)YFMainVC *mainVC;
 
-+(UIViewController *)rootVC:(BOOL)lock;
 
 
 

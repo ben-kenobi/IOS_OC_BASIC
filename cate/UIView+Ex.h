@@ -27,6 +27,10 @@ UIView * layoutViewWithSize(UIView *sup,NSArray *subs,NSInteger colNum,BOOL full
 -(void)setR2:(CGFloat )r;
 -(void)setX2:(CGFloat )x;
 -(void)setY2:(CGFloat )y;
+
+
+-(void)measurePriority:(float)level hor:(BOOL)hor;
+
 @end
 
 
@@ -52,4 +56,7 @@ UIView * layoutViewWithSize(UIView *sup,NSArray *subs,NSInteger colNum,BOOL full
 -(void)setX2:(CGFloat )x;
 -(void)setY2:(CGFloat )y;
 -(void)setAnchor:(CGFloat) x y:(CGFloat)y;
+
+
+
 @end

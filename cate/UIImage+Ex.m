@@ -6,6 +6,7 @@
 #import "UIImage+Ex.h"
 #import <ImageIO/ImageIO.h>
 #import "H264VideoParser.h"
+#import <AVFoundation/AVFoundation.h>
 
 CGMutablePathRef shapePath(CGRect rect,NSInteger count,NSInteger step,NSInteger multi,CGFloat froma){
     if(!count) return 0;
@@ -48,8 +49,8 @@ CGMutablePathRef shapePath(CGRect rect,NSInteger count,NSInteger step,NSInteger 
 +(instancetype)shapeImgWithSize:(CGSize)size color:(UIColor *)color count:(NSInteger)count multi:(NSInteger)multi step:(NSInteger)step drawType:(int)type{
     UIGraphicsBeginImageContextWithOptions(size, 0, 0);
     CGContextRef con=UIGraphicsGetCurrentContext();
-   CGMutablePathRef path= shapePath((CGRect){0,0,size}, count, step, multi,0);
-    CGContextAddPath(con,path );
+    CGMutablePathRef path= shapePath((CGRect){0,0,size}, count, step, multi,0);
+    CGContextAddPath(con,path);
     CGPathRelease(path);
     [color set];
     CGContextDrawPath(con, type);
@@ -91,7 +92,12 @@ CGMutablePathRef shapePath(CGRect rect,NSInteger count,NSInteger step,NSInteger 
     return [self resizableImageWithCapInsets:(UIEdgeInsets){h,w,h,w} resizingMode:UIImageResizingModeStretch];
 }
 
-
+-(instancetype)alwaysTemplate{
+    return [self imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+}
+-(instancetype)alwaysOrigin{
+    return [self imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+}
 
 -(instancetype)clipBy:(int)idx count:(int)count scale:(CGFloat)scale{
     CGFloat h=self.size.height*iScreen.scale,
@@ -100,7 +106,7 @@ CGMutablePathRef shapePath(CGRect rect,NSInteger count,NSInteger step,NSInteger 
     UIImage *img= [UIImage imageWithCGImage:ci  scale:scale orientation:0];
     CGImageRelease(ci);
     return img;
-
+    
 }
 
 
@@ -127,7 +133,7 @@ CGMutablePathRef shapePath(CGRect rect,NSInteger count,NSInteger step,NSInteger 
 
 
 +(UIImage *)gifImgF:(NSString *)path{
-  return [self gifImg:[NSData dataWithContentsOfFile:path]];
+    return [self gifImg:[NSData dataWithContentsOfFile:path]];
 }
 
 
@@ -215,6 +221,118 @@ CGMutablePathRef shapePath(CGRect rect,NSInteger count,NSInteger step,NSInteger 
     if(![iFm fileExistsAtPath:path isDirectory:0])
         return nil;
     return [self img4CVPixel:[H264VideoParser parseFile:path]];
+}
+
+
+
+
+
+
+
+
+
+-(CGFloat)h{
+    return self.size.height;
+}
+-(CGFloat)w{
+    return self.size.width;
+}
+
+
+-(instancetype)roundImg:(CGFloat)ivW boderColor:(UIColor*)color borderW:(CGFloat)borderW{
+    CGFloat w2=MIN(self.h, self.w);
+    CGFloat r = ivW == 0 ? w2 : ivW;
+    CGFloat scale = r/w2;
+    CGFloat rad=r*0.5+borderW;
+    
+    UIGraphicsBeginImageContextWithOptions(CGSizeMake(rad*2, rad*2), false, 0);
+    CGContextRef con=UIGraphicsGetCurrentContext();
+    if (borderW>0){
+        CGContextAddArc(con,rad,rad,rad,0, 2 * M_PI,0);
+        [color setFill];
+        CGContextDrawPath(con, kCGPathFill);
+    }
+    
+    CGContextAddArc(con, rad, rad, r*0.5, 0, 2 * M_PI, 0);
+    CGContextClip(con);
+    [self drawInRect:CGRectMake(r-scale*self.w+borderW, r-scale*self.h+borderW, scale*self.w,scale*self.h)];
+    
+    
+    UIImage* img=UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    return img;
+}
+
+-(instancetype) scale2w:(CGFloat)wid{
+    CGSize size = CGSizeMake(wid, wid/self.w*self.h);
+    
+    UIGraphicsBeginImageContextWithOptions(size, false, 0);
+    
+    [self drawInRect:CGRectMake(0, 0, size.width, size.height)];
+    UIImage* img=UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    return img;
+}
+
+
++(instancetype)launchImg{
+    NSDictionary* dict=iBundle.infoDictionary;
+    NSArray *images = dict[@"UILaunchImages"] ;
+    if(!images||!images.count) return nil;
+    CGSize scrsize=iScreen.bounds.size;
+    for (NSDictionary *dict in images) {
+        CGSize size=CGSizeFromString(dict[@"UILaunchImageSize"]);
+        if (CGSizeEqualToSize(size, scrsize)) {
+            return img(dict[@"UILaunchImageName"]);
+        }
+    }
+    return nil;
+}
+
+
+
++(instancetype)imgFromLayer:(CALayer*)layer{
+    UIGraphicsBeginImageContextWithOptions(layer.size, false, 0);
+    [layer renderInContext:UIGraphicsGetCurrentContext()];
+    UIImage* img=UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    return img;
+}
+
+
+
+
+-(instancetype)convertAndroidPointNine{
+    UIGraphicsBeginImageContextWithOptions(CGSizeMake(self.w-6, self.h-6), false, 0);
+    CGContextRef con=UIGraphicsGetCurrentContext();
+    CGContextDrawImage(con, CGRectMake(-3, -3, self.size.width, self.size.height), self.CGImage);
+    
+    UIImage * img=UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    return [img resizableStretchImg];
+}
++(void)generateVideoImage:(NSURL*)url cb:(void (^)(UIImage *img))cb
+{
+    AVURLAsset* asset=[AVURLAsset assetWithURL:url];
+    AVAssetImageGenerator* generator = [AVAssetImageGenerator assetImageGeneratorWithAsset:asset];
+    generator.appliesPreferredTrackTransform=true;
+    
+    CMTime thumbTime = CMTimeMakeWithSeconds(0,30);
+    
+    AVAssetImageGeneratorCompletionHandler handle = ^(CMTime requestedTime, CGImageRef _Nullable image, CMTime actualTime, AVAssetImageGeneratorResult result, NSError * _Nullable error){
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if (result != AVAssetImageGeneratorSucceeded) {
+                [iPop toast:@"couldn't generate thumbnail, error:\(error)"];
+                return;
+            }
+            UIImage* img = [UIImage imageWithCGImage:image];
+            cb(img);
+        });
+    };
+    
+    
+    generator.maximumSize = CGSizeMake(320, 180);
+    [generator generateCGImagesAsynchronouslyForTimes:@[[NSValue valueWithCMTime:thumbTime]]completionHandler:handle];
 }
 
 @end

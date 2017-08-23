@@ -15,4 +15,5 @@
 +(void)clearFileAtPath:(NSString *)path;
 +(NSString *)formatedFileSize:(long long)size;
 +(NSString *)formatedFileSize2:(long long)size;
++(NSString *)formatedFileSize3:(long long)size;
 @end
