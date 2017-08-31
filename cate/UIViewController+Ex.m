@@ -40,4 +40,10 @@
 }
 
 
+-(void)alert:(NSString *)title msg:(NSString *)msg{
+    UIAlertController *vc = [UIAlertController alertControllerWithTitle:title message:msg preferredStyle:UIAlertControllerStyleAlert];
+    [vc addAction:[UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:0]];
+    [self presentViewController:vc animated:YES completion:nil];
+}
+
 @end
