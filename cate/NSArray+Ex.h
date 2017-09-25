@@ -7,7 +7,6 @@
 
 @interface NSArray (Ex)
 -(NSString *)descriptionWithLocale:(id)locale;
-
 @end
 @interface NSDictionary (Ex)
 -(NSString *)descriptionWithLocale:(id)locale;

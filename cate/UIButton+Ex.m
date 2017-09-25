@@ -45,6 +45,7 @@
     [btn setImage:img forState:0];
     [btn setImage:selimg forState:UIControlStateSelected];
     [btn setImage:hlimg forState:UIControlStateHighlighted];
+    btn.adjustsImageWhenHighlighted=hlimg;
     [btn sizeToFit];
     return btn;
 }
