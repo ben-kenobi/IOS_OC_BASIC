@@ -18,6 +18,9 @@ CGMutablePathRef shapePath(CGRect rect,NSInteger count,NSInteger step,NSInteger 
 
 -(UIImage *)scaleImg2size:(CGSize)size;
 -(instancetype)roundImg:(CGFloat)ivW boderColor:(UIColor*)color borderW:(CGFloat)borderW;
+-(UIImage *)renderWithColor:(UIColor *)color;
+-(UIImage *)verticalMirroredImg;
+-(UIImage *)horizonMirroredImg;
 
 +(UIImage *)gifImg:(NSData *)data;
 +(UIImage *)gifImgF:(NSString *)path;

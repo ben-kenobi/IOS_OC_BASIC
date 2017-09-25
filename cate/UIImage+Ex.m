@@ -108,8 +108,23 @@ CGMutablePathRef shapePath(CGRect rect,NSInteger count,NSInteger step,NSInteger 
     return img;
     
 }
-
-
+-(UIImage *)renderWithColor:(UIColor *)color{
+    CGRect rect = CGRectMake(0, 0, self.w,self.h);
+    UIGraphicsBeginImageContextWithOptions(rect.size,NO,iScreen.scale);
+    CGContextRef context = UIGraphicsGetCurrentContext();
+    CGContextClipToMask(context, rect, self.CGImage);
+    CGContextSetFillColorWithColor(context,  color.CGColor);
+    CGContextFillRect(context, rect);
+    UIImage *img = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    return [img verticalMirroredImg];
+}
+-(UIImage *)verticalMirroredImg{
+    return [UIImage imageWithCGImage:self.CGImage scale:iScreen.scale orientation:UIImageOrientationDownMirrored];
+}
+-(UIImage *)horizonMirroredImg{
+     return [UIImage imageWithCGImage:self.CGImage scale:iScreen.scale orientation:UIImageOrientationLeftMirrored];
+}
 -(UIImage *)scaleImg2size:(CGSize)size{
     
     CGRect tar={0,0,size};

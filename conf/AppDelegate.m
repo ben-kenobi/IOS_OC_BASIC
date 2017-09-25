@@ -4,15 +4,9 @@
 
 //
 #import "AppDelegate.h"
-#import <ViewDeck/ViewDeck.h>
-#import "MainViewController.h"
-#import "LocalDataSource.h"
-#import "SourceSelectionTableViewController.h"
-#import "BCMenuVC.h"
-#define FIELD_CNT       4
 
-@interface AppDelegate ()<SourceSelectionTableViewControllerDelegate>
-@property(nonatomic,strong)IIViewDeckController *viewDeckController;
+
+@interface AppDelegate ()
 @end
 
 @implementation AppDelegate
@@ -20,7 +14,7 @@
 
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-
+    self.sw=iScreenW;
     self.window=[[UIWindow alloc] initWithFrame:iScreen.bounds];
     
     self.window.rootViewController=[self setupMainVC];
@@ -33,33 +27,10 @@
 }
 
 -(UIViewController *)setupMainVC{
-    self.mainVC =[[NSClassFromString(iRes4dict(@"conf.plist")[@"rootVC"]) alloc] init];
-    return self.mainVC;
+    return [[NSClassFromString(iRes4dict(@"conf.plist")[@"rootVC"]) alloc] init];
 }
 
 
--(UIViewController *)setupViewDeck{
-    NSDictionary *dict = iRes4dict(@"conf.plist");
-    UIViewController *vc= [NSClassFromString(dict[@"rootVC"]).alloc init];
-    UINavigationController *nav= [NSClassFromString(dict[@"navVC"]).alloc initWithRootViewController:vc];
-    
-    
-    SourceSelectionTableViewController *sourceVC = [[SourceSelectionTableViewController alloc] initWithStyle:UITableViewStyleGrouped];
-    sourceVC.delegate=self;
-    
-    BCMenuVC *menuVC =[[BCMenuVC alloc] init];
-    
-    self.viewDeckController=[[IIViewDeckController alloc]initWithCenterViewController:nav leftViewController:menuVC];
-    
-    return self.viewDeckController;
-
-}
-
-
--(void)sourceSelectionTableViewController:(SourceSelectionTableViewController *)termTableViewController didSelectDataSource:(id<ItemDataSource>)dataSource{
-    
-    [self.viewDeckController closeSide:YES];
-}
 
 
 
@@ -88,27 +59,6 @@
 
 
 
-
-
-
-
-// get Device Token
-- (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(nonnull NSData *)deviceToken {
-    NSLog(@"Registration successful, bundle identifier: %@, device token: %@",
-          [NSBundle.mainBundle bundleIdentifier], deviceToken);
-    
-    
-}
-// Get Device Token Fail
-- (void)application:(UIApplication *)app didFailToRegisterForRemoteNotificationsWithError:(NSError *)err {
-    NSString *str = [NSString stringWithFormat: @"Error: %@",err];
-    NSLog(@"%@",str);
-}
-//
--(void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo {
-    application.applicationIconBadgeNumber += 1;
-    NSLog(@"didReceiveRemoteNotification:%@", userInfo);
-}
 
 
 
