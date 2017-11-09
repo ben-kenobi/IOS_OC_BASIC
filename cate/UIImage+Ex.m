@@ -70,6 +70,31 @@ CGMutablePathRef shapePath(CGRect rect,NSInteger count,NSInteger step,NSInteger 
     UIGraphicsEndImageContext();
     return image;
 }
+
++ (instancetype)img4Color:(UIColor *)color size:(CGSize)size {
+    CGRect rect = CGRectMake(0, 0, size.width, size.height);
+    UIGraphicsBeginImageContextWithOptions(rect.size,NO,iScreen.scale);
+    CGContextRef context = UIGraphicsGetCurrentContext();
+    CGContextSetFillColorWithColor(context, [color CGColor]);
+    CGContextFillRect(context, rect);
+    UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    return image;
+}
++ (instancetype)roundStretchImg4Color:(UIColor *)color w:(CGFloat)w {
+    CGRect rect = CGRectMake(0, 0, w, w);
+    UIGraphicsBeginImageContextWithOptions(rect.size,NO,iScreen.scale);
+    CGContextRef context = UIGraphicsGetCurrentContext();
+    CGContextAddArc(context, w*.5, w*.5, w*0.5, 0, 2 * M_PI, 0);
+    CGContextClip(context);
+    CGContextSetFillColorWithColor(context, [color CGColor]);
+    CGContextFillRect(context, rect);
+    UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    return image.resizableStretchImg;
+}
+
+
 +(instancetype)img4CVPixel:(CVPixelBufferRef)buf{
     UIImage *img = [UIImage imageWithCIImage:[CIImage imageWithCVPixelBuffer:buf]];
     CVPixelBufferRelease(buf);
@@ -277,6 +302,8 @@ CGMutablePathRef shapePath(CGRect rect,NSInteger count,NSInteger step,NSInteger 
     UIGraphicsEndImageContext();
     return img;
 }
+
+
 
 -(instancetype) scale2w:(CGFloat)wid{
     CGSize size = CGSizeMake(wid, wid/self.w*self.h);

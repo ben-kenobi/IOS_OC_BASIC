@@ -1,8 +1,3 @@
-//
-//  VideoParser.m
-//  Created by yf on 2017/6/30.
-//  Copyright © 2017年 yf. All rights reserved.
-//
 
 
 /***
@@ -54,6 +49,7 @@ static void didDecompress(void *decompressionOutputRefCon,void *sourceFrameRefCo
     NSInteger _ppsSize;
     VTDecompressionSessionRef _decoderSession;
     CMVideoFormatDescriptionRef _decodeFormatDescription;
+    
 }
 
 
@@ -66,11 +62,27 @@ static void didDecompress(void *decompressionOutputRefCon,void *sourceFrameRefCo
 
 @implementation H264VideoParser
 
-+(void)parseFile:(NSString *)path cb:(void(^)(CVPixelBufferRef))decodeCB{
++(instancetype)parseFile:(NSString *)path cb:(void(^)(CVPixelBufferRef))decodeCB{
     H264VideoParser *parser =   [[self alloc]initWithFile:path];
     parser.decodeCB=decodeCB;
-    [parser startDecode];
-    [parser close];
+    dispatch_async(dispatch_get_global_queue(0, 0), ^{
+        [parser startDecode];
+    });
+    return parser;
+}
+
+-(void)setStop:(BOOL)stop{
+    _stop=stop;
+    if(_stop)
+        [self close];
+}
+-(void)setPause:(BOOL)pause{
+    _pause=pause;
+    if(!_pause){
+        dispatch_async(dispatch_get_global_queue(0, 0), ^{
+            [self startDecode];
+        });
+    }
 }
 
 +(CVPixelBufferRef)parseFile:(NSString *)path {
@@ -90,7 +102,7 @@ static void didDecompress(void *decompressionOutputRefCon,void *sourceFrameRefCo
 -(instancetype)init{
     if(self=[super init]){
         _bufferSize=0;
-        _bufferCap=512*1024;
+        _bufferCap=1080 * 1920;
         _buffer=malloc(_bufferCap);
     }
     return self;
@@ -153,9 +165,6 @@ static void didDecompress(void *decompressionOutputRefCon,void *sourceFrameRefCo
     memcpy(vp.buffer, _buffer, packetSize);
     _bufferSize=0;
     return vp;
-    
-    
-    
 }
 
 
@@ -296,7 +305,7 @@ static void didDecompress(void *decompressionOutputRefCon,void *sourceFrameRefCo
                 NSLog(@"IOS8VT: decode failed status=%d(Bad data)", decodeStatus);
                 
             }else if(decodeStatus!=noErr){
-                NSLog(@"IOS8VT: decode failed status=%d", decodeStatus);
+                NSLog(@"IOS8VT: decode failed status=%d ", decodeStatus);
                 
             }
             CFRelease(sampleBuffer);
@@ -307,13 +316,19 @@ static void didDecompress(void *decompressionOutputRefCon,void *sourceFrameRefCo
     return outputPixelBuffer;
 }
 
-
+-(void)printData:(void *)data size:(int)size{
+    for(int i=0;i<size;i++)
+        printf("%d ",(*(int*)(data+i))&0x1f);
+}
 -(void)startDecode{
     
     VideoPacket *vp = nil;
-    while(true){
+    while(!_stop&&!_pause){
         vp=[self nextPacket];
         if(vp==nil){
+            if(self.decodeCB)
+                self.decodeCB(nil);
+            self.stop=YES;
             break;
         }
         
@@ -325,7 +340,7 @@ static void didDecompress(void *decompressionOutputRefCon,void *sourceFrameRefCo
         vp.buffer[3]=*(pNalSize);
         CVPixelBufferRef pixelBuffer = NULL;
         int nalType = vp.buffer[4]&0x1F;
-        printf("\n=============%d--------------\n",nalType);
+        printf("\n=============%d-----%d---------\n",*pNalSize,nalType);
         switch(nalType){
             case 0x05:{
                 NSLog(@"Nal type is IDR frame");
@@ -351,6 +366,7 @@ static void didDecompress(void *decompressionOutputRefCon,void *sourceFrameRefCo
             default:{
                 NSLog(@"Nal type is B/P frame");
                 pixelBuffer=[self decode:vp];
+                
             }
                 break;
                 
