@@ -92,7 +92,40 @@
     }] resume];
     
 }
+//-----upload with data ------
++(void)upload:(NSData *)data name:(NSString *)name
+     filename:(NSString *)filename toURL:(NSURL *)url setupReq:(void(^)(NSMutableURLRequest *req))setupReq callBack:(void (^)(NSData *data,NSURLResponse *response, NSError *error))callback{
+    NSString *boundary=@"--------------1234566";
+    NSMutableURLRequest *req=[NSMutableURLRequest requestWithURL:url cachePolicy:1 timeoutInterval:15];
+    if(setupReq)
+        setupReq(req);
+    req.HTTPMethod=@"POST";
+    [req setValue:[@"multipart/form-data; boundary=" stringByAppendingString:boundary] forHTTPHeaderField:@"Content-Type"];
+    req.HTTPBody=[self uploadBodyWithBoundary:boundary data:data name:name filename:filename];
+    
+    [[[NSURLSession sharedSession] dataTaskWithRequest:req completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if(callback)
+                callback(data,response,error);
+        });
+        
+    }] resume];
+}
 
++(NSData *)uploadBodyWithBoundary:(NSString *)boundary data:(NSData *)data  name:(NSString *)name filename:(NSString *)filename{
+    NSMutableData *mdata=[NSMutableData dataWithData:[self segWithBoundary:boundary data:data name:name filename:filename]];
+    [mdata appendData:[self segOfEndingWithBoundary:boundary]];
+    return mdata;
+    
+}
+
++(NSData *)segWithBoundary:(NSString *)boundary data:(NSData *)data  name:(NSString *)name filename:(NSString *)filename{
+    NSMutableData *mdata=[NSMutableData dataWithData:[[NSString stringWithFormat:@"\r\n--%@\r\nContent-Disposition: form-data; name=%@; filename=%@\r\nContent-Type: %@\r\n\r\n",boundary,name,filename,@"application/octet-stream"] dataUsingEncoding:4]];
+    [mdata appendData:data];
+    return mdata;
+}
+
+//-----upload with filepath ------
 +(void)uploadFile:(NSString *)file name:(NSString *)name
          filename:(NSString *)filename toURL:(NSURL *)url callBack:(void (^)(NSData *data,NSURLResponse *response, NSError *error))callback{
     NSString *boundary=@"--------------1234566";

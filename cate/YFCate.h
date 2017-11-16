@@ -21,7 +21,7 @@
 typedef void (^defBlock)();
 
 BOOL emptyStr(NSString *str);
-
+UIWindow *frontestWindow();
 NSTimer * iTimer(CGFloat inteval,id tar,SEL sel,id userinfo);
 
 CADisplayLink *iDLink(id tar,SEL sel);

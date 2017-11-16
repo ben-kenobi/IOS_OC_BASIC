@@ -8,6 +8,13 @@
 BOOL emptyStr(NSString *str){
     return !str||!str.length;
 }
+UIWindow *frontestWindow(){
+    if(iVersion>=11){
+        return iApp.windows[0];
+    }else{
+        return iApp.windows[iApp.windows.count-1];
+    }
+}
 
 
 NSTimer * iTimer(CGFloat inteval,id tar,SEL sel,id userinfo){
@@ -159,6 +166,7 @@ NSString * iphoneType() {
 }
 +(void)showProg{
     [SVProgressHUD showWithMaskType:SVProgressHUDMaskTypeBlack];
+
 }
 +(void)dismProg{
     [SVProgressHUD dismiss];
@@ -166,7 +174,9 @@ NSString * iphoneType() {
 }
 +(void)toast:(NSString*)msg{
     //        iApp.windows[iApp.windows.count-1].makeToast(msg)
-    [iApp.windows[iApp.windows.count-1] makeToast:msg duration:1.5 position:nil title:nil image:nil style:[CSToastManager sharedStyle] completion:nil];
+//    [SVProgressHUD showInfoWithStatus:msg];
+
+    [frontestWindow() makeToast:msg duration:1.5 position:CSToastPositionCenter title:nil image:nil style:[CSToastManager sharedStyle] completion:nil];
 }
 @end
 
