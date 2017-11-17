@@ -9,6 +9,9 @@
 #import "IProUtil.h"
 #import "MD5.h"
 #import "UIView+Toast.h"
+#import "M1GuidanceView.h"
+#import "BCUIAlertVC.h"
+
 
 @interface IProUtil ()
 @property (nonatomic,strong)CLLocationManager *man;
@@ -54,11 +57,18 @@
 
 
 +(void)prompt:(NSString *)title tcolor:(UIColor *)tcolor tfont:(UIFont*)tfont msg:(NSString *)msg mcolor:(UIColor *)mcolor mfont:(UIFont *)mfont  cb:(void(^)())cb{
-    UIAlertController *vc = [UIAlertController alertControllerWithTitle:@"" message:@"" preferredStyle:UIAlertControllerStyleAlert];
-    UIView * backView = [vc.view.subviews.lastObject subviews].lastObject;
-    backView.layer.cornerRadius = dp2po(12);
-    backView.backgroundColor = iColor(0xfc, 0xfc, 0xfc, 1);
-   
+    [self prompt:title tcolor:tcolor tfont:tfont msg:msg mcolor:mcolor mfont:mfont vc:UIViewController.curVC cb:cb];
+}
+
+
+
+
++(void)prompt:(NSString *)title tcolor:(UIColor *)tcolor tfont:(UIFont*)tfont msg:(NSString *)msg mcolor:(UIColor *)mcolor mfont:(UIFont *)mfont vc:(UIViewController *)fromVC cb:(void(^)())cb{
+    BCUIAlertVC *vc = [BCUIAlertVC alertControllerWithTitle:@"" message:@"" preferredStyle:UIAlertControllerStyleAlert];
+//    UIView * backView = [vc.view.subviews.lastObject subviews].lastObject;
+//    backView.layer.cornerRadius = dp2po(12);
+//    backView.backgroundColor = iColor(0xfc, 0xfc, 0xfc, 1);
+    
     if(title){
         NSMutableAttributedString* titleMutableString  = [[NSMutableAttributedString alloc ] initWithString:title attributes:@{NSFontAttributeName:tfont,NSForegroundColorAttributeName:tcolor}];
         [vc setValue:titleMutableString forKey: @"attributedTitle"];
@@ -70,37 +80,84 @@
     paragraphStyle.alignment=NSTextAlignmentCenter;
     NSMutableAttributedString* messageMutableString  = [[NSMutableAttributedString alloc ] initWithString:message attributes:@{NSFontAttributeName:mfont,NSForegroundColorAttributeName:mcolor,NSParagraphStyleAttributeName:paragraphStyle}];
     [vc setValue:messageMutableString forKey: @"attributedMessage"];
-    UIVisualEffectView *ev = [[UIVisualEffectView alloc]initWithEffect:[UIBlurEffect effectWithStyle:UIBlurEffectStyleDark]];
-    ev.alpha=.7;
+    
+    
+    M1GuidanceView *ev=[[M1GuidanceView alloc]init];
+    
+    vc.dismissCB = ^{
+        [ev dismiss];
+    };
     if(cb){
         UIAlertAction* cancel = [UIAlertAction actionWithTitle:iStr(@"Cancel") style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
-            [UIView animateWithDuration:.1 animations:^{
-                ev.alpha=0;
-            } completion:^(BOOL finished) {
-                [ev removeFromSuperview];
-            }];
         }];
         [cancel setValue:iColor(0x66, 0x66, 0x66, 1) forKey:@"titleTextColor"];
         [vc addAction:cancel];
     }
-   
+    
     UIAlertAction* ok = [UIAlertAction actionWithTitle:iStr(@"OK") style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
         if(cb)
             cb();
-        [UIView animateWithDuration:.1 animations:^{
-            ev.alpha=0;
-        } completion:^(BOOL finished) {
-            [ev removeFromSuperview];
-        }];
     }];
     [ok setValue:iGlobalFocusColor forKey:@"titleTextColor"];
     [vc addAction:ok];
-  
     
-    [UIViewController.curVC presentViewController:vc animated:YES completion:nil];
-    [UIViewController.curVC.view insertSubview:ev belowSubview:vc.view];
-    [ev mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.edges.equalTo(@0);
+    
+    [fromVC presentViewController:vc animated:YES completion:nil];
+    [ev showBy:^UIView *(M1GuidanceView *v) {
+        UIViewController *avc = fromVC.navigationController?fromVC.navigationController:fromVC;
+        [avc.view insertSubview:ev belowSubview:vc.view];
+        return avc.view;
+    }];
+
+}
++(void)prompt:(NSAttributedString *)msg cb:(void(^)())cb{
+    BCUIAlertVC *vc = [BCUIAlertVC alertControllerWithTitle:@"" message:@"" preferredStyle:UIAlertControllerStyleAlert];
+    [vc setValue:msg forKey: @"attributedMessage"];
+    
+    
+    M1GuidanceView *ev=[[M1GuidanceView alloc]init];
+    
+    vc.dismissCB = ^{
+        [ev dismiss];
+    };
+    if(cb){
+        UIAlertAction* cancel = [UIAlertAction actionWithTitle:iStr(@"Cancel") style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+        }];
+        [cancel setValue:iColor(0x66, 0x66, 0x66, 1) forKey:@"titleTextColor"];
+        [vc addAction:cancel];
+    }
+    
+    UIAlertAction* ok = [UIAlertAction actionWithTitle:iStr(@"OK") style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        if(cb)
+            cb();
+    }];
+    [ok setValue:iGlobalFocusColor forKey:@"titleTextColor"];
+    [vc addAction:ok];
+    
+    UIViewController *fromVC = UIViewController.curVC;
+    
+    [fromVC presentViewController:vc animated:YES completion:nil];
+    [ev showBy:^UIView *(M1GuidanceView *v) {
+        UIViewController *avc = fromVC.navigationController?fromVC.navigationController:fromVC;
+        [avc.view insertSubview:ev belowSubview:vc.view];
+        return avc.view;
+    }];
+}
+
+
+
++(void)sheetPrompt:(id<BCStyleSheetListDelegate>)datas vc:(UIViewController *)fromVC{
+    BCAlertStylesheetVC *ac = [[BCAlertStylesheetVC alloc]init];
+    ac.datas=datas;
+    [fromVC presentViewController:ac animated:NO completion:nil];
+    M1GuidanceView *ev=[[M1GuidanceView alloc]init];
+    ac.dismissCB = ^{
+        [ev dismiss];
+    };
+    [ev showBy:^UIView *(M1GuidanceView *v) {
+        UIViewController *avc = fromVC.navigationController?fromVC.navigationController:fromVC;
+        [avc.view insertSubview:ev belowSubview:ac.view];
+        return avc.view;
     }];
     
 }
@@ -131,7 +188,7 @@
     [btn setTitle:title forState:0];
     btn.titleLabel.font=font;
     [btn setTitleColor:color forState:UIControlStateNormal];
-    [btn setTitleColor:iGlobalBG forState:UIControlStateHighlighted];
+    [btn setTitleColor:[color colorWithAlphaComponent:.6] forState:UIControlStateHighlighted];
     return btn;
 }
 
@@ -287,8 +344,45 @@
 }
 
 
++(BOOL)isEmail:(NSString *)str{
+    if(emptyStr(str))return NO;
+    static NSString * emailRegex = @"^[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,64}$";
+    static NSPredicate *pred=nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        pred=[NSPredicate predicateWithFormat:@"SELF MATCHES %@",emailRegex];
+    });
+    return [pred evaluateWithObject:str];
+}
++(BOOL)isPwd:(NSString*)str{
+    if(!str||str.length<8) return NO;
+    static NSString * pwdRegex = @"^\\w*[a-zA-Z]\\w*$";
+    static NSPredicate *pred=nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        pred=[NSPredicate predicateWithFormat:@"SELF MATCHES %@",pwdRegex];
+    });
+    return [pred evaluateWithObject:str];
+}
++(NSString *)getDeviceId{
+    return [[UIDevice currentDevice].identifierForVendor UUIDString];
+}
 
 
+
++(NSDictionary *)attrDictWith:(UIColor *)fcolor font:(UIFont *)font{
+    return @{NSForegroundColorAttributeName:fcolor,NSFontAttributeName:font};
+}
+
+
++(void)commonUnderlineBtnSetup:(UIButton *)btn title:(NSString *)title{
+ 
+    [btn setAttributedTitle:[[NSAttributedString alloc]initWithString:title attributes:@{NSForegroundColorAttributeName:iColor(0xaa, 0xaa, 0xaa, 1),NSFontAttributeName:iFont(dp2po(14)),NSUnderlineStyleAttributeName:@(NSUnderlineStyleSingle),NSUnderlineColorAttributeName:iColor(0xaa, 0xaa, 0xaa, 1)
+                                                                                                                                         }] forState:0];
+    [btn setAttributedTitle:[[NSAttributedString alloc]initWithString:title attributes:@{NSForegroundColorAttributeName:iGlobalFocusColor,NSFontAttributeName:iFont(dp2po(14)),NSUnderlineStyleAttributeName:@(NSUnderlineStyleSingle),NSUnderlineColorAttributeName:iGlobalFocusColor
+                                                                                                                                         }] forState:UIControlStateHighlighted];
+    btn.contentEdgeInsets=UIEdgeInsetsMake(5, 5, 5, 5);
+}
 @end
 
 

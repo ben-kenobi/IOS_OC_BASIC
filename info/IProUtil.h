@@ -8,12 +8,16 @@
 
 #import <Foundation/Foundation.h>
 #import <CoreLocation/CoreLocation.h>
-
+#import "BCAlertStylesheetVC.h"
 
 CGFloat dp2po(CGFloat dp);
 @interface IProUtil : NSObject<CLLocationManagerDelegate>
 +(void)commonPrompt:(NSString *)title msg:(NSString *)msg cb:(void(^)())cb;
 +(void)prompt:(NSString *)title tcolor:(UIColor *)tcolor tfont:(UIFont*)tfont msg:(NSString *)msg mcolor:(UIColor *)mcolor mfont:(UIFont *)mfont cb:(void(^)())cb;
++(void)prompt:(NSString *)title tcolor:(UIColor *)tcolor tfont:(UIFont*)tfont msg:(NSString *)msg mcolor:(UIColor *)mcolor mfont:(UIFont *)mfont vc:(UIViewController *)fromVC cb:(void(^)())cb;
+
++(void)prompt:(NSAttributedString *)msg cb:(void(^)())cb;
++(void)sheetPrompt:(id<BCStyleSheetListDelegate>)datas vc:(UIViewController *)fromVC;
 +(void)locationWith:(void(^)(BOOL suc,NSArray *locs))cb;
 +(instancetype)shareInstance;
 +(NSString *)digestAry:(NSArray *)ary;
@@ -29,7 +33,10 @@ CGFloat dp2po(CGFloat dp);
 +(UILabel *)commonLab:(UIFont *)font color:(UIColor *)color;
 +(UIButton *)commonTextBtn:(UIFont *)font color:(UIColor *)color title:(NSString *)title;
 +(UILabel *)commonLab:(UIFont *)font color:(UIColor *)color bg:(UIColor *)bg;
-
-
++(BOOL)isEmail:(NSString *)str;
++(BOOL)isPwd:(NSString*)str;
++(NSString *)getDeviceId;
++(NSDictionary *)attrDictWith:(UIColor *)fcolor font:(UIFont *)font;
++(void)commonUnderlineBtnSetup:(UIButton *)btn title:(NSString *)title;
 @end
 
