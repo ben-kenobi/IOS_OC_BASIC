@@ -19,9 +19,17 @@
     }
     return self;
 }
-//-(void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event{
-//    [self dismiss];
-//}
+
+-(UIView *)mask{
+    if(!_mask){
+        _mask=[[UIView alloc]init];
+        [self addSubview:_mask];
+        [_mask mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.edges.equalTo(@0);
+        }];
+    }
+    return _mask;
+}
 
 
 +(void)showAt:(UIView *)view{
@@ -36,14 +44,49 @@
     }];
 }
 
--(void)dismiss{
+-(void)showAt:(UIView *)view{
+    [self removeFromSuperview];
+    [view addSubview:self];
+    [self updateAsynchronously:YES completion:^{
+        self.frame = view.bounds;
+    }];
+    self.alpha=0;
     [UIView animateWithDuration:.25 animations:^{
+        self.alpha=1;
+    }];
+}
+
++(void)showBy:(UIView *(^)(M1GuidanceView *v))cb{
+    M1GuidanceView *v=[[M1GuidanceView alloc]init];
+    UIView *view = cb(v);
+    [v updateAsynchronously:YES completion:^{
+        v.frame = view.bounds;
+    }];
+    v.alpha=0;
+    [UIView animateWithDuration:.25 animations:^{
+        v.alpha=1;
+    }];
+}
+
+-(void)showBy:(UIView *(^)(M1GuidanceView *v))cb{
+    [self removeFromSuperview];
+    UIView *view = cb(self);
+    [self updateAsynchronously:YES completion:^{
+        self.frame = view.bounds;
+    }];
+    self.alpha=0;
+    [UIView animateWithDuration:.25 animations:^{
+        self.alpha=1;
+    }];
+}
+-(void)dismiss{
+    [UIView animateWithDuration:.15 animations:^{
         self.alpha=0;
     } completion:^(BOOL finished) {
         [self removeFromSuperview];
     }];
-    [iPref(0) setBool:YES forKey:NEW_FUN_GUIDANCED];
 }
+
 
 #pragma mark - UI
 -(void)initUI{
@@ -51,21 +94,6 @@
     self.tintColor = [UIColor blackColor];
     self.contentMode = UIViewContentModeBottom;
     self.blurRadius=4;
-    
-    self.btn=[UIButton btnWithImg:img(@"ok_btn") hlImg:[img(@"ok_btn") renderWithColor:iColor(0xaa, 0xaa, 0xaa, 1)]];
-    [self.btn addTarget:self action:@selector(dismiss) forControlEvents:UIControlEventTouchUpInside];
-    [self addSubview:self.btn];
-    [self.btn mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.centerX.equalTo(@0);
-        make.centerY.equalTo(@(dp2po(-30)));
-    }];
-    
-    UIImageView *iv=[[UIImageView alloc]initWithImage:img(@"guide_control")];
-    [self addSubview:iv];
-    [iv mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.right.equalTo(@(dp2po(-10)));
-        make.top.equalTo(@20);
-    }];
 }
 
 @end

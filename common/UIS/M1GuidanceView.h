@@ -10,5 +10,9 @@
 #import "FXBlurView.h"
 @interface M1GuidanceView : FXBlurView
 +(void)showAt:(UIView *)view;
+-(void)showAt:(UIView *)view;
 -(void)dismiss;
++(void)showBy:(UIView *(^)(M1GuidanceView *v))cb;
+-(void)showBy:(UIView *(^)(M1GuidanceView *v))cb;
+@property (nonatomic,strong)UIView *mask;
 @end
