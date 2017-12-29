@@ -8,6 +8,6 @@
 
 #import <Foundation/Foundation.h>
 
-@interface MD5 : NSObject
+@interface MyMD5 : NSObject
 + (NSString *)MD5Encrypt:(NSString *)str;
 @end

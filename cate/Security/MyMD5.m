@@ -6,10 +6,10 @@
 //  Copyright (c) 2015年 Ricky. All rights reserved.
 //
 
-#import "MD5.h"
+#import "MyMD5.h"
 #import <CommonCrypto/CommonDigest.h>
 
-@implementation MD5
+@implementation MyMD5
 
 + (NSString *)MD5Encrypt:(NSString *)str
 {

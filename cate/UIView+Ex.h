@@ -30,6 +30,7 @@ UIView * layoutViewWithSize(UIView *sup,NSArray *subs,NSInteger colNum,BOOL full
 
 
 -(void)measurePriority:(float)level hor:(BOOL)hor;
++(instancetype)viewWithColor:(UIColor *)color;
 
 @end
 

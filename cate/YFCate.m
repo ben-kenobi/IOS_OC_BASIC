@@ -16,7 +16,6 @@ UIWindow *frontestWindow(){
     }
 }
 
-
 NSTimer * iTimer(CGFloat inteval,id tar,SEL sel,id userinfo){
     NSTimer *timer=[NSTimer timerWithTimeInterval:inteval target:tar selector:sel userInfo:userinfo repeats:YES];
     [[NSRunLoop mainRunLoop] addTimer:timer forMode:NSRunLoopCommonModes];
@@ -31,6 +30,9 @@ CADisplayLink *iDLink(id tar,SEL sel){
 
 void runOnMain(void (^blo)()){
     dispatch_async(dispatch_get_main_queue(), blo);
+}
+void runOnGlobal(void (^blo)()){
+    dispatch_async(dispatch_get_global_queue(0, 0), blo);
 }
 
 
@@ -166,17 +168,17 @@ NSString * iphoneType() {
 }
 +(void)showProg{
     [SVProgressHUD showWithMaskType:SVProgressHUDMaskTypeBlack];
-
 }
 +(void)dismProg{
     [SVProgressHUD dismiss];
 
 }
 +(void)toast:(NSString*)msg{
-    //        iApp.windows[iApp.windows.count-1].makeToast(msg)
-//    [SVProgressHUD showInfoWithStatus:msg];
-
-    [frontestWindow() makeToast:msg duration:1.5 position:CSToastPositionCenter title:nil image:nil style:[CSToastManager sharedStyle] completion:nil];
+    if(!msg)return;
+    runOnMain(^{
+        //        iApp.windows[iApp.windows.count-1].makeToast(msg)
+        [frontestWindow() makeToast:msg duration:1.5 position:nil title:nil image:nil style:[CSToastManager sharedStyle] completion:nil];
+    });
 }
 @end
 

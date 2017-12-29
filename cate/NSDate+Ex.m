@@ -120,6 +120,25 @@
     
 }
 
+-(NSString *)dateFormat2{
+    static  NSDateFormatter *fm;
+    if(!fm){
+        fm=[[NSDateFormatter alloc] init];
+        fm.dateFormat=@"EEE MMM dd";
+        fm.locale=[NSLocale localeWithLocaleIdentifier:@"en_US"];
+    }
+    return [fm stringFromDate:self];
+}
+-(NSString *)dateFormat3{
+    static  NSDateFormatter *fm;
+    if(!fm){
+        fm=[[NSDateFormatter alloc] init];
+        fm.dateFormat=@"EEE MMM dd, yyyy";
+        fm.locale=[NSLocale localeWithLocaleIdentifier:@"en_US"];
+    }
+    return [fm stringFromDate:self];
+}
+
 -(NSString *)timeFormat{
     static  NSDateFormatter *fm;
     if(!fm){
@@ -193,6 +212,9 @@
 
 +(NSInteger)curTimeMilli{
     return [[NSDate date] timeIntervalSince1970]*1000;
+}
++(NSDate *)dateWithMilli:(NSInteger)millis{
+    return [NSDate dateWithTimeIntervalSince1970:millis/1000];
 }
 
 

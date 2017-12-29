@@ -7,7 +7,7 @@
 //
 
 #import "IProUtil.h"
-#import "MD5.h"
+#import "MyMD5.h"
 #import "UIView+Toast.h"
 #import "M1GuidanceView.h"
 #import "BCUIAlertVC.h"
@@ -208,10 +208,10 @@
     for(NSString *str in ary){
         [mstr appendString:str];
     }
-    return [MD5 MD5Encrypt:mstr];
+    return [MyMD5 MD5Encrypt:mstr];
 }
 +(NSString *)digestStr:(NSString *)str{
-    return [MD5 MD5Encrypt:str];
+    return [MyMD5 MD5Encrypt:str];
 }
 +(instancetype)shareInstance{
     static long l=0;

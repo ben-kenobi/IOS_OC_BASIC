@@ -137,7 +137,11 @@
 }
 
 
-
++(instancetype)viewWithColor:(UIColor *)color{
+    UIView *v=[[self alloc]init];
+    v.backgroundColor=color;
+    return v;
+}
 
 
 

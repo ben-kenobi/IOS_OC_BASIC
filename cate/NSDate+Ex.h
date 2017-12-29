@@ -8,6 +8,8 @@
 @interface NSDate (Ex)
 
 -(NSString *)dateFormat;
+-(NSString *)dateFormat2;
+-(NSString *)dateFormat3;
 -(NSString *)timeFormat;
 -(NSString *)timeFormat2;
 -(NSString *)timeFormat3;
@@ -17,7 +19,7 @@
 +(instancetype)timeFromStr:(NSString *)str;
 +(instancetype)timeMilliFromStr:(NSString *)str;
 +(NSInteger)curTimeMilli;
-
++(NSDate *)dateWithMilli:(NSInteger)millis;
 
 +(instancetype)fromCommonDateFormat:(NSString*)datestr;
 -(NSString *)toCommonDateFormat;
