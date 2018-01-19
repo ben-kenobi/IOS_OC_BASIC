@@ -6,7 +6,7 @@
 #import <Foundation/Foundation.h>
 
 @interface NSDate (Ex)
-
+@property (nonatomic,assign)BOOL viewed;
 -(NSString *)dateFormat;
 -(NSString *)dateFormat2;
 -(NSString *)dateFormat3;

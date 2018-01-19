@@ -2,8 +2,11 @@
 
 #import <Foundation/Foundation.h>
 
-#define ScaleTopMargin 84
-#define ScaleRight .32
+//#define ScaleTopMargin 84
+//#define ScaleRight .32
+
+#define ScaleTopMargin 0
+#define ScaleRight .18
 
 #define iGlobalGreen iColor(33, 197, 180,1)
 
@@ -19,3 +22,5 @@ extern NSString *const HOMESCROLLIDEN;
 extern NSString *const GETRECLISTNOTI;
 
 
+extern NSString *const APPSTORE_APPID;
+extern NSString *const APP_IDENNAME;

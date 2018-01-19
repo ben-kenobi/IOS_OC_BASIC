@@ -131,7 +131,6 @@ CGMutablePathRef shapePath(CGRect rect,NSInteger count,NSInteger step,NSInteger 
     UIImage *img= [UIImage imageWithCGImage:ci  scale:scale orientation:0];
     CGImageRelease(ci);
     return img;
-    
 }
 -(UIImage *)renderWithColor:(UIColor *)color{
     CGRect rect = CGRectMake(0, 0, self.w,self.h);
@@ -148,7 +147,7 @@ CGMutablePathRef shapePath(CGRect rect,NSInteger count,NSInteger step,NSInteger 
     return [UIImage imageWithCGImage:self.CGImage scale:iScreen.scale orientation:UIImageOrientationDownMirrored];
 }
 -(UIImage *)horizonMirroredImg{
-     return [UIImage imageWithCGImage:self.CGImage scale:iScreen.scale orientation:UIImageOrientationLeftMirrored];
+    return [UIImage imageWithCGImage:self.CGImage scale:iScreen.scale orientation:UIImageOrientationUpMirrored];
 }
 -(UIImage *)scaleImg2size:(CGSize)size{
     

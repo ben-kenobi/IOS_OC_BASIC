@@ -15,6 +15,8 @@
 +(NSString *)getTimestamp;
 +(void)broadcast:(NSString *)mes info:(NSDictionary *)info;
 +(float)systemVersion;
++(NSInteger)appVersion;
++(NSString *)appVersionStr;
 
 +(NSArray *)prosWithClz:(Class)clz;
 +(id)setValues:(NSDictionary *)dict forClz:(Class)clz;

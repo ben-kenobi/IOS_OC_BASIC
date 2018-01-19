@@ -20,6 +20,19 @@
 +(float)systemVersion{
     return  [[UIDevice currentDevice].systemVersion floatValue];
 }
++(NSInteger)appVersion{
+    NSString *appVersion=[IUtil appVersionStr];
+    NSArray *charArr=[appVersion componentsSeparatedByString:@"."];
+    NSInteger version_code=0;
+    for (int i=0; i<charArr.count; i++) {
+        version_code+=[[charArr objectAtIndex:i] integerValue]*(i==0?100:(i==1?10:1));
+    }
+    return version_code;
+    //    return [iBundle.infoDictionary[(NSString *)kCFBundleVersionKey] integerValue];
+}
++(NSString *)appVersionStr{
+    return  (NSString *)iBundle.infoDictionary[@"CFBundleShortVersionString"];
+}
 
 +(NSArray *)prosWithClz:(Class)clz{
     unsigned int count;

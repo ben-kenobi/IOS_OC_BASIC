@@ -8,12 +8,31 @@
 BOOL emptyStr(NSString *str){
     return !str||!str.length;
 }
+BOOL nullObj(id obj){
+    return obj==nil||[obj isKindOfClass:[NSNull class]];
+}
 UIWindow *frontestWindow(){
     if(iVersion>=11){
         return iApp.windows[0];
     }else{
         return iApp.windows[iApp.windows.count-1];
     }
+}
+
+NSLocale * prefLocale(){
+    return [NSLocale localeWithLocaleIdentifier:[NSLocale preferredLanguages][0]];
+}
+
+BOOL isRightToLeft(){
+     return [UIView userInterfaceLayoutDirectionForSemanticContentAttribute:UIView.appearance.semanticContentAttribute]==UIUserInterfaceLayoutDirectionRightToLeft;
+}
+
+UIImage * i18nImg(NSString * name){
+    UIImage *img = img(name);
+    if(isRightToLeft()){
+        return img.horizonMirroredImg;
+    }
+    return img;
 }
 
 NSTimer * iTimer(CGFloat inteval,id tar,SEL sel,id userinfo){
@@ -156,22 +175,22 @@ NSString * iphoneType() {
 @implementation iPop
 +(void)showMsg:(NSString*)msg{
     [SVProgressHUD showInfoWithStatus:msg];
-
+    
 }
 +(void)showSuc:(NSString*)msg{
     [SVProgressHUD showSuccessWithStatus:msg];
-
+    
 }
 +(void)showError:(NSString*)msg{
     [SVProgressHUD showErrorWithStatus:msg];
-
+    
 }
 +(void)showProg{
     [SVProgressHUD showWithMaskType:SVProgressHUDMaskTypeBlack];
 }
 +(void)dismProg{
     [SVProgressHUD dismiss];
-
+    
 }
 +(void)toast:(NSString*)msg{
     if(!msg)return;
@@ -198,7 +217,7 @@ NSString * iphoneType() {
 +(void)setImgFromALURL:(NSURL*)alurl cb:(void(^)(UIImage *))cb{
     ALAssetsLibraryAssetForURLResultBlock resultblock=^(ALAsset *asset){
         ALAssetRepresentation* rep = asset.defaultRepresentation;
-       __unsafe_unretained CGImageRef iref =  [rep fullResolutionImage];
+        __unsafe_unretained CGImageRef iref =  [rep fullResolutionImage];
         UIImage * image = [UIImage imageWithCGImage:iref];
         dispatch_async(dispatch_get_main_queue(), ^{
             cb(image);

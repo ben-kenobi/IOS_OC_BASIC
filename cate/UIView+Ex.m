@@ -177,7 +177,7 @@ UIView *layoutView(UIView *sup,NSArray *subs,NSInteger colNum,BOOL full){
             UIView *gap=[[UIView alloc] init];
             [sup addSubview:gap];
             [gap mas_makeConstraints:^(MASConstraintMaker *make) {
-                make.left.equalTo(lastv?lastv.mas_right:@0);
+                make.leading.equalTo(lastv?lastv.mas_trailing:@0);
                 if(col)
                     make.width.equalTo([ary[col-1] mas_width]);
             }];
@@ -200,7 +200,7 @@ UIView *layoutView(UIView *sup,NSArray *subs,NSInteger colNum,BOOL full){
         UIView *v=subs[i];
         [sup addSubview:v];
         [v mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.left.equalTo([ary[col] mas_right]);
+            make.leading.equalTo([ary[col] mas_trailing]);
             make.width.equalTo(@(v.w));
             make.height.equalTo(@(v.h));
             make.top.equalTo([vary[row] mas_bottom]);
@@ -212,8 +212,8 @@ UIView *layoutView(UIView *sup,NSArray *subs,NSInteger colNum,BOOL full){
             [sup addSubview:gap];
             [gap mas_makeConstraints:^(MASConstraintMaker *make) {
                 make.width.equalTo([ary[col] mas_width]);
-                make.right.equalTo(@0);
-                make.left.equalTo(lastv.mas_right);
+                make.trailing.equalTo(@0);
+                make.leading.equalTo(lastv.mas_trailing);
             }];
             [ary addObject:gap];
         }

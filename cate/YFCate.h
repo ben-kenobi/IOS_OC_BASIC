@@ -21,6 +21,10 @@
 typedef void (^defBlock)();
 
 BOOL emptyStr(NSString *str);
+BOOL nullObj(id obj);
+
+NSLocale * prefLocale();
+
 UIWindow *frontestWindow();
 
 NSTimer * iTimer(CGFloat inteval,id tar,SEL sel,id userinfo);
@@ -31,8 +35,8 @@ void runOnGlobal(void (^blo)());
 
 NSString * iphoneType() ;
 
-
-
+BOOL isRightToLeft();
+UIImage * i18nImg(NSString *name);
 
 
 
@@ -54,3 +58,4 @@ NSString * iphoneType() ;
 @interface ALUtil:NSObject
 +(void)setImgFromALURL:(NSURL*)alurl cb:(void(^)(UIImage *))cb;
 @end
+

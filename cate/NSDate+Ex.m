@@ -4,6 +4,7 @@
 //
 
 #import "NSDate+Ex.h"
+#import "objc/runtime.h"
 
 @implementation NSDate (Ex)
 
@@ -217,5 +218,12 @@
     return [NSDate dateWithTimeIntervalSince1970:millis/1000];
 }
 
+
+-(BOOL)viewed{
+    return [objc_getAssociatedObject(self,@"viewed") boolValue];
+}
+-(void)setViewed:(BOOL)viewed{
+    objc_setAssociatedObject(self, @"viewed", @(viewed), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+}
 
 @end
