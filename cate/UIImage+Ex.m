@@ -7,6 +7,8 @@
 #import <ImageIO/ImageIO.h>
 #import "H264VideoParser.h"
 #import <AVFoundation/AVFoundation.h>
+#import<QuartzCore/QuartzCore.h>
+#import<Accelerate/Accelerate.h>
 
 CGMutablePathRef shapePath(CGRect rect,NSInteger count,NSInteger step,NSInteger multi,CGFloat froma){
     if(!count) return 0;
@@ -109,7 +111,93 @@ CGMutablePathRef shapePath(CGRect rect,NSInteger count,NSInteger step,NSInteger 
     UIGraphicsEndImageContext();
     return img;
 }
+-(void)imgToCVPixel:(CVPixelBufferRef *)bufp{
+    CIContext *context = [CIContext contextWithOptions:nil];
+    CVPixelBufferCreate(kCFAllocatorDefault, self.w,
+                        self.h,  kCVPixelFormatType_32BGRA,0,
+                        bufp);
+    [context render:[CIImage imageWithCGImage:self.CGImage] toCVPixelBuffer:*bufp];
+}
 
+- (UIImage *)fixOrientation {
+    
+    // No-op if the orientation is already correct
+    if (self.imageOrientation == UIImageOrientationUp) return self;
+    
+    // We need to calculate the proper transformation to make the image upright.
+    // We do it in 2 steps: Rotate if Left/Right/Down, and then flip if Mirrored.
+    CGAffineTransform transform = CGAffineTransformIdentity;
+    
+    switch (self.imageOrientation) {
+        case UIImageOrientationDown:
+        case UIImageOrientationDownMirrored:
+            transform = CGAffineTransformTranslate(transform, self.size.width, self.size.height);
+            transform = CGAffineTransformRotate(transform, M_PI);
+            break;
+            
+        case UIImageOrientationLeft:
+        case UIImageOrientationLeftMirrored:
+            transform = CGAffineTransformTranslate(transform, self.size.width, 0);
+            transform = CGAffineTransformRotate(transform, M_PI_2);
+            break;
+            
+        case UIImageOrientationRight:
+        case UIImageOrientationRightMirrored:
+            transform = CGAffineTransformTranslate(transform, 0, self.size.height);
+            transform = CGAffineTransformRotate(transform, -M_PI_2);
+            break;
+        case UIImageOrientationUp:
+        case UIImageOrientationUpMirrored:
+            break;
+    }
+    
+    switch (self.imageOrientation) {
+        case UIImageOrientationUpMirrored:
+        case UIImageOrientationDownMirrored:
+            transform = CGAffineTransformTranslate(transform, self.size.width, 0);
+            transform = CGAffineTransformScale(transform, -1, 1);
+            break;
+            
+        case UIImageOrientationLeftMirrored:
+        case UIImageOrientationRightMirrored:
+            transform = CGAffineTransformTranslate(transform, self.size.height, 0);
+            transform = CGAffineTransformScale(transform, -1, 1);
+            break;
+        case UIImageOrientationUp:
+        case UIImageOrientationDown:
+        case UIImageOrientationLeft:
+        case UIImageOrientationRight:
+            break;
+    }
+    
+    // Now we draw the underlying CGImage into a new context, applying the transform
+    // calculated above.
+    CGContextRef ctx = CGBitmapContextCreate(NULL, self.size.width, self.size.height,
+                                             CGImageGetBitsPerComponent(self.CGImage), 0,
+                                             CGImageGetColorSpace(self.CGImage),
+                                             CGImageGetBitmapInfo(self.CGImage));
+    CGContextConcatCTM(ctx, transform);
+    switch (self.imageOrientation) {
+        case UIImageOrientationLeft:
+        case UIImageOrientationLeftMirrored:
+        case UIImageOrientationRight:
+        case UIImageOrientationRightMirrored:
+            // Grr...
+            CGContextDrawImage(ctx, CGRectMake(0,0,self.size.height,self.size.width), self.CGImage);
+            break;
+            
+        default:
+            CGContextDrawImage(ctx, CGRectMake(0,0,self.size.width,self.size.height), self.CGImage);
+            break;
+    }
+    
+    // And now we just create a new UIImage from the drawing context
+    CGImageRef cgimg = CGBitmapContextCreateImage(ctx);
+    UIImage *img = [UIImage imageWithCGImage:cgimg];
+    CGContextRelease(ctx);
+    CGImageRelease(cgimg);
+    return img;
+}
 
 -(instancetype)resizableStretchImg{
     CGFloat  w=self.size.width*.5;
@@ -168,6 +256,74 @@ CGMutablePathRef shapePath(CGRect rect,NSInteger count,NSInteger step,NSInteger 
 }
 
 
+
+-(UIImage *)rotate4Angle:(CGFloat)angle{
+    
+    //将image转化成context
+    
+    //获取图片像素的宽和高
+    size_t width =self.size.width*self.scale;
+    size_t height =self.size.height*self.scale;
+    
+    //颜色通道为8因为0-255经过了8个颜色通道的变化
+    //每一行图片的字节数因为我们采用的是ARGB/RGBA所以字节数为width * 4
+    size_t bytesPerRow =width *4;
+    
+    //图片的透明度通道
+    CGImageAlphaInfo info =kCGImageAlphaPremultipliedFirst;
+    //配置context的参数:
+    CGContextRef context =CGBitmapContextCreate(nil, width, height,8, bytesPerRow,CGColorSpaceCreateDeviceRGB(),kCGBitmapByteOrderDefault|info);
+    
+    if(!context) {
+        return nil;
+    }
+    
+    //将图片渲染到图形上下文中
+    CGContextDrawImage(context,CGRectMake(0,0, width, height),self.CGImage);
+    
+    uint8_t* data = (uint8_t*)CGBitmapContextGetData(context);
+    
+    //旋转前的数据
+    
+    vImage_Buffer src = { data,height,width,bytesPerRow};
+    
+    //旋转后的数据
+    
+    vImage_Buffer dest= { data,height,width,bytesPerRow};
+    
+    //背景颜色
+    Pixel_8888 backColor = {0,0,0,0};
+    
+    //填充颜色
+    vImage_Flags flags = kvImageBackgroundColorFill;
+    
+    //旋转context
+    vImageRotate_ARGB8888(&src, &dest,nil, -angle, backColor, flags);
+    
+    //将conetxt转换成image
+    
+    CGImageRef imageRef =CGBitmapContextCreateImage(context);
+    
+    UIImage* rotateImage =[UIImage imageWithCGImage:imageRef scale:self.scale orientation:self.imageOrientation];
+    
+    return rotateImage;
+    
+}
+
+
+-(UIImage *)rotate4Angle2:(CGFloat)angle{
+    CGFloat w = self.w*2,h=self.h*2;
+    CGRect rect = CGRectMake(0, 0, w,h);
+    UIGraphicsBeginImageContextWithOptions(rect.size,NO,iScreen.scale);
+    CGContextRef context = UIGraphicsGetCurrentContext();
+    CGContextTranslateCTM(context, w*.5, h*.5);
+    CGContextRotateCTM(context, angle);
+    CGContextTranslateCTM(context, w*-.5, h*-.5);
+    [self drawInRect:CGRectMake(w*.25, h*.25, self.w, self.h)];
+    UIImage *img = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    return img;
+}
 
 
 
@@ -314,7 +470,14 @@ CGMutablePathRef shapePath(CGRect rect,NSInteger count,NSInteger step,NSInteger 
     UIGraphicsEndImageContext();
     return img;
 }
-
+-(instancetype)scale2PreciseW:(CGFloat)wid{
+    CGSize size = CGSizeMake(wid, wid/self.w*self.h);
+    UIGraphicsBeginImageContextWithOptions(size, false, 1);
+    [self drawInRect:CGRectMake(0, 0, size.width, size.height)];
+    UIImage* img=UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    return img;
+}
 
 +(instancetype)launchImg{
     NSDictionary* dict=iBundle.infoDictionary;

@@ -13,9 +13,17 @@ BOOL nullObj(id obj){
 }
 UIWindow *frontestWindow(){
     if(iVersion>=11){
-        return iApp.windows[0];
+        UIWindow *window = iApp.windows[0];
+        if(CGRectEqualToRect(iScreen.bounds , window.bounds)){
+            return window;
+        }
+        return iApp.windows[1];
     }else{
-        return iApp.windows[iApp.windows.count-1];
+        UIWindow *window = iApp.windows[iApp.windows.count-1];
+        if(CGRectEqualToRect(iScreen.bounds , window.bounds)){
+            return window;
+        }
+        return iApp.windows[iApp.windows.count-2];
     }
 }
 

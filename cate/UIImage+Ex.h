@@ -15,8 +15,12 @@ CGMutablePathRef shapePath(CGRect rect,NSInteger count,NSInteger step,NSInteger 
 
 +(instancetype)imgFromV:(UIView *)view;
 +(instancetype)imgFromLayer:(CALayer*)layer;
-
+- (UIImage *)fixOrientation ;
+-(void)imgToCVPixel:(CVPixelBufferRef *)bufp;
 -(UIImage *)scaleImg2size:(CGSize)size;
+-(UIImage *)rotate4Angle:(CGFloat)angle;
+-(UIImage *)rotate4Angle2:(CGFloat)angle;
+
 -(instancetype)roundImg:(CGFloat)ivW boderColor:(UIColor*)color borderW:(CGFloat)borderW;
 -(UIImage *)renderWithColor:(UIColor *)color;
 -(UIImage *)verticalMirroredImg;
@@ -33,12 +37,12 @@ CGMutablePathRef shapePath(CGRect rect,NSInteger count,NSInteger step,NSInteger 
 +(instancetype)imgFromH264File:(NSString *)path;
 
 
-
 -(CGFloat)h;
 -(CGFloat)w;
 
 
 -(instancetype) scale2w:(CGFloat)wid;
+-(instancetype)scale2PreciseW:(CGFloat)wid;
 +(instancetype)launchImg;
 -(instancetype)convertAndroidPointNine;
 +(void)generateVideoImage:(NSURL*)url cb:(void (^)(UIImage *img))cb;
