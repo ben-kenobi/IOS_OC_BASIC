@@ -194,7 +194,9 @@ NSString * iphoneType() {
     
 }
 +(void)showProg{
-    [SVProgressHUD showWithMaskType:SVProgressHUDMaskTypeBlack];
+    [SVProgressHUD setDefaultMaskType:(SVProgressHUDMaskTypeBlack)];
+    [SVProgressHUD  show];
+//    [SVProgressHUD showWithMaskType:SVProgressHUDMaskTypeBlack];
 }
 +(void)dismProg{
     [SVProgressHUD dismiss];

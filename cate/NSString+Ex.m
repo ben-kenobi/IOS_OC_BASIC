@@ -29,6 +29,11 @@
     [[NSScanner scannerWithString:[self substringWithRange:(NSRange){0,self.length}] ] scanHexInt:&val];
     return val;
 }
+-(NSInteger)toHexLongValue{
+    NSInteger val;
+    [[NSScanner scannerWithString:[self substringWithRange:(NSRange){0,self.length}] ] scanHexLongLong:&val];
+    return val;
+}
 -(UInt8)toHexByte{
     return (UInt8)[self toHexValue];
 }

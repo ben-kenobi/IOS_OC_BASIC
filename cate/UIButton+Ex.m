@@ -60,7 +60,10 @@ void AudioServicesStopSystemSound(int);
 
 
 -(void)sendAction:(SEL)action to:(id)target forEvent:(UIEvent *)event{
-    if(iVersion>=10){
+    //判断device是否大于iphone7，iphone7以上才支持反馈震动，<2的为iphone6s或以下
+    NSInteger type=[[UIDevice.currentDevice valueForKey:@"_feedbackSupportLevel"] integerValue];
+
+    if(iVersion>=10&&type>=2){
         static UIImpactFeedbackGenerator *gen;
         static dispatch_once_t onceToken;
         dispatch_once(&onceToken, ^{
@@ -74,7 +77,7 @@ void AudioServicesStopSystemSound(int);
             dictionary = [NSMutableDictionary dictionary];
             // 可以自己设定震动间隔与时常（毫秒）
             // 是否生效, 时长, 是否生效, 时长……
-            NSArray *pattern = @[@YES, @10, @NO, @1];
+            NSArray *pattern = @[@YES, @50, @NO, @1];
             
             dictionary[@"VibePattern"] = pattern; // 模式
             dictionary[@"Intensity"] = @.5; // 强度（测试范围是0.3～1.0）

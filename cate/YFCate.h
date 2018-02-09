@@ -18,24 +18,24 @@
 #import "UIBarButtonItem+Ex.h"
 
 
-typedef void (^defBlock)();
+typedef void (^defBlock)(void);
 
 BOOL emptyStr(NSString *str);
 BOOL nullObj(id obj);
 
-NSLocale * prefLocale();
+NSLocale * prefLocale(void);
 
-UIWindow *frontestWindow();
+UIWindow *frontestWindow(void);
 
 NSTimer * iTimer(CGFloat inteval,id tar,SEL sel,id userinfo);
 
 CADisplayLink *iDLink(id tar,SEL sel);
-void runOnMain(void (^blo)());
-void runOnGlobal(void (^blo)());
+void runOnMain(void (^blo)(void));
+void runOnGlobal(void (^blo)(void));
 
-NSString * iphoneType() ;
+NSString * iphoneType(void) ;
 
-BOOL isRightToLeft();
+BOOL isRightToLeft(void);
 UIImage * i18nImg(NSString *name);
 
 
