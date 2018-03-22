@@ -63,6 +63,13 @@
 //    return [str isEqualToString:curdateStr];
     return [self isSameYear:[NSDate date]];
 }
+-(NSInteger)dayOfWeek{
+    NSCalendar *calendar = [NSCalendar currentCalendar];
+    NSInteger dayofWeek;
+    [calendar getEra:0 yearForWeekOfYear:0 weekOfYear:0 weekday:&dayofWeek fromDate:self];
+    return dayofWeek;
+}
+
 -(BOOL)isToday{
     NSCalendar *calendar = [NSCalendar currentCalendar];
     return [calendar isDateInToday:self];
@@ -105,6 +112,14 @@
 -(BOOL)isSameMinute:(NSDate *)date{
     NSCalendar *calendar = [NSCalendar currentCalendar];
     return [calendar isDate:self equalToDate:date toUnitGranularity:NSCalendarUnitMinute];
+}
+-(NSDate *)convertToToday{
+    if(self.isToday)return self;
+    NSCalendar *calendar = [NSCalendar currentCalendar];
+    NSInteger era,year,month,day,hour,minute,sec,nanosec;
+    [calendar getEra:&era year:&year month:&month day:&day fromDate:[NSDate date]];
+    [calendar getHour:&hour minute:&minute second:&sec nanosecond:&nanosec fromDate:self];
+    return [calendar dateWithEra:era year:year month:month day:day hour:hour minute:minute second:sec nanosecond:nanosec];
 }
 
 

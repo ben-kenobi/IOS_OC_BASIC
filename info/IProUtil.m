@@ -11,6 +11,8 @@
 #import "UIView+Toast.h"
 #import "M1GuidanceView.h"
 #import "BCUIAlertVC.h"
+#import "SVProgressHUD.h"
+#import "objc/runtime.h"
 
 
 @interface IProUtil ()
@@ -325,6 +327,7 @@
 
 +(void)initialize{
     if(self==[IProUtil class]){
+        //toast
         CSToastStyle *style = [[CSToastStyle alloc] initWithDefaultStyle];
         style.messageColor = [UIColor whiteColor];
         style.backgroundColor=iColor(0, 0, 0, .8);
@@ -340,6 +343,16 @@
         [CSToastManager setQueueEnabled:NO];
         [CSToastManager setDefaultPosition:CSToastPositionCenter];
         CSToastManager.defaultDuration=2;
+        
+        
+        //svprogresshud
+        [SVProgressHUD setDefaultStyle:SVProgressHUDStyleCustom];
+        [SVProgressHUD setDefaultMaskType:(SVProgressHUDMaskTypeBlack)];
+        UIImageView *iv = self.commonLoadingSubIv;
+        [SVProgressHUD setLoadingImageView:iv];
+        [SVProgressHUD setDefaultAnimationType:SVProgressHUDAnimationTypeCustom];
+        [SVProgressHUD setDefaultStyle:SVProgressHUDStyleLight];
+
     }
 }
 
@@ -354,13 +367,33 @@
     });
     return [pred evaluateWithObject:str];
 }
-+(BOOL)isPwd:(NSString*)str{
++(BOOL)isLoginPwd:(NSString*)str{
     if(!str||str.length<8) return NO;
-    static NSString * pwdRegex = @"^\\w*[a-zA-Z]\\w*$";
     static NSPredicate *pred=nil;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
+        NSString * pwdRegex = @"^.*[a-zA-Z].*$";
         pred=[NSPredicate predicateWithFormat:@"SELF MATCHES %@",pwdRegex];
+    });
+    return [pred evaluateWithObject:str];
+}
++(BOOL)isSignupPwd:(NSString*)str{
+    if(!str||str.length<8) return NO;
+    static NSPredicate *pred=nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        
+        NSString *REGEX_PASSWORD_LENGTH = @"^.{8,25}$";
+        
+        NSString *REGEX_PASSWORD_NUM = @"^.*[0-9]+.*$";
+        
+        NSString *REGEX_PASSWORD_UPPER_LETTER = @"^.*[A-Z]+.*$";
+        
+        NSString *REGEX_PASSWORD_LOWER_LETTER = @"^.*[a-z]+.*$";
+        
+        NSString *REGEX_PASSWORD_SPE_CHARACTERS = @"^.*[/^/$/.//,;:'!@#$%^&*-_/*/|/?/+/(/)/[/]/{/}]+.*$";
+        
+        pred=[NSPredicate predicateWithFormat:@"SELF MATCHES %@  AND SELF MATCHES %@ AND SELF MATCHES %@ AND SELF MATCHES %@ AND SELF MATCHES %@ AND SELF MATCHES %@",REGEX_PASSWORD_LENGTH,REGEX_PASSWORD_NUM,REGEX_PASSWORD_UPPER_LETTER,REGEX_PASSWORD_LOWER_LETTER,REGEX_PASSWORD_SPE_CHARACTERS];
     });
     return [pred evaluateWithObject:str];
 }
@@ -375,13 +408,46 @@
 }
 
 
-+(void)commonUnderlineBtnSetup:(UIButton *)btn title:(NSString *)title{
- 
-    [btn setAttributedTitle:[[NSAttributedString alloc]initWithString:title attributes:@{NSForegroundColorAttributeName:iColor(0xaa, 0xaa, 0xaa, 1),NSFontAttributeName:iFont(dp2po(14)),NSUnderlineStyleAttributeName:@(NSUnderlineStyleSingle),NSUnderlineColorAttributeName:iColor(0xaa, 0xaa, 0xaa, 1)
-                                                                                                                                         }] forState:0];
-    [btn setAttributedTitle:[[NSAttributedString alloc]initWithString:title attributes:@{NSForegroundColorAttributeName:iGlobalFocusColor,NSFontAttributeName:iFont(dp2po(14)),NSUnderlineStyleAttributeName:@(NSUnderlineStyleSingle),NSUnderlineColorAttributeName:iGlobalFocusColor
-                                                                                                                                         }] forState:UIControlStateHighlighted];
-    btn.contentEdgeInsets=UIEdgeInsetsMake(5, 5, 5, 5);
++(UIImageView *)commonLoadingIv{
+    UIImageView *bgiv = [[UIImageView alloc]initWithImage:img(@"loading_security_bg")];
+    UIImageView *iv = [self commonLoadingSubIv];
+    [bgiv addSubview:iv];
+    [iv mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.center.equalTo(@0);
+    }];
+    return bgiv;
+}
+
++(UIImageView *)commonLoadingSubIv{
+    NSMutableArray *mary = [[NSMutableArray alloc]init];
+    for(int i=0;i<30;i++){
+        NSData *data=iData4F(iRes(iFormatStr(@"/Photos/loading/loading_%02d.png",i)));
+        [mary addObject:[[UIImage alloc]initWithData:data scale:2]];
+    }
+    UIImageView *iv = [[UIImageView alloc]init];
+    iv.animationImages=mary;
+    iv.animationDuration=.04*mary.count;
+    iv.animationRepeatCount=0;
+    [iv startAnimating];
+    return iv;
+}
+
++(void)dispatchAfter:(NSInteger)secs tar:(id)tar bloc:(void(^)(void))bloc{
+    [self dispatchCancel:tar];
+    __weak id wt = tar;
+    dispatch_block_t block = dispatch_block_create(DISPATCH_BLOCK_INHERIT_QOS_CLASS, ^{
+        objc_setAssociatedObject(wt, "tblockkey", nil, OBJC_ASSOCIATION_ASSIGN);
+        bloc();
+    });
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(secs * NSEC_PER_SEC)), dispatch_get_main_queue(), block);
+    objc_setAssociatedObject(tar, "tblockkey", block, OBJC_ASSOCIATION_ASSIGN);
+}
++(void)dispatchCancel:(id)tar{
+    dispatch_block_t block = objc_getAssociatedObject(tar, "tblockkey");
+    if(block){
+        dispatch_block_cancel(block);
+        objc_setAssociatedObject(tar, "tblockkey", nil, OBJC_ASSOCIATION_ASSIGN);
+    };
 }
 @end
 

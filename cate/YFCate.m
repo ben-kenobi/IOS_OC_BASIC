@@ -55,10 +55,10 @@ CADisplayLink *iDLink(id tar,SEL sel){
     return link;
 }
 
-void runOnMain(void (^blo)()){
+void runOnMain(void (^blo)(void)){
     dispatch_async(dispatch_get_main_queue(), blo);
 }
-void runOnGlobal(void (^blo)()){
+void runOnGlobal(void (^blo)(void)){
     dispatch_async(dispatch_get_global_queue(0, 0), blo);
 }
 
@@ -183,7 +183,6 @@ NSString * iphoneType() {
 @implementation iPop
 +(void)showMsg:(NSString*)msg{
     [SVProgressHUD showInfoWithStatus:msg];
-    
 }
 +(void)showSuc:(NSString*)msg{
     [SVProgressHUD showSuccessWithStatus:msg];
@@ -193,21 +192,28 @@ NSString * iphoneType() {
     [SVProgressHUD showErrorWithStatus:msg];
     
 }
++(void)showProgWithMsg:(NSString *)msg{
+    [SVProgressHUD  showWithStatus:msg];
+}
 +(void)showProg{
-    [SVProgressHUD setDefaultMaskType:(SVProgressHUDMaskTypeBlack)];
     [SVProgressHUD  show];
-//    [SVProgressHUD showWithMaskType:SVProgressHUDMaskTypeBlack];
 }
 +(void)dismProg{
     [SVProgressHUD dismiss];
-    
 }
-+(void)toast:(NSString*)msg{
++(void)toastWarn:(NSString*)msg{
     if(!msg)return;
     runOnMain(^{
         //        iApp.windows[iApp.windows.count-1].makeToast(msg)
-        [frontestWindow() makeToast:msg duration:1.5 position:nil title:nil image:nil style:[CSToastManager sharedStyle] completion:nil];
+       /* [frontestWindow() makeToast:msg duration:1.5 position:nil title:nil image:nil style:[CSToastManager sharedStyle] completion:nil];*/
+        [UIUtil toastAt:[UIViewController curVC].view msg:msg color:iWarnTipColor];
     });
+}
++(void)toastSuc:(NSString *)msg{
+     [UIUtil toastAt:[UIViewController curVC].view msg:msg color:iSucTipColor];
+}
++(void)toastInfo:(NSString *)msg{
+     [UIUtil toastAt:[UIViewController curVC].view msg:msg color:iInfoTipColor];
 }
 @end
 

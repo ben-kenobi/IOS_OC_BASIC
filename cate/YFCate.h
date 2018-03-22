@@ -46,9 +46,13 @@ UIImage * i18nImg(NSString *name);
 +(void)showMsg:(NSString*)msg;
 +(void)showSuc:(NSString*)msg;
 +(void)showError:(NSString*)msg;
++(void)showProgWithMsg:(NSString *)msg;
 +(void)showProg;
 +(void)dismProg;
-+(void)toast:(NSString*)msg;
++(void)toastSuc:(NSString*)msg;
++(void)toastInfo:(NSString*)msg;
++(void)toastWarn:(NSString*)msg;
+
 @end
 
 @interface iDialog : NSObject

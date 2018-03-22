@@ -27,6 +27,7 @@
 -(NSString *)postDateString ;
 
 -(BOOL)isThisYear;
+-(NSInteger)dayOfWeek;//sunday is first day 1 and saturday is 7
 -(BOOL)isToday;
 -(BOOL)isWeekend;
 -(BOOL)isTomorrow;
@@ -37,6 +38,6 @@
 -(BOOL)isSameYear:(NSDate *)date;
 -(BOOL)isSameHour:(NSDate *)date;
 -(BOOL)isSameMinute:(NSDate *)date;
-
+-(NSDate *)convertToToday;//将日期变成今天的日期，时分秒不变
 
 @end

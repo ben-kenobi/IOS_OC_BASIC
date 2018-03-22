@@ -95,7 +95,22 @@ CGMutablePathRef shapePath(CGRect rect,NSInteger count,NSInteger step,NSInteger 
     UIGraphicsEndImageContext();
     return image.resizableStretchImg;
 }
-
++ (instancetype)roundStretchImg4Color:(UIColor *)color w:(CGFloat)w withBorder:(UIColor *)boderColor{
+    CGRect rect = CGRectMake(0, 0, w, w);
+    UIGraphicsBeginImageContextWithOptions(rect.size,NO,iScreen.scale);
+    CGContextRef context = UIGraphicsGetCurrentContext();
+    CGContextAddArc(context, w*.5, w*.5, w*0.5, 0, 2 * M_PI, 0);
+    CGContextClip(context);
+    CGContextSetFillColorWithColor(context, [boderColor CGColor]);
+    CGContextFillRect(context, rect);
+    CGContextAddArc(context, w*.5, w*.5, w*0.5-1, 0, 2 * M_PI, 0);
+    CGContextClip(context);
+    CGContextSetFillColorWithColor(context, [color CGColor]);
+    CGContextFillRect(context, rect);
+    UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    return image.resizableStretchImg;
+}
 
 +(instancetype)img4CVPixel:(CVPixelBufferRef)buf{
     UIImage *img = [UIImage imageWithCIImage:[CIImage imageWithCVPixelBuffer:buf]];
@@ -526,7 +541,7 @@ CGMutablePathRef shapePath(CGRect rect,NSInteger count,NSInteger step,NSInteger 
     AVAssetImageGeneratorCompletionHandler handle = ^(CMTime requestedTime, CGImageRef _Nullable image, CMTime actualTime, AVAssetImageGeneratorResult result, NSError * _Nullable error){
         dispatch_async(dispatch_get_main_queue(), ^{
             if (result != AVAssetImageGeneratorSucceeded) {
-                [iPop toast:@"couldn't generate thumbnail, error:\(error)"];
+                [iPop toastWarn:@"couldn't generate thumbnail, error:\(error)"];
                 return;
             }
             UIImage* img = [UIImage imageWithCGImage:image];
