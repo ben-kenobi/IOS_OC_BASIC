@@ -39,5 +39,8 @@
 +(void)commonNav:(UIViewController *)vc shadow:(BOOL)shadow line:(BOOL)line translucent:(BOOL)translucent color:(UIColor *)bartintcolor;
 
 +(void)commonTexBtn:(UIButton *)btn tar:(id)tar action:(SEL)action shadowOpacity:(CGFloat)opa H:(CGFloat)H;
++(void)commonStrokeBtn:(UIButton *)btn tar:(id)tar action:(SEL)action shadowOpacity:(CGFloat)opa H:(CGFloat)H;
++(void)commonStrokeBtn:(UIButton *)btn tar:(id)tar action:(SEL)action shadowOpacity:(CGFloat)opa H:(CGFloat)H strokeColor:(UIColor*)strokeColor strokeHLColor:(UIColor*)HLstrokeColor strokeDisColor:(UIColor*)disstrokeColor corRad:(CGFloat)corRad;
 +(UIInterfaceOrientationMask)orientation2mask:(UIInterfaceOrientation)orientation;
++(BOOL)screenIsHorizontal;
 @end

@@ -13,11 +13,14 @@
 //   id obj= [objc_getAssociatedObject(iApp, iVCKey) navigationController];
     dispatch_async(dispatch_get_main_queue(), ^{
         UIViewController * obj=objc_getAssociatedObject(iApp, iVCKey);
-        if([obj  isKindOfClass:[UINavigationController class]]){
-            [(UINavigationController *)obj pushViewController:vc animated:YES];
-        }else{
-            [[obj navigationController] pushViewController:vc animated:YES];
-        }
+        [obj showViewController:vc sender:nil];
+//        if([obj  isKindOfClass:[UINavigationController class]]){
+////            [(UINavigationController *)obj pushViewController:vc animated:YES];
+//            [(UINavigationController *)obj showViewController:vc sender:0];
+//        }else{
+//            [[obj navigationController] showViewController:vc sender:nil];
+////            [[obj navigationController] pushViewController:vc animated:YES];
+//        }
     });
 }
 
@@ -46,4 +49,22 @@
     [self presentViewController:vc animated:YES completion:nil];
 }
 
+
++(UIViewController *)topVC{
+    UIWindow *window = [[UIApplication sharedApplication].delegate window];
+    UIViewController *topViewController = [window rootViewController];
+    while (true) {
+        if (topViewController.presentedViewController) {
+            topViewController = topViewController.presentedViewController;
+        } else if ([topViewController isKindOfClass:[UINavigationController class]] && [(UINavigationController*)topViewController topViewController]) {
+            topViewController = [(UINavigationController *)topViewController topViewController];
+        } else if ([topViewController isKindOfClass:[UITabBarController class]]) {
+            UITabBarController *tab = (UITabBarController *)topViewController;
+            topViewController = tab.selectedViewController;
+        } else {
+            break;
+        }
+    }
+    return topViewController;
+}
 @end

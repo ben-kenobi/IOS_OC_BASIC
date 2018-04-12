@@ -12,7 +12,11 @@
 
 #define iGlobalBlue iColor(63,169,248,1)
 
+#define iTfLineColoe iColor(0xdd,0xdd,0xdd,1)
 
+#define iWarnTipColor iColor(0xff, 0x73, 0x0a, 1)
+#define iInfoTipColor iColor(0x88,0x88,0x88,1)
+#define iSucTipColor iColor(33,197,180,1)
 
 
 extern NSString *const ANOTI;

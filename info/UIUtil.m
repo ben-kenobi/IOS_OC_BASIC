@@ -172,11 +172,31 @@
 }
 
 +(void)commonTexBtn:(UIButton *)btn tar:(id)tar action:(SEL)action shadowOpacity:(CGFloat)opa H:(CGFloat)H{
-    [btn setBackgroundImage:[UIImage roundStretchImg4Color:iGlobalFocusColor w:H] forState:0];
-    [btn setBackgroundImage:[UIImage roundStretchImg4Color:iGlobalHLFocusColor w:H] forState:UIControlStateHighlighted];
-    [btn setBackgroundImage:[UIImage roundStretchImg4Color:[iGlobalFocusColor colorWithAlphaComponent:.3] w:H] forState:UIControlStateDisabled];
-    [UIUtil commonShadowWithColor:iColor(0x46, 0x9c, 0xf2, 1) Radius:12 size:CGSizeMake(0, 4) view:btn opacity:opa];
+    CGFloat cornerRad = 6;
+    [btn setBackgroundImage:[UIImage roundStretchImg4Color:iGlobalFocusColor w:cornerRad*2] forState:0];
+    [btn setBackgroundImage:[UIImage roundStretchImg4Color:iGlobalHLFocusColor w:cornerRad*2] forState:UIControlStateHighlighted];
+    [btn setBackgroundImage:[UIImage roundStretchImg4Color:[iGlobalDisableColor colorWithAlphaComponent:1] w:cornerRad*2] forState:UIControlStateDisabled];
+    [UIUtil commonShadowWithColor:iColor(0, 0, 0, 1) Radius:5 size:CGSizeMake(0, 2) view:btn opacity:.2];
+    
+    [btn setTitleColor:iColor(0x3e, 0x3e, 0x3e, 1) forState:UIControlStateDisabled];
+    
     [btn addTarget:tar action:action forControlEvents:UIControlEventTouchUpInside];
+}
+
++(void)commonStrokeBtn:(UIButton *)btn tar:(id)tar action:(SEL)action shadowOpacity:(CGFloat)opa H:(CGFloat)H strokeColor:(UIColor*)strokeColor strokeHLColor:(UIColor*)HLstrokeColor strokeDisColor:(UIColor*)disstrokeColor corRad:(CGFloat)corRad{
+    UIImage *img=[[UIImage img4Color:[UIColor whiteColor] size:CGSizeMake(corRad*2, corRad*2)] roundImg:corRad*2 boderColor:strokeColor borderW:1].resizableStretchImg;
+    UIImage *hlimg=[[UIImage img4Color:iGlobalBG size:CGSizeMake(corRad*2, corRad*2)] roundImg:corRad*2 boderColor:HLstrokeColor borderW:1].resizableStretchImg;
+    UIImage *disimg=[[UIImage img4Color:disstrokeColor size:CGSizeMake(corRad*2, corRad*2)] roundImg:corRad*2 boderColor:disstrokeColor borderW:1].resizableStretchImg;
+    
+    
+    [btn setBackgroundImage:img forState:0];
+    [btn setBackgroundImage:hlimg forState:UIControlStateHighlighted];
+    [btn setBackgroundImage:disimg forState:UIControlStateDisabled];
+    [UIUtil commonShadowWithColor:iColor(0x88, 0x88, 0x88, 1) Radius:5 size:CGSizeMake(0, 2) view:btn opacity:opa];
+    [btn addTarget:tar action:action forControlEvents:UIControlEventTouchUpInside];
+}
++(void)commonStrokeBtn:(UIButton *)btn tar:(id)tar action:(SEL)action shadowOpacity:(CGFloat)opa H:(CGFloat)H{
+    [self commonStrokeBtn:btn tar:tar action:action shadowOpacity:opa H:H strokeColor:iGlobalFocusColor strokeHLColor:iGlobalHLFocusColor strokeDisColor:iGlobalDisableColor corRad:6];
 }
 +(UIInterfaceOrientationMask)orientation2mask:(UIInterfaceOrientation)orientation{
     if(orientation==UIInterfaceOrientationPortraitUpsideDown){
@@ -189,13 +209,16 @@
         return UIInterfaceOrientationMaskPortrait;
     }
 }
++(BOOL)screenIsHorizontal{
+    return iApp.statusBarOrientation==UIInterfaceOrientationLandscapeLeft||iApp.statusBarOrientation==UIInterfaceOrientationLandscapeRight;
+}
 @end
 
 
 
 @implementation BCSlider
--(CGRect)thumbRectForBounds:(CGRect)bounds trackRect:(CGRect)rect value:(float)value{
-    CGSize size =  self.currentThumbImage.size;
-    return CGRectMake(size.width/-2+value*rect.size.width, self.icy-size.height/2+3, size.width, size.height);
-}
+//-(CGRect)thumbRectForBounds:(CGRect)bounds trackRect:(CGRect)rect value:(float)value{
+//    CGSize size =  self.currentThumbImage.size;
+//    return CGRectMake(size.width/-2+value*rect.size.width, self.icy-size.height/2+3, size.width, size.height);
+//}
 @end

@@ -75,6 +75,10 @@
 #define iVersion [[[UIDevice currentDevice]systemVersion]floatValue]
 
 
+#define DEGREES_TO_RADIANS(angle) (angle / 180.0 * M_PI)
+#define RADIANS_TO_DEGREES(radians) ((radians) * (180.0 / M_PI))
+
+
 #define iLazy4Dict(na1,na2) -(NSMutableDictionary *)na1{\
 if(!na2){\
 na2=[NSMutableDictionary  dictionary];\
@@ -90,18 +94,22 @@ return na2;\
 }
 #define iColor(r,g,b,a) [UIColor colorWithRed:(r)/255.0 green:(g)/255.0 blue:(b)/255.0 alpha:(a)]
 
-#define iGlobalBG iColor(0xf6,0xf6,0xf6,1)
+#define iGlobalBG iColor(248,248,248,1)
 #define iGlobalBG2 iColor(0xfc,0xfc,0xfc,1)
 #define iCommonSeparatorColor iColor(0xe8,0xe8,0xe8,1)
 #define iGlobalOrange iColor(0xff,0x73,0x0a,1)
 
-#define iSwitchTint iColor(0x40,0xda,0x6c,1)
+#define iSwitchTint iGlobalFocusColor
+//#define iSwitchTint iColor(0x40,0xda,0x6c,1)
 
 
 //#define iGlobalFocusColor iColor(0x2D, 0xc8, 0xff, 1)
 //#define iGlobalFocusColor iColor(0x00, 0xD2, 0xc3, 1)
 #define iGlobalFocusColor iColor(0x2b, 0x92, 0xf9, 1)
 #define iGlobalHLFocusColor iColor(40, 138, 237, 1)
+#define iGlobalDisableColor iColor(0xd0, 0xd0, 0xd0, 1)
+#define iGlobalErrorColor iColor(0xff, 0x4f, 0x4f, 1)
+
 
 //#define iDarkBG iColor(0x20, 0x1f, 0x1f, 1)
 #define iDarkBG iColor(0xff, 0xff, 0xff, 1)

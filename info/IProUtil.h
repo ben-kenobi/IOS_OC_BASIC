@@ -15,7 +15,7 @@ CGFloat dp2po(CGFloat dp);
 +(void)commonPrompt:(NSString *)title msg:(NSString *)msg cb:(void(^)(void))cb;
 +(void)prompt:(NSString *)title tcolor:(UIColor *)tcolor tfont:(UIFont*)tfont msg:(NSString *)msg mcolor:(UIColor *)mcolor mfont:(UIFont *)mfont cb:(void(^)(void))cb;
 +(void)prompt:(NSString *)title tcolor:(UIColor *)tcolor tfont:(UIFont*)tfont msg:(NSString *)msg mcolor:(UIColor *)mcolor mfont:(UIFont *)mfont vc:(UIViewController *)fromVC cb:(void(^)(void))cb;
-
++(UIAlertController *)commonTextFieldDialog:(NSString*)title msg:(NSString *)msg ph:(NSString *)ph text:(NSString *)text cb:(void (^)(BOOL isOK,NSString *text))cb;
 +(void)prompt:(NSAttributedString *)msg cb:(void(^)(void))cb;
 +(void)sheetPrompt:(id<BCStyleSheetListDelegate>)datas vc:(UIViewController *)fromVC;
 +(void)locationWith:(void(^)(BOOL suc,NSArray *locs))cb;
@@ -40,7 +40,7 @@ CGFloat dp2po(CGFloat dp);
 +(NSString *)getDeviceId;
 +(NSDictionary *)attrDictWith:(UIColor *)fcolor font:(UIFont *)font;
 +(UIImageView *)commonLoadingIv;
-+(void)dispatchAfter:(NSInteger)secs tar:(id)tar bloc:(void(^)(void))bloc;
++(void)dispatchAfter:(CGFloat)secs tar:(id)tar bloc:(void(^)(void))bloc;
 +(void)dispatchCancel:(id)tar;
 @end
 

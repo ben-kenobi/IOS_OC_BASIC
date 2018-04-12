@@ -14,6 +14,8 @@
 #import "SVProgressHUD.h"
 #import "objc/runtime.h"
 
+@interface BCDisableNoShadowBtn:UIButton
+@end
 
 @interface IProUtil ()
 @property (nonatomic,strong)CLLocationManager *man;
@@ -56,7 +58,32 @@
 
 
 
++(UIAlertController *)commonTextFieldDialog:(NSString*)title msg:(NSString *)msg ph:(NSString *)ph text:(NSString *)text cb:(void (^)(BOOL isOK,NSString *text))cb{
+    UIAlertController * alertController = [UIAlertController alertControllerWithTitle: title
+                                                                              message: msg    preferredStyle:UIAlertControllerStyleAlert];
+    [alertController addTextFieldWithConfigurationHandler:^(UITextField *textField) {
+        [textField mas_updateConstraints:^(MASConstraintMaker *make) {
+            make.height.equalTo(@(dp2po(30)));
+        }];
+        textField.font=iFont(dp2po(17));
+        textField.borderStyle=UITextBorderStyleNone;
+        textField.placeholder = ph;
+        textField.tintColor=iGlobalFocusColor;
+        textField.clearButtonMode = UITextFieldViewModeWhileEditing;
+        textField.text=text;
+    }];
+    [alertController addAction:[UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {
+        cb(NO,nil);
+    }]];
 
+    [alertController addAction:[UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+        NSArray * textfields = alertController.textFields;
+        UITextField * namefield = textfields[0];
+        NSString* name = namefield.text;
+        cb(YES,name);
+    }]];
+    return alertController;
+}
 
 +(void)prompt:(NSString *)title tcolor:(UIColor *)tcolor tfont:(UIFont*)tfont msg:(NSString *)msg mcolor:(UIColor *)mcolor mfont:(UIFont *)mfont  cb:(void(^)())cb{
     [self prompt:title tcolor:tcolor tfont:tfont msg:msg mcolor:mcolor mfont:mfont vc:UIViewController.curVC cb:cb];
@@ -186,7 +213,7 @@
 }
 
 +(UIButton *)commonTextBtn:(UIFont *)font color:(UIColor *)color title:(NSString *)title{
-    UIButton *btn = [[UIButton alloc] init];
+    UIButton *btn = [[BCDisableNoShadowBtn alloc] init];
     [btn setTitle:title forState:0];
     btn.titleLabel.font=font;
     [btn setTitleColor:color forState:UIControlStateNormal];
@@ -346,13 +373,18 @@
         
         
         //svprogresshud
-        [SVProgressHUD setDefaultStyle:SVProgressHUDStyleCustom];
-        [SVProgressHUD setDefaultMaskType:(SVProgressHUDMaskTypeBlack)];
-        UIImageView *iv = self.commonLoadingSubIv;
+        [SVProgressHUD setDefaultMaskType:(SVProgressHUDMaskTypeClear)];
+//        UIImageView *iv = self.commonLoadingSubIv;
+        UIImageView *iv = [[UIImageView alloc]initWithImage:[UIImage img4Color:iColor(0xff, 0x00,0,0) size:CGSizeMake(dp2po(42), dp2po(42))]];
+        UIActivityIndicatorView *actindi = [[UIActivityIndicatorView alloc]initWithActivityIndicatorStyle:(UIActivityIndicatorViewStyleWhiteLarge)];
+        [iv addSubview:actindi];
+        [actindi startAnimating];
+        [actindi mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.center.equalTo(@0);
+        }];
         [SVProgressHUD setLoadingImageView:iv];
         [SVProgressHUD setDefaultAnimationType:SVProgressHUDAnimationTypeCustom];
-        [SVProgressHUD setDefaultStyle:SVProgressHUDStyleLight];
-
+        [SVProgressHUD setDefaultStyle:SVProgressHUDStyleDark];
     }
 }
 
@@ -368,11 +400,11 @@
     return [pred evaluateWithObject:str];
 }
 +(BOOL)isLoginPwd:(NSString*)str{
-    if(!str||str.length<8) return NO;
+//    if(!str||str.length<8) return NO;
     static NSPredicate *pred=nil;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        NSString * pwdRegex = @"^.*[a-zA-Z].*$";
+        NSString * pwdRegex = @"^.+$";
         pred=[NSPredicate predicateWithFormat:@"SELF MATCHES %@",pwdRegex];
     });
     return [pred evaluateWithObject:str];
@@ -391,9 +423,9 @@
         
         NSString *REGEX_PASSWORD_LOWER_LETTER = @"^.*[a-z]+.*$";
         
-        NSString *REGEX_PASSWORD_SPE_CHARACTERS = @"^.*[/^/$/.//,;:'!@#$%^&*-_/*/|/?/+/(/)/[/]/{/}]+.*$";
+//        NSString *REGEX_PASSWORD_SPE_CHARACTERS = @"^.*[~'!@#￥$%^&*()-+_=:/{/}/[/]/./?]+.*$";
         
-        pred=[NSPredicate predicateWithFormat:@"SELF MATCHES %@  AND SELF MATCHES %@ AND SELF MATCHES %@ AND SELF MATCHES %@ AND SELF MATCHES %@ AND SELF MATCHES %@",REGEX_PASSWORD_LENGTH,REGEX_PASSWORD_NUM,REGEX_PASSWORD_UPPER_LETTER,REGEX_PASSWORD_LOWER_LETTER,REGEX_PASSWORD_SPE_CHARACTERS];
+        pred=[NSPredicate predicateWithFormat:@"SELF MATCHES %@  AND SELF MATCHES %@ AND SELF MATCHES %@ AND SELF MATCHES %@ AND SELF MATCHES %@",REGEX_PASSWORD_LENGTH,REGEX_PASSWORD_NUM,REGEX_PASSWORD_UPPER_LETTER,REGEX_PASSWORD_LOWER_LETTER];
     });
     return [pred evaluateWithObject:str];
 }
@@ -432,7 +464,8 @@
     return iv;
 }
 
-+(void)dispatchAfter:(NSInteger)secs tar:(id)tar bloc:(void(^)(void))bloc{
++(void)dispatchAfter:(CGFloat)secs tar:(id)tar bloc:(void(^)(void))bloc{
+    if(secs<0)return;
     [self dispatchCancel:tar];
     __weak id wt = tar;
     dispatch_block_t block = dispatch_block_create(DISPATCH_BLOCK_INHERIT_QOS_CLASS, ^{
@@ -451,7 +484,12 @@
 }
 @end
 
-
+@implementation BCDisableNoShadowBtn
+-(void)setEnabled:(BOOL)enabled{
+    [super setEnabled:enabled];
+    self.layer.shadowOpacity=enabled?.2:0;
+}
+@end
 
 
 CGFloat dp2po(CGFloat dp){
