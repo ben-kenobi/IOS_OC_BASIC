@@ -123,7 +123,7 @@
         [vc addAction:cancel];
     }
     
-    UIAlertAction* ok = [UIAlertAction actionWithTitle:iStr(@"OK") style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+    UIAlertAction* ok = [UIAlertAction actionWithTitle:iStr(@"Confirm") style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
         if(cb)
             cb();
     }];
@@ -188,7 +188,19 @@
         [avc.view insertSubview:ev belowSubview:ac.view];
         return avc.view;
     }];
-    
+}
+
++(void)present:(BCBasePromtpVC *)vc from:(UIViewController *)fromVC{
+    [fromVC presentViewController:vc animated:NO completion:nil];
+    M1GuidanceView *ev=[[M1GuidanceView alloc]init];
+    vc.dismissCB = ^{
+        [ev dismiss];
+    };
+    [ev showBy:^UIView *(M1GuidanceView *v) {
+        UIViewController *avc = fromVC.navigationController?fromVC.navigationController:fromVC;
+        [avc.view insertSubview:ev belowSubview:vc.view];
+        return avc.view;
+    }];
 }
 
 
@@ -218,6 +230,15 @@
     btn.titleLabel.font=font;
     [btn setTitleColor:color forState:UIControlStateNormal];
     [btn setTitleColor:[color colorWithAlphaComponent:.6] forState:UIControlStateHighlighted];
+    return btn;
+}
++(UIButton *)commonNoShadowTextBtn:(UIFont *)font color:(UIColor *)color title:(NSString *)title{
+    UIButton *btn = [[UIButton alloc] init];
+    [btn setTitle:title forState:0];
+    btn.titleLabel.font=font;
+    [btn setTitleColor:color forState:UIControlStateNormal];
+    [btn setTitleColor:[color colorWithAlphaComponent:.6] forState:UIControlStateHighlighted];
+    [btn setTitleColor:[color colorWithAlphaComponent:.3] forState:UIControlStateDisabled];
     return btn;
 }
 
@@ -487,7 +508,7 @@
 @implementation BCDisableNoShadowBtn
 -(void)setEnabled:(BOOL)enabled{
     [super setEnabled:enabled];
-    self.layer.shadowOpacity=enabled?.2:0;
+    self.layer.shadowOpacity=enabled?.12:0;
 }
 @end
 

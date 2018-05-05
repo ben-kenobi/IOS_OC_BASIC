@@ -148,8 +148,8 @@ iLog(@"\nclass:%@\nline:%d\ndesc:%@",[self class],__LINE__,desc);
 
 
 
-
-
+#define onExit \
+__strong void(^block)(void) __attribute__((cleanup(myCleanupBlock), unused)) = ^
 
 
 

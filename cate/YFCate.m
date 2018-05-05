@@ -26,6 +26,9 @@ UIWindow *frontestWindow(){
         return iApp.windows[iApp.windows.count-2];
     }
 }
+void myCleanupBlock(__strong void(^*block)(void)){
+    (*block)();
+}
 
 NSLocale * prefLocale(){
     return [NSLocale localeWithLocaleIdentifier:[NSLocale preferredLanguages][0]];
@@ -217,16 +220,19 @@ NSString * iphoneType() {
 }
 +(void)toastWarn:(NSString*)msg{
     if(!msg)return;
-    runOnMain(^{
-        //        iApp.windows[iApp.windows.count-1].makeToast(msg)
-       /* [frontestWindow() makeToast:msg duration:1.5 position:nil title:nil image:nil style:[CSToastManager sharedStyle] completion:nil];*/
-        [UIUtil toastAt:[UIViewController curVC].view msg:msg color:iWarnTipColor];
-    });
+    [UIUtil toastAt:[UIViewController curVC].view msg:msg color:iWarnTipColor];
+
+//    runOnMain(^{
+//        //        iApp.windows[iApp.windows.count-1].makeToast(msg)
+//       /* [frontestWindow() makeToast:msg duration:1.5 position:nil title:nil image:nil style:[CSToastManager sharedStyle] completion:nil];*/
+//    });
 }
 +(void)toastSuc:(NSString *)msg{
+    if(!msg)return;
      [UIUtil toastAt:[UIViewController curVC].view msg:msg color:iSucTipColor];
 }
 +(void)toastInfo:(NSString *)msg{
+    if(!msg)return;
      [UIUtil toastAt:[UIViewController curVC].view msg:msg color:iInfoTipColor];
 }
 @end

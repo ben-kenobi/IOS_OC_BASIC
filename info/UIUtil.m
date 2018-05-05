@@ -141,7 +141,9 @@
 }
 
 +(void)toastAt:(UIView *)view msg:(NSString *)msg color:(UIColor *)textColor{
-    [YFMsgBanner showAt:view withCountdown:4 msg:msg iden:@"msg" color:textColor];
+    runOnMain(^{
+        [YFMsgBanner showAt:view withCountdown:4 msg:msg iden:@"msg" color:textColor];
+    });
 }
 
 

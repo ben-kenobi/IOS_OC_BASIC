@@ -14,6 +14,7 @@
 -(NSString *)timeFormat2;
 -(NSString *)timeFormat3;
 -(NSString *)timeFormat4;
+-(NSString *)timeFormat5;
 -(NSString *)timeMilliFormat;
 +(instancetype)dateFromStr:(NSString *)str;
 +(instancetype)timeFromStr:(NSString *)str;

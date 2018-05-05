@@ -48,6 +48,7 @@
 +(id)setValues:(NSDictionary *)dict forClz:(Class)clz{
     NSArray *ary=[self prosWithClz:clz];
     id obj=[[clz alloc] init];
+    if(nullObj(dict)) return obj;
     for(NSString *key in ary){
         if(dict[key]){
             [obj setValue:dict[key] forKey:key];

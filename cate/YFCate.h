@@ -37,7 +37,7 @@ NSString * iphoneType(void) ;
 
 BOOL isRightToLeft(void);
 UIImage * i18nImg(NSString *name);
-
+void myCleanupBlock(__strong void(^*block)(void));
 
 
 

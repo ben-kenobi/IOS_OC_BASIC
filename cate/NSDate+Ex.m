@@ -198,7 +198,14 @@
     }
     return [fm stringFromDate:self];
 }
-
+-(NSString *)timeFormat5{
+    static  NSDateFormatter *fm;
+    if(!fm){
+        fm=[[NSDateFormatter alloc] init];
+        fm.dateFormat=@"HH:mm";
+    }
+    return [fm stringFromDate:self];
+}
 +(instancetype)dateFromStr:(NSString *)str{
     static  NSDateFormatter *fm;
     if(!fm){
