@@ -20,6 +20,8 @@
 
 +(NSArray *)prosWithClz:(Class)clz;
 +(id)setValues:(NSDictionary *)dict forClz:(Class)clz;
+//通过setter方法设置
++(id)setterValues:(NSDictionary *)dict forClz:(Class)clz;
 +(void)setValues:(NSDictionary *)dict forObj:(NSObject *)obj;
 
 +(NSArray *)aryWithClz:(Class)clz fromFile:(NSString *)file;

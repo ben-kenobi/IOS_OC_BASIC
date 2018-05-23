@@ -32,10 +32,12 @@ CGFloat dp2po(CGFloat dp);
 
 +(UILabel *)commonLab:(UIFont *)font color:(UIColor *)color;
 +(UIButton *)commonTextBtn:(UIFont *)font color:(UIColor *)color title:(NSString *)title;
++(UIButton *)commonNoShadowTextBtn:(UIFont *)font color:(UIColor *)color title:(NSString *)title;
 +(UILabel *)commonLab:(UIFont *)font color:(UIColor *)color bg:(UIColor *)bg;
 +(BOOL)isEmail:(NSString *)str;
 +(BOOL)isLoginPwd:(NSString*)str;
 +(BOOL)isSignupPwd:(NSString*)str;
++(BOOL)isSignupNickname:(NSString*)str;
 
 +(NSString *)getDeviceId;
 +(NSDictionary *)attrDictWith:(UIColor *)fcolor font:(UIFont *)font;

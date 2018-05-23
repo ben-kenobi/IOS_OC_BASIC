@@ -10,6 +10,6 @@
 
 +(instancetype)setDict:(NSDictionary *)dict;
 -(void)setDict:(NSDictionary *)dict;
-
++(instancetype)setterDict:(NSDictionary *)dict;
 -(NSDictionary *)dict;
 @end

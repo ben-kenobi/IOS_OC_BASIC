@@ -11,6 +11,9 @@
 +(instancetype)setDict:(NSDictionary *)dict{
     return [IUtil setValues:dict forClz:self];
 }
++(instancetype)setterDict:(NSDictionary *)dict{
+    return [IUtil setterValues:dict forClz:self];
+}
 -(void)setDict:(NSDictionary *)dict{
     [IUtil setValues:dict forObj:self];
 }

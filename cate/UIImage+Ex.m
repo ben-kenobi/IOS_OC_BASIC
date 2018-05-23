@@ -555,3 +555,12 @@ CGMutablePathRef shapePath(CGRect rect,NSInteger count,NSInteger step,NSInteger 
 }
 
 @end
+
+@implementation CIImage(Ex)
+-(CGFloat)h{
+    return self.extent.size.height;
+}
+-(CGFloat)w{
+    return self.extent.size.width;
+}
+@end

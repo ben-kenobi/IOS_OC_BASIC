@@ -87,12 +87,12 @@
     [shapeLayer setBounds:CGRectMake(0, 0, wid, 1)];
     [shapeLayer setPosition:CGPointMake(wid*.5, .5)];
     [shapeLayer setFillColor:[[UIColor clearColor] CGColor]];
-    [shapeLayer setStrokeColor:[iColor(0xbb, 0xbb, 0xbb, 1) CGColor]];
+    [shapeLayer setStrokeColor:[iCommonSeparatorColor CGColor]];
     [shapeLayer setLineWidth:1.0f];
     [shapeLayer setLineJoin:kCALineJoinMiter];
     [shapeLayer setLineDashPattern:
-     [NSArray arrayWithObjects:[NSNumber numberWithInt:5],
-      [NSNumber numberWithInt:5],nil]];
+     [NSArray arrayWithObjects:[NSNumber numberWithInt:3],
+      [NSNumber numberWithInt:3],nil]];
     
     
     CGMutablePathRef path = CGPathCreateMutable();
@@ -109,7 +109,7 @@
     [shapeLayer setBounds:CGRectMake(0, 0, wid, 1)];
     [shapeLayer setPosition:CGPointMake(wid*.5, .5)];
     [shapeLayer setFillColor:[[UIColor clearColor] CGColor]];
-    [shapeLayer setStrokeColor:[iColor(0xe2, 0xe2, 0xe2, 1) CGColor]];
+    [shapeLayer setStrokeColor:[iCommonSeparatorColor CGColor]];
     [shapeLayer setLineWidth:1.0f];
     [shapeLayer setLineJoin:kCALineJoinMiter];
     [shapeLayer setLineDashPattern:
@@ -148,8 +148,7 @@
 
 
 +(void)commonTransiWith:(UIView *)view blo:(void(^)(void))blo dura:(CGFloat)dura{
-    blo();
-
+//    blo();
     [UIView transitionWithView:view duration:dura options:(UIViewAnimationOptionTransitionCrossDissolve|UIViewAnimationOptionShowHideTransitionViews|UIViewAnimationOptionAllowAnimatedContent|UIViewAnimationOptionCurveEaseInOut) animations:^{
         blo();
     } completion:nil];

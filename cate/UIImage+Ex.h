@@ -47,3 +47,9 @@ CGMutablePathRef shapePath(CGRect rect,NSInteger count,NSInteger step,NSInteger 
 -(instancetype)convertAndroidPointNine;
 +(void)generateVideoImage:(NSURL*)url cb:(void (^)(UIImage *img))cb;
 @end
+
+
+@interface CIImage (Ex)
+-(CGFloat)h;
+-(CGFloat)w;
+@end

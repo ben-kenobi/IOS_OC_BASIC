@@ -21,14 +21,14 @@
     return  [[UIDevice currentDevice].systemVersion floatValue];
 }
 +(NSInteger)appVersion{
-    NSString *appVersion=[IUtil appVersionStr];
-    NSArray *charArr=[appVersion componentsSeparatedByString:@"."];
-    NSInteger version_code=0;
-    for (int i=0; i<charArr.count; i++) {
-        version_code+=[[charArr objectAtIndex:i] integerValue]*(i==0?100:(i==1?10:1));
-    }
-    return version_code;
-    //    return [iBundle.infoDictionary[(NSString *)kCFBundleVersionKey] integerValue];
+//    NSString *appVersion=[IUtil appVersionStr];
+//    NSArray *charArr=[appVersion componentsSeparatedByString:@"."];
+//    NSInteger version_code=0;
+//    for (int i=0; i<charArr.count; i++) {
+//        version_code+=[[charArr objectAtIndex:i] integerValue]*(i==0?100:(i==1?10:1));
+//    }
+//    return version_code;
+        return [iBundle.infoDictionary[(NSString *)kCFBundleVersionKey] integerValue];
 }
 +(NSString *)appVersionStr{
     return  (NSString *)iBundle.infoDictionary[@"CFBundleShortVersionString"];
@@ -56,6 +56,21 @@
     }
     return obj;
 }
+
+
+//通过setter方法设置
++(id)setterValues:(NSDictionary *)dict forClz:(Class)clz{
+    id obj=[[clz alloc] init];
+    if(nullObj(dict)) return obj;
+    for(NSString *key in dict.allKeys){
+        SEL selector = NSSelectorFromString(iFormatStr(@"set%@%@:",[[key substringToIndex:1] uppercaseString],[key substringFromIndex:1]));
+        if([obj respondsToSelector:selector]){
+            [obj setValue:dict[key] forKey:key];
+        }
+    }
+    return obj;
+}
+
 +(void)setValues:(NSDictionary *)dict forObj:(NSObject *)obj{
     NSArray *ary=[self prosWithClz:obj.class];
     for(NSString *key in ary){

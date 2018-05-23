@@ -25,7 +25,7 @@
 
 @implementation IProUtil
 
-+(void)commonPrompt:(NSString *)title msg:(NSString *)msg cb:(void(^)())cb{
++(void)commonPrompt:(NSString *)title msg:(NSString *)msg cb:(void(^)(void))cb{
     UIAlertController *vc = [UIAlertController alertControllerWithTitle:title message:@"" preferredStyle:UIAlertControllerStyleAlert];
     UIView * backView = [vc.view.subviews.lastObject subviews].lastObject;
     backView.layer.cornerRadius = dp2po(12);
@@ -85,14 +85,14 @@
     return alertController;
 }
 
-+(void)prompt:(NSString *)title tcolor:(UIColor *)tcolor tfont:(UIFont*)tfont msg:(NSString *)msg mcolor:(UIColor *)mcolor mfont:(UIFont *)mfont  cb:(void(^)())cb{
++(void)prompt:(NSString *)title tcolor:(UIColor *)tcolor tfont:(UIFont*)tfont msg:(NSString *)msg mcolor:(UIColor *)mcolor mfont:(UIFont *)mfont  cb:(void(^)(void))cb{
     [self prompt:title tcolor:tcolor tfont:tfont msg:msg mcolor:mcolor mfont:mfont vc:UIViewController.curVC cb:cb];
 }
 
 
 
 
-+(void)prompt:(NSString *)title tcolor:(UIColor *)tcolor tfont:(UIFont*)tfont msg:(NSString *)msg mcolor:(UIColor *)mcolor mfont:(UIFont *)mfont vc:(UIViewController *)fromVC cb:(void(^)())cb{
++(void)prompt:(NSString *)title tcolor:(UIColor *)tcolor tfont:(UIFont*)tfont msg:(NSString *)msg mcolor:(UIColor *)mcolor mfont:(UIFont *)mfont vc:(UIViewController *)fromVC cb:(void(^)(void))cb{
     BCUIAlertVC *vc = [BCUIAlertVC alertControllerWithTitle:@"" message:@"" preferredStyle:UIAlertControllerStyleAlert];
 //    UIView * backView = [vc.view.subviews.lastObject subviews].lastObject;
 //    backView.layer.cornerRadius = dp2po(12);
@@ -139,7 +139,7 @@
     }];
 
 }
-+(void)prompt:(NSAttributedString *)msg cb:(void(^)())cb{
++(void)prompt:(NSAttributedString *)msg cb:(void(^)(void))cb{
     BCUIAlertVC *vc = [BCUIAlertVC alertControllerWithTitle:@"" message:@"" preferredStyle:UIAlertControllerStyleAlert];
     [vc setValue:msg forKey: @"attributedMessage"];
     
@@ -409,7 +409,6 @@
     }
 }
 
-
 +(BOOL)isEmail:(NSString *)str{
     if(emptyStr(str))return NO;
     static NSString * emailRegex = @"^[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,64}$";
@@ -420,8 +419,10 @@
     });
     return [pred evaluateWithObject:str];
 }
+
 +(BOOL)isLoginPwd:(NSString*)str{
-//    if(!str||str.length<8) return NO;
+//    if(!str||str.length<8||str.length>20) return NO;
+//    return YES;
     static NSPredicate *pred=nil;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
@@ -431,12 +432,14 @@
     return [pred evaluateWithObject:str];
 }
 +(BOOL)isSignupPwd:(NSString*)str{
-    if(!str||str.length<8) return NO;
+    if(!str||str.length<8||str.length>20) return NO;
+    return YES;
+    /*
     static NSPredicate *pred=nil;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         
-        NSString *REGEX_PASSWORD_LENGTH = @"^.{8,25}$";
+        NSString *REGEX_PASSWORD_LENGTH = @"^.{8,20}$";
         
         NSString *REGEX_PASSWORD_NUM = @"^.*[0-9]+.*$";
         
@@ -449,7 +452,14 @@
         pred=[NSPredicate predicateWithFormat:@"SELF MATCHES %@  AND SELF MATCHES %@ AND SELF MATCHES %@ AND SELF MATCHES %@ AND SELF MATCHES %@",REGEX_PASSWORD_LENGTH,REGEX_PASSWORD_NUM,REGEX_PASSWORD_UPPER_LETTER,REGEX_PASSWORD_LOWER_LETTER];
     });
     return [pred evaluateWithObject:str];
+     */
 }
++(BOOL)isSignupNickname:(NSString*)str{
+    if(!str||str.length<=0||str.length>64) return NO;
+    return YES;
+}
+
+
 +(NSString *)getDeviceId{
     return [[UIDevice currentDevice].identifierForVendor UUIDString];
 }
