@@ -87,12 +87,22 @@
 }
 
 +(void)clearFileAtPath:(NSString *)path{
-    if([iFm fileExistsAtPath:path]){
+    BOOL isdir=NO;
+    if([iFm fileExistsAtPath:path isDirectory:&isdir]){
+        if(!isdir){
+            [iFm removeItemAtPath:path error:0];
+            return;
+        }
         NSArray *files=[iFm subpathsAtPath:path];
         for(NSString *file in files){
             NSString *absfile=[path stringByAppendingPathComponent:file];
             [iFm removeItemAtPath:absfile error:0];
         }
+    }
+}
++(void)rmFiles:(NSArray<NSString *> *)pathlist{
+    for(NSString * path in pathlist){
+        [self clearFileAtPath:path];
     }
 }
 

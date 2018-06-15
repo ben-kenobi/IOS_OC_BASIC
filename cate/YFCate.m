@@ -5,12 +5,7 @@
 #import "SVProgressHUD.h"
 #import <AssetsLibrary/AssetsLibrary.h>
 #import "UIView+Toast.h"
-BOOL emptyStr(NSString *str){
-    return !str||!str.length;
-}
-BOOL nullObj(id obj){
-    return obj==nil||[obj isKindOfClass:[NSNull class]];
-}
+
 UIWindow *frontestWindow(){
     if(iVersion>=11){
         UIWindow *window = iApp.windows[0];
@@ -33,6 +28,13 @@ void myCleanupBlock(__strong void(^*block)(void)){
 NSLocale * prefLocale(){
     return [NSLocale localeWithLocaleIdentifier:[NSLocale preferredLanguages][0]];
 }
+NSString * localeLanguage(){
+    return [prefLocale() objectForKey:NSLocaleLanguageCode];
+}
+NSString * localeCountry(){
+    return [prefLocale() objectForKey:NSLocaleCountryCode];
+}
+
 
 BOOL isRightToLeft(){
      return [UIView userInterfaceLayoutDirectionForSemanticContentAttribute:UIView.appearance.semanticContentAttribute]==UIUserInterfaceLayoutDirectionRightToLeft;

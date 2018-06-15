@@ -4,7 +4,7 @@
 //
 
 #import "NSObject+Ex.h"
-
+#import "IUtil.h"
 @implementation NSObject (Ex)
 
 

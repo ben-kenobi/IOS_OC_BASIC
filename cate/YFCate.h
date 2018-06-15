@@ -20,11 +20,11 @@
 
 typedef void (^defBlock)(void);
 
-BOOL emptyStr(NSString *str);
-BOOL nullObj(id obj);
+
 
 NSLocale * prefLocale(void);
-
+NSString * localeLanguage();
+NSString * localeCountry();
 UIWindow *frontestWindow(void);
 
 NSTimer * iTimer(CGFloat inteval,id tar,SEL sel,id userinfo);

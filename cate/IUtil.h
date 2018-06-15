@@ -9,7 +9,8 @@
 #define LogoutNoti @"LogoutNoti"
 #define usernamekey @"usernamekey"
 #define pwdkey @"pwdkey"
-
+BOOL emptyStr(NSString *str);
+BOOL nullObj(id obj);
 
 @interface IUtil : NSObject
 +(NSString *)getTimestamp;

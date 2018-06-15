@@ -7,7 +7,13 @@
 #import "objc/runtime.h"
 #import <sys/sysctl.h>
 #import <mach/mach.h>
-
+#import <UIKit/UIKit.h>
+BOOL emptyStr(NSString *str){
+    return !str||!str.length;
+}
+BOOL nullObj(id obj){
+    return obj==nil||[obj isKindOfClass:[NSNull class]];
+}
 
 @implementation IUtil
 +(NSString *)getTimestamp{
@@ -28,10 +34,10 @@
 //        version_code+=[[charArr objectAtIndex:i] integerValue]*(i==0?100:(i==1?10:1));
 //    }
 //    return version_code;
-        return [iBundle.infoDictionary[(NSString *)kCFBundleVersionKey] integerValue];
+        return [NSBundle.mainBundle.infoDictionary[(NSString *)kCFBundleVersionKey] integerValue];
 }
 +(NSString *)appVersionStr{
-    return  (NSString *)iBundle.infoDictionary[@"CFBundleShortVersionString"];
+    return  (NSString *)NSBundle.mainBundle.infoDictionary[@"CFBundleShortVersionString"];
 }
 
 +(NSArray *)prosWithClz:(Class)clz{
@@ -51,7 +57,8 @@
     if(nullObj(dict)) return obj;
     for(NSString *key in ary){
         if(dict[key]){
-            [obj setValue:dict[key] forKey:key];
+            id val = dict[key];
+            [obj setValue:val forKey:key];
         }
     }
     return obj;
@@ -63,7 +70,8 @@
     id obj=[[clz alloc] init];
     if(nullObj(dict)) return obj;
     for(NSString *key in dict.allKeys){
-        SEL selector = NSSelectorFromString(iFormatStr(@"set%@%@:",[[key substringToIndex:1] uppercaseString],[key substringFromIndex:1]));
+        NSString *fstr = [NSString stringWithFormat:@"set%@%@:",[[key substringToIndex:1] uppercaseString],[key substringFromIndex:1]];
+        SEL selector = NSSelectorFromString(fstr);
         if([obj respondsToSelector:selector]){
             [obj setValue:dict[key] forKey:key];
         }
