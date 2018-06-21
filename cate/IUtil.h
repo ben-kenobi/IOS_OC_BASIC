@@ -28,6 +28,10 @@ BOOL nullObj(id obj);
 +(NSArray *)aryWithClz:(Class)clz fromFile:(NSString *)file;
 
 
++(void)postSystemwideNoti:(NSString *)notiname;
++(void)observeSystemwideNoti:(NSString *)name cb:(void (^)(void))cb;
+
+
 +(NSData *)uploadBodyWithBoundary:(NSString *)boundary file:(NSString *)file  name:(NSString *)name filename:(NSString *)filename;
 +(NSURLResponse *)synResponseByURL:(NSURL *)url;
 

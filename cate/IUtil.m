@@ -8,6 +8,18 @@
 #import <sys/sysctl.h>
 #import <mach/mach.h>
 #import <UIKit/UIKit.h>
+
+static void SystemWideNotiCallback(CFNotificationCenterRef center,
+                               void *observer,
+                               CFStringRef name,
+                               const void *object,
+                               CFDictionaryRef userInfo)
+{
+    id blo = (__bridge id)observer;
+    ((void (^)(void))blo)();
+}
+
+
 BOOL emptyStr(NSString *str){
     return !str||!str.length;
 }
@@ -102,6 +114,25 @@ BOOL nullObj(id obj){
     return ary;
 }
 
+
++(void)postSystemwideNoti:(NSString *)notiname{
+    CFNotificationCenterRef distributedCenter =
+    CFNotificationCenterGetDarwinNotifyCenter();
+    CFNotificationCenterPostNotification(distributedCenter, (__bridge CFStringRef)notiname, 0, 0, 1);
+}
++(void)observeSystemwideNoti:(NSString *)name cb:(void (^)(void))cb{
+    CFNotificationCenterRef distributedCenter =
+    CFNotificationCenterGetDarwinNotifyCenter();
+    CFNotificationSuspensionBehavior behavior =
+    CFNotificationSuspensionBehaviorDeliverImmediately;
+    
+    CFNotificationCenterAddObserver(distributedCenter,
+                                    (void *)cb,
+                                SystemWideNotiCallback,
+                                    (__bridge CFStringRef)name,
+                                    NULL,
+                                    behavior);
+}
 
 +(void)get:(NSURL *)url cache:(int)cache callBack:(void (^)(NSData *data,NSURLResponse *response, NSError *error))callback{
     [[[NSURLSession sharedSession] dataTaskWithRequest:[NSURLRequest requestWithURL:url cachePolicy:cache timeoutInterval:15] completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
