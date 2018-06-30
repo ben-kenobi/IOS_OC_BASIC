@@ -22,20 +22,9 @@ typedef void (^defBlock)(void);
 
 
 
-NSLocale * prefLocale(void);
-NSString * localeLanguage();
-NSString * localeCountry();
+
+
 UIWindow *frontestWindow(void);
-
-NSTimer * iTimer(CGFloat inteval,id tar,SEL sel,id userinfo);
-
-CADisplayLink *iDLink(id tar,SEL sel);
-void runOnMain(void (^blo)(void));
-void runOnGlobal(void (^blo)(void));
-
-NSString * iphoneType(void) ;
-
-BOOL isRightToLeft(void);
 UIImage * i18nImg(NSString *name);
 void myCleanupBlock(__strong void(^*block)(void));
 
@@ -52,7 +41,9 @@ void myCleanupBlock(__strong void(^*block)(void));
 +(void)toastSuc:(NSString*)msg;
 +(void)toastInfo:(NSString*)msg;
 +(void)toastWarn:(NSString*)msg;
-
++(void)bannerWarn:(NSString*)msg;
++(void)bannerSuc:(NSString *)msg;
++(void)bannerInfo:(NSString *)msg;
 @end
 
 @interface iDialog : NSObject

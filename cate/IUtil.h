@@ -3,12 +3,21 @@
 //Created by apple on 17/07/21.
 //
 
-#import <Foundation/Foundation.h>
+#import <UIKit/UIKit.h>
 
 #define LoginNoti @"LoginNoti"
 #define LogoutNoti @"LogoutNoti"
 #define usernamekey @"usernamekey"
 #define pwdkey @"pwdkey"
+typedef enum : NSUInteger {
+    BCHttpMethodGet,
+    BCHttpMethodPost,
+    BCHttpMethodPostJson,
+    BCHttpMethodDelete,
+    BCHttpMethodPut
+} BCHttpMethod;
+
+
 BOOL emptyStr(NSString *str);
 BOOL nullObj(id obj);
 
@@ -23,14 +32,23 @@ BOOL nullObj(id obj);
 +(id)setValues:(NSDictionary *)dict forClz:(Class)clz;
 //通过setter方法设置
 +(id)setterValues:(NSDictionary *)dict forClz:(Class)clz;
+//通过setter方法设置
++(void)setterValues:(NSDictionary *)dict forObj:(NSObject *)obj;
 +(void)setValues:(NSDictionary *)dict forObj:(NSObject *)obj;
 
 +(NSArray *)aryWithClz:(Class)clz fromFile:(NSString *)file;
 
 
 +(void)postSystemwideNoti:(NSString *)notiname;
-+(void)observeSystemwideNoti:(NSString *)name cb:(void (^)(void))cb;
 
+
+/**
+ 添加系统级的广播监听
+ @param name 广播名
+ @param cb 回调，需要外部保持强引用，并且需要在不需要的时候 removeSystemwideObserver
+ */
++(void)observeSystemwideNoti:(NSString *)name cb:(void (^)(void))cb;
++(void)removeSystemwideObserver:(id)observer;
 
 +(NSData *)uploadBodyWithBoundary:(NSString *)boundary file:(NSString *)file  name:(NSString *)name filename:(NSString *)filename;
 +(NSURLResponse *)synResponseByURL:(NSURL *)url;
@@ -54,4 +72,24 @@ BOOL nullObj(id obj);
 + (double)curUsage;
 +(double)GetCpuUsage ;
 + (NSInteger)GetMemoryStatistics ;
+
+
+
+
+#pragma mark - from cate
+
+NSLocale * prefLocale(void);
+NSString * localeLanguage(void);
+NSString * localeCountry(void);
+NSInteger  timeOffset(void);//时差，单位秒
+
+NSTimer * iTimer(CGFloat inteval,id tar,SEL sel,id userinfo);
+
+CADisplayLink *iDLink(id tar,SEL sel);
+void runOnMain(void (^blo)(void));
+void runOnGlobal(void (^blo)(void));
+
+NSString * iphoneType(void) ;
+BOOL isRightToLeft(void);
+
 @end

@@ -4,6 +4,7 @@
 //
 
 #import "NSString+Ex.h"
+#import <UIKit/UIKit.h>
 
 @implementation NSString (Ex)
 
@@ -29,8 +30,8 @@
     [[NSScanner scannerWithString:[self substringWithRange:(NSRange){0,self.length}] ] scanHexInt:&val];
     return val;
 }
--(NSInteger)toHexLongValue{
-    NSInteger val;
+-(int64_t)toHexLongValue{
+    int64_t val;
     [[NSScanner scannerWithString:[self substringWithRange:(NSRange){0,self.length}] ] scanHexLongLong:&val];
     return val;
 }

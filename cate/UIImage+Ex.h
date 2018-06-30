@@ -15,6 +15,8 @@ CGMutablePathRef shapePath(CGRect rect,NSInteger count,NSInteger step,NSInteger 
 
 +(instancetype)imgFromV:(UIView *)view;
 +(instancetype)imgFromLayer:(CALayer*)layer;
+//将图片截取成方形，按比例计算xy起始点
+-(instancetype)squareBy:(CGFloat)ratio;
 - (UIImage *)fixOrientation ;
 -(void)imgToCVPixel:(CVPixelBufferRef *)bufp;
 -(UIImage *)scaleImg2size:(CGSize)size;

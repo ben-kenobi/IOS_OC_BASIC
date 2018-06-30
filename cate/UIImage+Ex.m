@@ -518,8 +518,15 @@ CGMutablePathRef shapePath(CGRect rect,NSInteger count,NSInteger step,NSInteger 
     return img;
 }
 
-
-
+//将图片截取成方形，按比例计算xy起始点
+-(instancetype)squareBy:(CGFloat)ratio{
+    CGFloat w2=MIN(self.h, self.w);
+    UIGraphicsBeginImageContextWithOptions(CGSizeMake(w2,w2), false, 0);
+    [self drawInRect:CGRectMake(-(self.w-w2)*ratio,-(self.h-w2)*ratio,w2,w2)];
+    UIImage* img=UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    return img;
+}
 
 -(instancetype)convertAndroidPointNine{
     UIGraphicsBeginImageContextWithOptions(CGSizeMake(self.w-6, self.h-6), false, 0);

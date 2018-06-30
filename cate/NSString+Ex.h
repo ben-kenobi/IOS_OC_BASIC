@@ -4,7 +4,7 @@
 //
 
 #import <Foundation/Foundation.h>
-
+#import <UIKit/UIKit.h>
 @interface NSString (Ex)
 
 -(instancetype)strByAppendToCachePath;
@@ -12,7 +12,7 @@
 -(instancetype)strByAppendToTempPath;
 -(BOOL)ignorecaseEqualTo:(NSString *) str;
 -(unsigned int)toHexValue;
--(NSInteger)toHexLongValue;
+-(int64_t)toHexLongValue;
 -(UInt8)toHexByte;
 -(CGSize)sizeBy:(UIFont *)font;
 -(CGSize)sizeBy:(CGSize)size font:(UIFont *)font;

@@ -233,10 +233,10 @@
     return [fm dateFromString:str];
 }
 
-+(NSInteger)curTimeMilli{
++(int64_t)curTimeMilli{
     return [[NSDate date] timeIntervalSince1970]*1000;
 }
-+(NSDate *)dateWithMilli:(NSInteger)millis{
++(NSDate *)dateWithMilli:(int64_t)millis{
     return [NSDate dateWithTimeIntervalSince1970:millis/1000];
 }
 

@@ -19,8 +19,8 @@
 +(instancetype)dateFromStr:(NSString *)str;
 +(instancetype)timeFromStr:(NSString *)str;
 +(instancetype)timeMilliFromStr:(NSString *)str;
-+(NSInteger)curTimeMilli;
-+(NSDate *)dateWithMilli:(NSInteger)millis;
++(int64_t)curTimeMilli;
++(NSDate *)dateWithMilli:(int64_t)millis;
 
 +(instancetype)fromCommonDateFormat:(NSString*)datestr;
 -(NSString *)toCommonDateFormat;

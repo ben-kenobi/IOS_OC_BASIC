@@ -7,14 +7,17 @@
 #import "IUtil.h"
 @implementation NSObject (Ex)
 
-
 +(instancetype)setDict:(NSDictionary *)dict{
+    //    return [IUtil setterValues:dict forClz:self];
     return [IUtil setValues:dict forClz:self];
 }
 +(instancetype)setterDict:(NSDictionary *)dict{
+//    return [IUtil setValues:dict forClz:self];
     return [IUtil setterValues:dict forClz:self];
 }
+
 -(void)setDict:(NSDictionary *)dict{
+    //    [IUtil setterValues:dict forObj:self];
     [IUtil setValues:dict forObj:self];
 }
 

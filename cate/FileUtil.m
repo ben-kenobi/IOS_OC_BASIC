@@ -38,7 +38,7 @@
     if(idx==0)
         return [NSString stringWithFormat:@"%lld%@",size,strs[idx]];
     else
-        return [NSString stringWithFormat:@"%.1f%@",resul,strs[idx]];
+        return [NSString stringWithFormat:@"%.2f%@",resul,strs[idx]];
 }
 
 +(NSString *)formatedFileSize2:(long long)size{
@@ -53,9 +53,9 @@
         idx++;
     }
     if(idx==0)
-        return [NSString stringWithFormat:@"%lld %@",size,strs[idx]];
+        return [NSString stringWithFormat:@"%lld%@",size,strs[idx]];
     else
-        return [NSString stringWithFormat:@"%.2f %@",resul,strs[idx]];
+        return [NSString stringWithFormat:@"%.2f%@",resul,strs[idx]];
 }
 
 
