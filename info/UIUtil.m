@@ -145,7 +145,11 @@
         [YFMsgBanner showAt:view withCountdown:4 msg:msg iden:@"msg" color:textColor];
     });
 }
-
++(void)showAt:(UIView *)view msg:(NSString *)msg color:(UIColor *)textColor{
+    runOnMain(^{
+        [YFMsgBanner showAt:view withCountdown:-1 msg:msg iden:@"msg_show" color:textColor];
+    });
+}
 
 +(void)commonTransiWith:(UIView *)view blo:(void(^)(void))blo dura:(CGFloat)dura{
 //    blo();
@@ -187,7 +191,7 @@
 +(void)commonStrokeBtn:(UIButton *)btn tar:(id)tar action:(SEL)action shadowOpacity:(CGFloat)opa H:(CGFloat)H strokeColor:(UIColor*)strokeColor strokeHLColor:(UIColor*)HLstrokeColor strokeDisColor:(UIColor*)disstrokeColor corRad:(CGFloat)corRad{
     UIImage *img=[[UIImage img4Color:[UIColor whiteColor] size:CGSizeMake(corRad*2, corRad*2)] roundImg:corRad*2 boderColor:strokeColor borderW:1].resizableStretchImg;
     UIImage *hlimg=[[UIImage img4Color:iGlobalBG size:CGSizeMake(corRad*2, corRad*2)] roundImg:corRad*2 boderColor:HLstrokeColor borderW:1].resizableStretchImg;
-    UIImage *disimg=[[UIImage img4Color:disstrokeColor size:CGSizeMake(corRad*2, corRad*2)] roundImg:corRad*2 boderColor:disstrokeColor borderW:1].resizableStretchImg;
+    UIImage *disimg=[[UIImage img4Color:[UIColor whiteColor] size:CGSizeMake(corRad*2, corRad*2)] roundImg:corRad*2 boderColor:disstrokeColor borderW:1].resizableStretchImg;
     
     
     [btn setBackgroundImage:img forState:0];

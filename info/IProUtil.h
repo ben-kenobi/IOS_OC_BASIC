@@ -44,5 +44,7 @@ CGFloat dp2po(CGFloat dp);
 +(UIImageView *)commonLoadingIv;
 +(void)dispatchAfter:(CGFloat)secs tar:(id)tar bloc:(void(^)(void))bloc;
 +(void)dispatchCancel:(id)tar;
++(void)dispatchAfter:(CGFloat)secs tar:(id)tar iden:(NSString *)iden bloc:(void(^)(void))bloc;
++(void)dispatchCancel:(id)tar iden:(NSString *)iden;
 @end
 

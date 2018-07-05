@@ -40,11 +40,11 @@
     [vc setValue:messageMutableString forKey: @"attributedMessage"];
     
     if(cb){
-        UIAlertAction* cancel = [UIAlertAction actionWithTitle:iStr(@"Cancel") style:UIAlertActionStyleDefault handler:nil];
+        UIAlertAction* cancel = [UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel",0) style:UIAlertActionStyleDefault handler:nil];
         [cancel setValue:iColor(0x66, 0x66, 0x66, 1) forKey:@"titleTextColor"];
         [vc addAction:cancel];
     }
-    UIAlertAction* ok = [UIAlertAction actionWithTitle:iStr(@"OK") style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+    UIAlertAction* ok = [UIAlertAction actionWithTitle:NSLocalizedString(@"OK",0) style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
         if(cb)
             cb();
     }];
@@ -117,13 +117,13 @@
         [ev dismiss];
     };
     if(cb){
-        UIAlertAction* cancel = [UIAlertAction actionWithTitle:iStr(@"Cancel") style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+        UIAlertAction* cancel = [UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel",0) style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
         }];
         [cancel setValue:iColor(0x66, 0x66, 0x66, 1) forKey:@"titleTextColor"];
         [vc addAction:cancel];
     }
     
-    UIAlertAction* ok = [UIAlertAction actionWithTitle:iStr(@"Confirm") style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+    UIAlertAction* ok = [UIAlertAction actionWithTitle:NSLocalizedString(@"Confirm",0) style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
         if(cb)
             cb();
     }];
@@ -141,7 +141,7 @@
 }
 +(void)prompt:(NSAttributedString *)msg cb:(void(^)(void))cb{
     BCUIAlertVC *vc = [BCUIAlertVC alertControllerWithTitle:@"" message:@"" preferredStyle:UIAlertControllerStyleAlert];
-    [vc setValue:msg forKey: @"attributedMessage"];
+    [vc setValue:msg forKey:@"attributedMessage"];
     
     
     M1GuidanceView *ev=[[M1GuidanceView alloc]init];
@@ -150,13 +150,13 @@
         [ev dismiss];
     };
     if(cb){
-        UIAlertAction* cancel = [UIAlertAction actionWithTitle:iStr(@"Cancel") style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+        UIAlertAction* cancel = [UIAlertAction actionWithTitle:NSLocalizedString(@"Cancel",0) style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
         }];
         [cancel setValue:iColor(0x66, 0x66, 0x66, 1) forKey:@"titleTextColor"];
         [vc addAction:cancel];
     }
     
-    UIAlertAction* ok = [UIAlertAction actionWithTitle:iStr(@"OK") style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+    UIAlertAction* ok = [UIAlertAction actionWithTitle:NSLocalizedString(@"OK",0) style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
         if(cb)
             cb();
     }];
@@ -496,21 +496,28 @@
 }
 
 +(void)dispatchAfter:(CGFloat)secs tar:(id)tar bloc:(void(^)(void))bloc{
+    [self dispatchAfter:secs tar:tar iden:@"tcommonblockkey" bloc:bloc];
+}
++(void)dispatchCancel:(id)tar{
+    [self dispatchCancel:tar iden:@"tcommonblockkey"];
+}
+
++(void)dispatchAfter:(CGFloat)secs tar:(id)tar iden:(NSString *)iden bloc:(void(^)(void))bloc{
     if(secs<0)return;
     [self dispatchCancel:tar];
     __weak id wt = tar;
     dispatch_block_t block = dispatch_block_create(DISPATCH_BLOCK_INHERIT_QOS_CLASS, ^{
-        objc_setAssociatedObject(wt, "tblockkey", nil, OBJC_ASSOCIATION_ASSIGN);
+        objc_setAssociatedObject(wt, iden.UTF8String, nil, OBJC_ASSOCIATION_ASSIGN);
         bloc();
     });
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(secs * NSEC_PER_SEC)), dispatch_get_main_queue(), block);
-    objc_setAssociatedObject(tar, "tblockkey", block, OBJC_ASSOCIATION_ASSIGN);
+    objc_setAssociatedObject(tar, iden.UTF8String, block, OBJC_ASSOCIATION_ASSIGN);
 }
-+(void)dispatchCancel:(id)tar{
-    dispatch_block_t block = objc_getAssociatedObject(tar, "tblockkey");
++(void)dispatchCancel:(id)tar iden:(NSString *)iden{
+    dispatch_block_t block = objc_getAssociatedObject(tar, iden.UTF8String);
     if(block){
         dispatch_block_cancel(block);
-        objc_setAssociatedObject(tar, "tblockkey", nil, OBJC_ASSOCIATION_ASSIGN);
+        objc_setAssociatedObject(tar,iden.UTF8String, nil, OBJC_ASSOCIATION_ASSIGN);
     };
 }
 @end

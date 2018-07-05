@@ -34,9 +34,9 @@
             NSInteger result = -self.timeIntervalSinceNow;
             
             if (result < 60) {
-                return iStr(@"a moment ago");
+                return NSLocalizedString(@"a moment ago",0);
             }else if (result < 60 * 60) {
-                return iFormatStr(@"%ld %@",result/60,iStr(@"minutes ago"));
+                return iFormatStr(@"%ld %@",result/60,NSLocalizedString(@"minutes ago",0));
             }else{
                 fm.dateFormat = @"HH:mm:ss";
             }
