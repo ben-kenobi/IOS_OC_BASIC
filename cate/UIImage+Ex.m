@@ -522,7 +522,7 @@ CGMutablePathRef shapePath(CGRect rect,NSInteger count,NSInteger step,NSInteger 
 -(instancetype)squareBy:(CGFloat)ratio{
     CGFloat w2=MIN(self.h, self.w);
     UIGraphicsBeginImageContextWithOptions(CGSizeMake(w2,w2), false, 0);
-    [self drawInRect:CGRectMake(-(self.w-w2)*ratio,-(self.h-w2)*ratio,w2,w2)];
+    [self drawInRect:CGRectMake(-(self.w-w2)*ratio,-(self.h-w2)*ratio,self.w,self.h)];
     UIImage* img=UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
     return img;

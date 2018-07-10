@@ -42,20 +42,23 @@ UIImage * i18nImg(NSString * name){
 
 @implementation iPop
 +(void)showMsg:(NSString*)msg{
+    [SVProgressHUD setBackgroundColor:[UIColor whiteColor]];
     [SVProgressHUD showInfoWithStatus:msg];
 }
 +(void)showSuc:(NSString*)msg{
+    [SVProgressHUD setBackgroundColor:[UIColor whiteColor]];
     [SVProgressHUD showSuccessWithStatus:msg];
-    
 }
 +(void)showError:(NSString*)msg{
+    [SVProgressHUD setBackgroundColor:[UIColor whiteColor]];
     [SVProgressHUD showErrorWithStatus:msg];
-    
 }
 +(void)showProgWithMsg:(NSString *)msg{
+    [SVProgressHUD setBackgroundColor:[UIColor whiteColor]];
     [SVProgressHUD  showWithStatus:msg];
 }
 +(void)showProg{
+    [SVProgressHUD setBackgroundColor:[UIColor clearColor]];
     [SVProgressHUD  show];
 }
 +(void)dismProg{
