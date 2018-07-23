@@ -54,14 +54,18 @@ UIImage * i18nImg(NSString * name){
     [SVProgressHUD showErrorWithStatus:msg];
 }
 +(void)showProgWithMsg:(NSString *)msg{
+    [SVProgressHUD setBackgroundLayerColor:iColor(0, 0, 0, .6)];
+    [SVProgressHUD setDefaultMaskType:(SVProgressHUDMaskTypeCustom)];
     [SVProgressHUD setBackgroundColor:[UIColor whiteColor]];
     [SVProgressHUD  showWithStatus:msg];
 }
 +(void)showProg{
+    [SVProgressHUD setDefaultMaskType:(SVProgressHUDMaskTypeClear)];
     [SVProgressHUD setBackgroundColor:[UIColor clearColor]];
     [SVProgressHUD  show];
 }
 +(void)dismProg{
+    [SVProgressHUD setDefaultMaskType:(SVProgressHUDMaskTypeClear)];
     [SVProgressHUD dismiss];
 }
 +(void)toastWarn:(NSString*)msg{

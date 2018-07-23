@@ -21,6 +21,7 @@ static void SystemWideNotiCallback(CFNotificationCenterRef center,
 }
 
 
+
 BOOL emptyStr(NSString *str){
     return !str||!str.length;
 }
@@ -584,7 +585,8 @@ NSString * iphoneType() {
     if([platform isEqualToString:@"iPhone10,6"]) return@"iPhone X";
     
     
-    if([platform isEqualToString:@"iPod1,1"])  return@"iPod Touch 1G";
+    if([platform isEqualToString:@"iPod1,1"])
+        return@"iPod Touch 1G";
     
     if([platform isEqualToString:@"iPod2,1"])  return@"iPod Touch 2G";
     
@@ -669,6 +671,7 @@ NSString * iphoneType() {
 
 NSLocale * prefLocale(){
     return [NSLocale localeWithLocaleIdentifier:[NSLocale preferredLanguages][0]];
+//    [NSLocale localeWithLocaleIdentifier:[NSBundle mainBundle].preferredLocalizations.firstObject];
 }
 NSString * localeLanguage(){
     return [prefLocale() objectForKey:NSLocaleLanguageCode];
@@ -681,6 +684,7 @@ NSString * localeCountry(){
 NSInteger  timeOffset(void){
     return [NSTimeZone systemTimeZone].secondsFromGMT;
 }
+
 
 BOOL isRightToLeft(){
     return [UIView userInterfaceLayoutDirectionForSemanticContentAttribute:UIView.appearance.semanticContentAttribute]==UIUserInterfaceLayoutDirectionRightToLeft;

@@ -31,9 +31,9 @@
     return val;
 }
 -(int64_t)toHexLongValue{
-    int64_t val;
+    unsigned long long val;
     [[NSScanner scannerWithString:[self substringWithRange:(NSRange){0,self.length}] ] scanHexLongLong:&val];
-    return val;
+    return (int64_t)val;
 }
 -(UInt8)toHexByte{
     return (UInt8)[self toHexValue];

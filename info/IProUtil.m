@@ -395,17 +395,10 @@
         
         //svprogresshud
         [SVProgressHUD setDefaultMaskType:(SVProgressHUDMaskTypeClear)];
-//        UIImageView *iv = self.commonLoadingSubIv;
-        UIImageView *iv = [[UIImageView alloc]initWithImage:[UIImage img4Color:iColor(0xff, 0x00,0,0) size:CGSizeMake(dp2po(42), dp2po(42))]];
-        UIActivityIndicatorView *actindi = [[UIActivityIndicatorView alloc]initWithActivityIndicatorStyle:(UIActivityIndicatorViewStyleWhiteLarge)];
-        [iv addSubview:actindi];
-        [actindi startAnimating];
-        [actindi mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.center.equalTo(@0);
-        }];
-        [SVProgressHUD setLoadingImageView:iv];
-        [SVProgressHUD setDefaultAnimationType:SVProgressHUDAnimationTypeCustom];
-        [SVProgressHUD setDefaultStyle:SVProgressHUDStyleDark];
+        [SVProgressHUD setForegroundColor:iGlobalFocusColor];
+        [SVProgressHUD setRingThickness:dp2po(3.5)];
+        [SVProgressHUD setDefaultAnimationType:SVProgressHUDAnimationTypeFlat];
+        [SVProgressHUD setDefaultStyle:SVProgressHUDStyleCustom];
     }
 }
 
@@ -432,8 +425,18 @@
     return [pred evaluateWithObject:str];
 }
 +(BOOL)isSignupPwd:(NSString*)str{
+    if(emptyStr(str))return NO;
+    static NSString * emailRegex = @"^[\\x21-\\x7E]{8,20}$";
+    static NSPredicate *pred=nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        pred=[NSPredicate predicateWithFormat:@"SELF MATCHES %@",emailRegex];
+    });
+    return [pred evaluateWithObject:str];
+    /*
     if(!str||str.length<8||str.length>20) return NO;
     return YES;
+     */
     /*
     static NSPredicate *pred=nil;
     static dispatch_once_t onceToken;
@@ -455,7 +458,7 @@
      */
 }
 +(BOOL)isSignupNickname:(NSString*)str{
-    if(!str||str.length<=0||str.length>64) return NO;
+    if(!str||str.length<=0||[str dataUsingEncoding:4].length>BC_NAME_TF_MAX_LEN) return NO;
     return YES;
 }
 
