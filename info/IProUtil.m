@@ -190,18 +190,7 @@
     }];
 }
 
-+(void)present:(BCBasePromtpVC *)vc from:(UIViewController *)fromVC{
-    [fromVC presentViewController:vc animated:NO completion:nil];
-    M1GuidanceView *ev=[[M1GuidanceView alloc]init];
-    vc.dismissCB = ^{
-        [ev dismiss];
-    };
-    [ev showBy:^UIView *(M1GuidanceView *v) {
-        UIViewController *avc = fromVC.navigationController?fromVC.navigationController:fromVC;
-        [avc.view insertSubview:ev belowSubview:vc.view];
-        return avc.view;
-    }];
-}
+
 
 
 +(UILabel *)commonLab:(UIFont *)font color:(UIColor *)color{

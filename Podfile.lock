@@ -1,0 +1,20 @@
+PODS:
+  - MJRefresh (3.1.15.3)
+  - SVProgressHUD (2.2.5)
+
+DEPENDENCIES:
+  - MJRefresh
+  - SVProgressHUD
+
+SPEC REPOS:
+  https://github.com/CocoaPods/Specs.git:
+    - MJRefresh
+    - SVProgressHUD
+
+SPEC CHECKSUMS:
+  MJRefresh: b48380ae2b927b46c4ef000de9adb8dc748e1df7
+  SVProgressHUD: 1428aafac632c1f86f62aa4243ec12008d7a51d6
+
+PODFILE CHECKSUM: cad6c88ddf7a00aed688894b645c20963d60f096
+
+COCOAPODS: 1.5.0

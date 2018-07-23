@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>rootVC</key>
-	<string>YFMainVC</string>
+	<string>BasicVC</string>
 	<key>navVC</key>
 	<string>YFNavVC</string>
 	<key>introVC</key>
