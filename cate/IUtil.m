@@ -54,17 +54,48 @@ BOOL nullObj(id obj){
     return  (NSString *)NSBundle.mainBundle.infoDictionary[@"CFBundleShortVersionString"];
 }
 
+
+//获取类型的property名字列表,property名字不带_前缀
 +(NSArray *)prosWithClz:(Class)clz{
-    unsigned int count;
-    struct objc_property **pros=class_copyPropertyList(clz, &count);
     NSMutableArray *ary=[NSMutableArray array];
-    for(int i=0;i<count;i++){
-        struct objc_property *pro=pros[i];
-        [ary addObject:[NSString stringWithUTF8String:property_getName(pro)]];
+    while (clz!=[NSObject class]){
+        unsigned int count;
+        struct objc_property **pros=class_copyPropertyList(clz, &count);
+        for(int i=0;i<count;i++){
+            struct objc_property *pro=pros[i];
+            [ary addObject:[NSString stringWithUTF8String:property_getName(pro)]];
+        }
+        clz=[clz superclass];
+        free(pros);
     }
     return ary;
 }
 
+
+//获取类型的成员变量名字列表,property的名字前带_前缀
++(NSArray *)varsWithClz:(Class)clz{
+    NSMutableArray *ary=[NSMutableArray array];
+    unsigned int count;
+    Ivar *ivars = class_copyIvarList(clz, &count);
+    NSArray *filters = @[@"superclass", @"description", @"debugDescription", @"hash"];
+    for(int i=0;i<count;i++){
+        Ivar ivar = ivars[i];
+        NSString *varname = [NSString stringWithUTF8String:ivar_getName(ivar)];
+        if(![filters containsObject:varname]){
+            [ary addObject: varname];
+        }
+    }
+    free(ivars);
+    Class sclz=[clz superclass];
+    if(clz!=[NSObject class]){
+        NSArray *ar = [self prosWithClz:sclz];
+        [ary addObjectsFromArray:ar];
+    }
+    return ary;
+}
+
+
+//字典转对象，字典值设置给对象的property字段
 +(id)setValues:(NSDictionary *)dict forClz:(Class)clz{
     NSArray *ary=[self prosWithClz:clz];
     id obj=[[clz alloc] init];
@@ -77,7 +108,20 @@ BOOL nullObj(id obj){
     }
     return obj;
 }
-
+//字典转对象，字典值设置给对象的成员变量
++(id)setVarValues:(NSDictionary *)dict forClz:(Class)clz{
+    NSArray *ary=[self varsWithClz:clz];
+    id obj=[[clz alloc] init];
+    if(nullObj(dict)) return obj;
+    for(NSString *varname in ary){
+        NSString *key = [varname hasPrefix:@"_"]?[varname substringFromIndex:1]:varname;
+        if(dict[key]){
+            id val = dict[key];
+            [obj setValue:val forKey:varname];
+        }
+    }
+    return obj;
+}
 
 //通过setter方法设置
 +(id)setterValues:(NSDictionary *)dict forClz:(Class)clz{
@@ -166,7 +210,7 @@ BOOL nullObj(id obj){
     
     req.HTTPMethod=@"POST";
   
-    req.HTTPBody=[[body stringByReplacingPercentEscapesUsingEncoding:4] dataUsingEncoding:4];
+    req.HTTPBody=[[body stringByRemovingPercentEncoding] dataUsingEncoding:4];
     
     [[[NSURLSession sharedSession] dataTaskWithRequest:req completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
         dispatch_async(dispatch_get_main_queue(), ^{
@@ -411,7 +455,7 @@ BOOL nullObj(id obj){
     //    // 方法二: 16384
     //    page_size = getpagesize();
     // 方法三: 4096
-    if( host_page_size(mach_host_self(), &page_size)!= KERN_SUCCESS ){
+    if( host_page_size(mach_host_self(), (vm_size_t *)&page_size)!= KERN_SUCCESS ){
         perror("Failed to get page size");
     }
     printf("Page size is %ld bytes\n", page_size);
@@ -572,95 +616,95 @@ NSString * iphoneType() {
     if ([platform isEqualToString:@"iPhone8,2"]) return @"iPhone 6s Plus(A1549/A1586)";
     if ([platform isEqualToString:@"iPhone9,1"]) return @"iPhone 7  (A1549/A1586)";
     if ([platform isEqualToString:@"iPhone9,2"]) return @"iPhone 7 Plus (A1549/A1586)";
-    if([platform isEqualToString:@"iPhone10,1"]) return@"iPhone 8";
+    if([platform isEqualToString:@"iPhone10,1"]) return @"iPhone 8";
     
-    if([platform isEqualToString:@"iPhone10,4"]) return@"iPhone 8";
+    if([platform isEqualToString:@"iPhone10,4"]) return @"iPhone 8";
     
-    if([platform isEqualToString:@"iPhone10,2"]) return@"iPhone 8 Plus";
+    if([platform isEqualToString:@"iPhone10,2"]) return @"iPhone 8 Plus";
     
-    if([platform isEqualToString:@"iPhone10,5"]) return@"iPhone 8 Plus";
+    if([platform isEqualToString:@"iPhone10,5"]) return @"iPhone 8 Plus";
     
-    if([platform isEqualToString:@"iPhone10,3"]) return@"iPhone X";
+    if([platform isEqualToString:@"iPhone10,3"]) return @"iPhone X";
     
-    if([platform isEqualToString:@"iPhone10,6"]) return@"iPhone X";
+    if([platform isEqualToString:@"iPhone10,6"]) return @"iPhone X";
     
     
     if([platform isEqualToString:@"iPod1,1"])
-        return@"iPod Touch 1G";
+        return @"iPod Touch 1G";
     
-    if([platform isEqualToString:@"iPod2,1"])  return@"iPod Touch 2G";
+    if([platform isEqualToString:@"iPod2,1"])return @"iPod Touch 2G";
     
-    if([platform isEqualToString:@"iPod3,1"])  return@"iPod Touch 3G";
+    if([platform isEqualToString:@"iPod3,1"])return @"iPod Touch 3G";
     
-    if([platform isEqualToString:@"iPod4,1"])  return@"iPod Touch 4G";
+    if([platform isEqualToString:@"iPod4,1"])return @"iPod Touch 4G";
     
-    if([platform isEqualToString:@"iPod5,1"])  return@"iPod Touch 5G";
+    if([platform isEqualToString:@"iPod5,1"])return @"iPod Touch 5G";
     
-    if([platform isEqualToString:@"iPad1,1"])  return@"iPad 1G";
+    if([platform isEqualToString:@"iPad1,1"])return @"iPad 1G";
     
-    if([platform isEqualToString:@"iPad2,1"])  return@"iPad 2";
+    if([platform isEqualToString:@"iPad2,1"])return @"iPad 2";
     
-    if([platform isEqualToString:@"iPad2,2"])  return@"iPad 2";
+    if([platform isEqualToString:@"iPad2,2"])return @"iPad 2";
     
-    if([platform isEqualToString:@"iPad2,3"])  return@"iPad 2";
+    if([platform isEqualToString:@"iPad2,3"])return @"iPad 2";
     
-    if([platform isEqualToString:@"iPad2,4"])  return@"iPad 2";
+    if([platform isEqualToString:@"iPad2,4"])return @"iPad 2";
     
-    if([platform isEqualToString:@"iPad2,5"])  return@"iPad Mini 1G";
+    if([platform isEqualToString:@"iPad2,5"])return @"iPad Mini 1G";
     
-    if([platform isEqualToString:@"iPad2,6"])  return@"iPad Mini 1G";
+    if([platform isEqualToString:@"iPad2,6"])return @"iPad Mini 1G";
     
-    if([platform isEqualToString:@"iPad2,7"])  return@"iPad Mini 1G";
+    if([platform isEqualToString:@"iPad2,7"])return @"iPad Mini 1G";
     
-    if([platform isEqualToString:@"iPad3,1"])  return@"iPad 3";
+    if([platform isEqualToString:@"iPad3,1"])return @"iPad 3";
     
-    if([platform isEqualToString:@"iPad3,2"])  return@"iPad 3";
+    if([platform isEqualToString:@"iPad3,2"])return @"iPad 3";
     
-    if([platform isEqualToString:@"iPad3,3"])  return@"iPad 3";
+    if([platform isEqualToString:@"iPad3,3"])return @"iPad 3";
     
-    if([platform isEqualToString:@"iPad3,4"])  return@"iPad 4";
+    if([platform isEqualToString:@"iPad3,4"])return @"iPad 4";
     
-    if([platform isEqualToString:@"iPad3,5"])  return@"iPad 4";
+    if([platform isEqualToString:@"iPad3,5"])return @"iPad 4";
     
-    if([platform isEqualToString:@"iPad3,6"])  return@"iPad 4";
+    if([platform isEqualToString:@"iPad3,6"])return @"iPad 4";
     
-    if([platform isEqualToString:@"iPad4,1"])  return@"iPad Air";
+    if([platform isEqualToString:@"iPad4,1"])return @"iPad Air";
     
-    if([platform isEqualToString:@"iPad4,2"])  return@"iPad Air";
+    if([platform isEqualToString:@"iPad4,2"])return @"iPad Air";
     
-    if([platform isEqualToString:@"iPad4,3"])  return@"iPad Air";
+    if([platform isEqualToString:@"iPad4,3"])return @"iPad Air";
     
-    if([platform isEqualToString:@"iPad4,4"])  return@"iPad Mini 2G";
+    if([platform isEqualToString:@"iPad4,4"])return @"iPad Mini 2G";
     
-    if([platform isEqualToString:@"iPad4,5"])  return@"iPad Mini 2G";
+    if([platform isEqualToString:@"iPad4,5"])return @"iPad Mini 2G";
     
-    if([platform isEqualToString:@"iPad4,6"])  return@"iPad Mini 2G";
+    if([platform isEqualToString:@"iPad4,6"])return @"iPad Mini 2G";
     
-    if([platform isEqualToString:@"iPad4,7"])  return@"iPad Mini 3";
+    if([platform isEqualToString:@"iPad4,7"])return @"iPad Mini 3";
     
-    if([platform isEqualToString:@"iPad4,8"])  return@"iPad Mini 3";
+    if([platform isEqualToString:@"iPad4,8"])return @"iPad Mini 3";
     
-    if([platform isEqualToString:@"iPad4,9"])  return@"iPad Mini 3";
+    if([platform isEqualToString:@"iPad4,9"])return @"iPad Mini 3";
     
-    if([platform isEqualToString:@"iPad5,1"])  return@"iPad Mini 4";
+    if([platform isEqualToString:@"iPad5,1"])return @"iPad Mini 4";
     
-    if([platform isEqualToString:@"iPad5,2"])  return@"iPad Mini 4";
+    if([platform isEqualToString:@"iPad5,2"])return @"iPad Mini 4";
     
-    if([platform isEqualToString:@"iPad5,3"])  return@"iPad Air 2";
+    if([platform isEqualToString:@"iPad5,3"])return @"iPad Air 2";
     
-    if([platform isEqualToString:@"iPad5,4"])  return@"iPad Air 2";
+    if([platform isEqualToString:@"iPad5,4"])return @"iPad Air 2";
     
-    if([platform isEqualToString:@"iPad6,3"])  return@"iPad Pro 9.7";
+    if([platform isEqualToString:@"iPad6,3"])return @"iPad Pro 9.7";
     
-    if([platform isEqualToString:@"iPad6,4"])  return@"iPad Pro 9.7";
+    if([platform isEqualToString:@"iPad6,4"])return @"iPad Pro 9.7";
     
-    if([platform isEqualToString:@"iPad6,7"])  return@"iPad Pro 12.9";
+    if([platform isEqualToString:@"iPad6,7"])return @"iPad Pro 12.9";
     
-    if([platform isEqualToString:@"iPad6,8"])  return@"iPad Pro 12.9";
+    if([platform isEqualToString:@"iPad6,8"])return @"iPad Pro 12.9";
     
-    if([platform isEqualToString:@"i386"])  return@"iPhone Simulator";
+    if([platform isEqualToString:@"i386"])return @"iPhone Simulator";
     
-    if([platform isEqualToString:@"x86_64"])  return@"iPhone Simulator";
+    if([platform isEqualToString:@"x86_64"])return @"iPhone Simulator";
     
     return platform;
     

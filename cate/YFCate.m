@@ -87,16 +87,26 @@ UIImage * i18nImg(NSString * name){
 }
 
 +(void)bannerWarn:(NSString*)msg{
-    if(!msg)return;
-    [UIUtil showAt:[UIViewController curVC].view msg:msg color:iWarnTipColor];
+    [self bannerWarn:msg iden:@"show_msg"];
 }
 +(void)bannerSuc:(NSString *)msg{
-    if(!msg)return;
-    [UIUtil showAt:[UIViewController curVC].view msg:msg color:iSucTipColor];
+    [self bannerSuc:msg iden:@"show_msg"];
 }
 +(void)bannerInfo:(NSString *)msg{
+    [self bannerInfo:msg iden:@"show_msg"];
+}
+
++(void)bannerWarn:(NSString*)msg iden:(NSString *)iden{
     if(!msg)return;
-    [UIUtil showAt:[UIViewController curVC].view msg:msg color:iInfoTipColor];
+    [UIUtil showAt:[UIViewController curVC].view msg:msg color:iWarnTipColor iden:iden];
+}
++(void)bannerSuc:(NSString *)msg iden:(NSString *)iden{
+    if(!msg)return;
+    [UIUtil showAt:[UIViewController curVC].view msg:msg color:iSucTipColor iden:iden];
+}
++(void)bannerInfo:(NSString *)msg iden:(NSString *)iden{
+    if(!msg)return;
+    [UIUtil showAt:[UIViewController curVC].view msg:msg color:iInfoTipColor  iden:iden];
 }
 @end
 

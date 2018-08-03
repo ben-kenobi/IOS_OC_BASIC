@@ -44,6 +44,9 @@ void myCleanupBlock(__strong void(^*block)(void));
 +(void)bannerWarn:(NSString*)msg;
 +(void)bannerSuc:(NSString *)msg;
 +(void)bannerInfo:(NSString *)msg;
++(void)bannerWarn:(NSString*)msg iden:(NSString *)iden;
++(void)bannerSuc:(NSString *)msg iden:(NSString *)iden;
++(void)bannerInfo:(NSString *)msg iden:(NSString *)iden;
 @end
 
 @interface iDialog : NSObject

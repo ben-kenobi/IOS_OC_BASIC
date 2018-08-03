@@ -29,6 +29,7 @@ BOOL nullObj(id obj);
 +(NSString *)appVersionStr;
 
 +(NSArray *)prosWithClz:(Class)clz;
++(NSArray *)varsWithClz:(Class)clz;
 +(id)setValues:(NSDictionary *)dict forClz:(Class)clz;
 //通过setter方法设置
 +(id)setterValues:(NSDictionary *)dict forClz:(Class)clz;

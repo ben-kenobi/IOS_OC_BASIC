@@ -145,9 +145,9 @@
         [YFMsgBanner showAt:view withCountdown:4 msg:msg iden:@"msg" color:textColor];
     });
 }
-+(void)showAt:(UIView *)view msg:(NSString *)msg color:(UIColor *)textColor{
++(void)showAt:(UIView *)view msg:(NSString *)msg color:(UIColor *)textColor iden:(NSString *)iden{
     runOnMain(^{
-        [YFMsgBanner showAt:view withCountdown:-1 msg:msg iden:@"msg_show" color:textColor];
+        [YFMsgBanner showAt:view withCountdown:-1 msg:msg iden:iden color:textColor];
     });
 }
 
@@ -181,7 +181,7 @@
     [btn setBackgroundImage:[UIImage roundStretchImg4Color:iGlobalFocusColor w:cornerRad*2] forState:0];
     [btn setBackgroundImage:[UIImage roundStretchImg4Color:iGlobalHLFocusColor w:cornerRad*2] forState:UIControlStateHighlighted];
     [btn setBackgroundImage:[UIImage roundStretchImg4Color:[iGlobalDisableColor colorWithAlphaComponent:1] w:cornerRad*2] forState:UIControlStateDisabled];
-    [UIUtil commonShadowWithColor:iColor(0, 0, 0, 1) Radius:5 size:CGSizeMake(0, 2) view:btn opacity:.2];
+    [UIUtil commonShadowWithColor:iColor(0, 0, 0, 1) Radius:5 size:CGSizeMake(0, 2) view:btn opacity:.15];
     
     [btn setTitleColor:iColor(0x3e, 0x3e, 0x3e, 1) forState:UIControlStateDisabled];
     
@@ -194,15 +194,17 @@
     UIImage *disimg=[[UIImage img4Color:[UIColor whiteColor] size:CGSizeMake(corRad*2, corRad*2)] roundImg:corRad*2 boderColor:disstrokeColor borderW:1].resizableStretchImg;
     
     
-    [btn setBackgroundImage:img forState:0];
+    [btn setBackgroundImage:img forState:UIControlStateNormal];
     [btn setBackgroundImage:hlimg forState:UIControlStateHighlighted];
     [btn setBackgroundImage:disimg forState:UIControlStateDisabled];
     [UIUtil commonShadowWithColor:iColor(0x88, 0x88, 0x88, 1) Radius:5 size:CGSizeMake(0, 2) view:btn opacity:opa];
     [btn addTarget:tar action:action forControlEvents:UIControlEventTouchUpInside];
 }
+
 +(void)commonStrokeBtn:(UIButton *)btn tar:(id)tar action:(SEL)action shadowOpacity:(CGFloat)opa H:(CGFloat)H{
     [self commonStrokeBtn:btn tar:tar action:action shadowOpacity:opa H:H strokeColor:iGlobalFocusColor strokeHLColor:iGlobalHLFocusColor strokeDisColor:iGlobalDisableColor corRad:6];
 }
+
 +(UIInterfaceOrientationMask)orientation2mask:(UIInterfaceOrientation)orientation{
     if(orientation==UIInterfaceOrientationPortraitUpsideDown){
         return UIInterfaceOrientationMaskPortraitUpsideDown;
@@ -214,6 +216,7 @@
         return UIInterfaceOrientationMaskPortrait;
     }
 }
+
 +(BOOL)screenIsHorizontal{
     return iApp.statusBarOrientation==UIInterfaceOrientationLandscapeLeft||iApp.statusBarOrientation==UIInterfaceOrientationLandscapeRight;
 }
