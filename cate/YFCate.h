@@ -13,10 +13,13 @@
 #import "FileUtil.h"
 #import "NetUtil.h"
 #import "UIImageView+WEB.h"
-#import "UIImageView+WebCache.h"
 #import "UIButton+Ex.h"
 #import "UIBarButtonItem+Ex.h"
-
+#import "AFNetworking.h"
+#import "UIUtil.h"
+#import "IProUtil.h"
+#import <UIKit/UIKit.h>
+#import "YFConst.h"
 
 typedef void (^defBlock)(void);
 
@@ -30,30 +33,9 @@ void myCleanupBlock(__strong void(^*block)(void));
 
 
 
-@interface iPop : NSObject
-
-+(void)showMsg:(NSString*)msg;
-+(void)showSuc:(NSString*)msg;
-+(void)showError:(NSString*)msg;
-+(void)showProgWithMsg:(NSString *)msg;
-+(void)showProg;
-+(void)dismProg;
-+(void)toastSuc:(NSString*)msg;
-+(void)toastInfo:(NSString*)msg;
-+(void)toastWarn:(NSString*)msg;
-+(void)bannerWarn:(NSString*)msg;
-+(void)bannerSuc:(NSString *)msg;
-+(void)bannerInfo:(NSString *)msg;
-+(void)bannerWarn:(NSString*)msg iden:(NSString *)iden;
-+(void)bannerSuc:(NSString *)msg iden:(NSString *)iden;
-+(void)bannerInfo:(NSString *)msg iden:(NSString *)iden;
-@end
-
 @interface iDialog : NSObject
 +(void)dialogWith:(NSString*)title msg:(NSString*)msg actions:(NSArray *)actions vc:(UIViewController*)vc;
 @end
 
-@interface ALUtil:NSObject
-+(void)setImgFromALURL:(NSURL*)alurl cb:(void(^)(UIImage *))cb;
-@end
+
 

@@ -9,13 +9,7 @@
 #import <UIKit/UIKit.h>
 
 @interface YFFloatWindow : UIWindow
-{
-    
-    UIButton *_button;
-    
-}
-
-
-
--(id) initWithFrame:(CGRect)frame;
+@property (nonatomic,assign)BOOL show;
+@property (nonatomic,assign)UIInterfaceOrientation orientation;
+-(id)initWith:(BOOL)hor;
 @end

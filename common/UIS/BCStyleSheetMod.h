@@ -6,7 +6,7 @@
 //  Copyright © 2017年 oceanwing. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
+#import "YFCate.h"
 
 @class BCStyleSheetMod;
 

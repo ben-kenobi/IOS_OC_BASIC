@@ -7,21 +7,12 @@
 //
 
 #import <Foundation/Foundation.h>
-#import <CoreLocation/CoreLocation.h>
-#import "BCAlertStylesheetVC.h"
+#import "YFCate.h"
 
-CGFloat dp2po(CGFloat dp);
-@interface IProUtil : NSObject<CLLocationManagerDelegate>
-+(void)commonPrompt:(NSString *)title msg:(NSString *)msg cb:(void(^)(void))cb;
-+(void)prompt:(NSString *)title tcolor:(UIColor *)tcolor tfont:(UIFont*)tfont msg:(NSString *)msg mcolor:(UIColor *)mcolor mfont:(UIFont *)mfont cb:(void(^)(void))cb;
-+(void)prompt:(NSString *)title tcolor:(UIColor *)tcolor tfont:(UIFont*)tfont msg:(NSString *)msg mcolor:(UIColor *)mcolor mfont:(UIFont *)mfont vc:(UIViewController *)fromVC cb:(void(^)(void))cb;
-+(UIAlertController *)commonTextFieldDialog:(NSString*)title msg:(NSString *)msg ph:(NSString *)ph text:(NSString *)text cb:(void (^)(BOOL isOK,NSString *text))cb;
-+(void)prompt:(NSAttributedString *)msg cb:(void(^)(void))cb;
-+(void)sheetPrompt:(id<BCStyleSheetListDelegate>)datas vc:(UIViewController *)fromVC;
-+(void)locationWith:(void(^)(BOOL suc,NSArray *locs))cb;
-+(instancetype)shareInstance;
-+(NSString *)digestAry:(NSArray *)ary;
-+(NSString *)digestStr:(NSString *)str;
+@interface IProUtil : NSObject
+
+
+
 +(UIButton *)btnWith:(CGRect)frame title:(NSString *)title bgc:(UIColor *)bgc font:(UIFont *)font sup:(UIView *)sup;
 +(UILabel*)labWithColor:(UIColor*)color font:(UIFont *)font sup:(UIView *)sup;
 +(NSRegularExpression *)usernameRe;
@@ -37,11 +28,8 @@ CGFloat dp2po(CGFloat dp);
 +(BOOL)isEmail:(NSString *)str;
 +(BOOL)isLoginPwd:(NSString*)str;
 +(BOOL)isSignupPwd:(NSString*)str;
-+(BOOL)isSignupNickname:(NSString*)str;
 
-+(NSString *)getDeviceId;
 +(NSDictionary *)attrDictWith:(UIColor *)fcolor font:(UIFont *)font;
-+(UIImageView *)commonLoadingIv;
 +(void)dispatchAfter:(CGFloat)secs tar:(id)tar bloc:(void(^)(void))bloc;
 +(void)dispatchCancel:(id)tar;
 +(void)dispatchAfter:(CGFloat)secs tar:(id)tar iden:(NSString *)iden bloc:(void(^)(void))bloc;

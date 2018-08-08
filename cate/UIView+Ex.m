@@ -4,6 +4,7 @@
 //
 
 #import "UIView+Ex.h"
+#import "YFCate.h"
 
 
 @implementation UIView (Ex)

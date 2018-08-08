@@ -7,9 +7,9 @@
 //
 
 #import "UIButton+Ex.h"
-#import <AudioToolbox/AudioToolbox.h>
-void AudioServicesPlaySystemSoundWithVibration(int, id, NSDictionary *);
-void AudioServicesStopSystemSound(int);
+//#import <AudioToolbox/AudioToolbox.h>
+//void AudioServicesPlaySystemSoundWithVibration(int, id, NSDictionary *);
+//void AudioServicesStopSystemSound(int);
 @implementation UIButton(Ex)
 
 +(instancetype)btnWithImg:(UIImage *)img diableColor:(UIColor *)color{

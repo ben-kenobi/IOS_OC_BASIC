@@ -4,8 +4,8 @@
 //
 
 #import "UIImage+Ex.h"
+#import "YFCate.h"
 #import <ImageIO/ImageIO.h>
-#import "H264VideoParser.h"
 #import <AVFoundation/AVFoundation.h>
 #import<QuartzCore/QuartzCore.h>
 #import<Accelerate/Accelerate.h>
@@ -423,17 +423,6 @@ CGMutablePathRef shapePath(CGRect rect,NSInteger count,NSInteger step,NSInteger 
     return frameDuration;
 }
 
-+(instancetype)imgFromH264Data:(NSData *)data{
-    if(!data||!data.length)return nil;
-    return [self img4CVPixel:[H264VideoParser parseData:data]];
-}
-+(instancetype)imgFromH264File:(NSString *)path{
-    if(![iFm fileExistsAtPath:path isDirectory:0])
-        return nil;
-    return [self img4CVPixel:[H264VideoParser parseFile:path]];
-}
-
-
 
 
 
@@ -548,7 +537,7 @@ CGMutablePathRef shapePath(CGRect rect,NSInteger count,NSInteger step,NSInteger 
     AVAssetImageGeneratorCompletionHandler handle = ^(CMTime requestedTime, CGImageRef _Nullable image, CMTime actualTime, AVAssetImageGeneratorResult result, NSError * _Nullable error){
         dispatch_async(dispatch_get_main_queue(), ^{
             if (result != AVAssetImageGeneratorSucceeded) {
-                [iPop toastWarn:@"couldn't generate thumbnail, error:\(error)"];
+                NSLog(@"couldn't generate thumbnail, error:\(error)");
                 return;
             }
             UIImage* img = [UIImage imageWithCGImage:image];

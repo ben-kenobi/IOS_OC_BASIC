@@ -4,6 +4,7 @@
 //
 
 #import "UIBarButtonItem+Ex.h"
+#import "YFCate.h"
 
 @implementation UIBarButtonItem (Ex)
 + (UIBarButtonItem *)itemWithTarget:(id)target action:(SEL)action img:(UIImage *)img hlimg:(UIImage *)hlimg{

@@ -5,6 +5,7 @@
 
 #import "NSDate+Ex.h"
 #import "objc/runtime.h"
+#import "YFCate.h"
 
 @implementation NSDate (Ex)
 
@@ -36,9 +37,9 @@
             if (result < 60) {
                 return NSLocalizedString(@"a moment ago",0);
             }else if (result < 60 * 60) {
-                return iFormatStr(@"%ld %@",result/60,NSLocalizedString(@"minutes ago",0));
+                return iFormatStr(@"%d %@",result/60,NSLocalizedString(@"minutes ago",0));
             }else{
-                fm.dateFormat = @"HH:mm:ss";
+                fm.dateFormat = @"HH:mm";
             }
         }else if (self.isYesterday) {
             fm.dateFormat = @"'Yesterday' HH:mm";

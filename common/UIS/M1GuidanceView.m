@@ -7,6 +7,8 @@
 //
 
 #import "M1GuidanceView.h"
+#import "YFCate.h"
+
 @interface M1GuidanceView()
 @property (nonatomic,strong)UIButton *btn;
 @end

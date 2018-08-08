@@ -6,6 +6,7 @@
 
 #import "H264VideoParser.h"
 #import <VideoToolbox/VideoToolbox.h>
+#import "YFCate.h"
 
 
 const uint8_t KStartCode[4]={0,0,0,1};

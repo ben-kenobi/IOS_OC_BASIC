@@ -1,11 +1,7 @@
 
 
-#import <Foundation/Foundation.h>
+#import "YFCate.h"
 #import <sys/utsname.h>
-#import "SVProgressHUD.h"
-#import <AssetsLibrary/AssetsLibrary.h>
-#import "UIView+Toast.h"
-
 
 
 void myCleanupBlock(__strong void(^*block)(void)){
@@ -14,6 +10,7 @@ void myCleanupBlock(__strong void(^*block)(void)){
 
 
 UIWindow *frontestWindow(){
+#ifdef PrefixHeader_pch
     if(iVersion>=11){
         UIWindow *window = iApp.windows[0];
         if(CGRectEqualToRect(iScreen.bounds , window.bounds)){
@@ -27,6 +24,9 @@ UIWindow *frontestWindow(){
         }
         return iApp.windows[iApp.windows.count-2];
     }
+#else
+    return nil;
+#endif
 }
 UIImage * i18nImg(NSString * name){
     UIImage *img = img(name);
@@ -40,76 +40,6 @@ UIImage * i18nImg(NSString * name){
 
 
 
-@implementation iPop
-+(void)showMsg:(NSString*)msg{
-    [SVProgressHUD setBackgroundColor:[UIColor whiteColor]];
-    [SVProgressHUD showInfoWithStatus:msg];
-}
-+(void)showSuc:(NSString*)msg{
-    [SVProgressHUD setBackgroundColor:[UIColor whiteColor]];
-    [SVProgressHUD showSuccessWithStatus:msg];
-}
-+(void)showError:(NSString*)msg{
-    [SVProgressHUD setBackgroundColor:[UIColor whiteColor]];
-    [SVProgressHUD showErrorWithStatus:msg];
-}
-+(void)showProgWithMsg:(NSString *)msg{
-    [SVProgressHUD setBackgroundLayerColor:iColor(0, 0, 0, .6)];
-    [SVProgressHUD setDefaultMaskType:(SVProgressHUDMaskTypeCustom)];
-    [SVProgressHUD setBackgroundColor:[UIColor whiteColor]];
-    [SVProgressHUD  showWithStatus:msg];
-}
-+(void)showProg{
-    [SVProgressHUD setDefaultMaskType:(SVProgressHUDMaskTypeClear)];
-    [SVProgressHUD setBackgroundColor:[UIColor clearColor]];
-    [SVProgressHUD  show];
-}
-+(void)dismProg{
-    [SVProgressHUD setDefaultMaskType:(SVProgressHUDMaskTypeClear)];
-    [SVProgressHUD dismiss];
-}
-+(void)toastWarn:(NSString*)msg{
-    if(!msg)return;
-    [UIUtil toastAt:[UIViewController curVC].view msg:msg color:iWarnTipColor];
-
-//    runOnMain(^{
-//        //        iApp.windows[iApp.windows.count-1].makeToast(msg)
-//       /* [frontestWindow() makeToast:msg duration:1.5 position:nil title:nil image:nil style:[CSToastManager sharedStyle] completion:nil];*/
-//    });
-}
-+(void)toastSuc:(NSString *)msg{
-    if(!msg)return;
-     [UIUtil toastAt:[UIViewController curVC].view msg:msg color:iSucTipColor];
-}
-+(void)toastInfo:(NSString *)msg{
-    if(!msg)return;
-     [UIUtil toastAt:[UIViewController curVC].view msg:msg color:iInfoTipColor];
-}
-
-+(void)bannerWarn:(NSString*)msg{
-    [self bannerWarn:msg iden:@"show_msg"];
-}
-+(void)bannerSuc:(NSString *)msg{
-    [self bannerSuc:msg iden:@"show_msg"];
-}
-+(void)bannerInfo:(NSString *)msg{
-    [self bannerInfo:msg iden:@"show_msg"];
-}
-
-+(void)bannerWarn:(NSString*)msg iden:(NSString *)iden{
-    if(!msg)return;
-    [UIUtil showAt:[UIViewController curVC].view msg:msg color:iWarnTipColor iden:iden];
-}
-+(void)bannerSuc:(NSString *)msg iden:(NSString *)iden{
-    if(!msg)return;
-    [UIUtil showAt:[UIViewController curVC].view msg:msg color:iSucTipColor iden:iden];
-}
-+(void)bannerInfo:(NSString *)msg iden:(NSString *)iden{
-    if(!msg)return;
-    [UIUtil showAt:[UIViewController curVC].view msg:msg color:iInfoTipColor  iden:iden];
-}
-@end
-
 
 @implementation iDialog : NSObject
 +(void)dialogWith:(NSString*)title msg:(NSString*)msg actions:(NSArray *)actions vc:(UIViewController*)vc{
@@ -122,21 +52,4 @@ UIImage * i18nImg(NSString * name){
 
 @end
 
-@implementation ALUtil:NSObject
-+(void)setImgFromALURL:(NSURL*)alurl cb:(void(^)(UIImage *))cb{
-    ALAssetsLibraryAssetForURLResultBlock resultblock=^(ALAsset *asset){
-        ALAssetRepresentation* rep = asset.defaultRepresentation;
-        __unsafe_unretained CGImageRef iref =  [rep fullResolutionImage];
-        UIImage * image = [UIImage imageWithCGImage:iref];
-        dispatch_async(dispatch_get_main_queue(), ^{
-            cb(image);
-        });
-    };
-    ALAssetsLibraryAccessFailureBlock failureblock = ^(NSError *error){
-        printf("\n-----load ALAssets fail------\n");
-    };
-    ALAssetsLibrary* assetslibrary = [[ALAssetsLibrary alloc] init];
-    [assetslibrary assetForURL:alurl resultBlock:resultblock failureBlock:failureblock];
-}
-@end
 

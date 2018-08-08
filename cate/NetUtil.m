@@ -8,6 +8,8 @@
 #import <sys/socket.h>
 #import <netinet/in.h>
 #import <arpa/inet.h>
+#import "YFCate.h"
+
 @implementation NetUtil
 
 +(void)jsonPost:(NSString *)url param:(NSDictionary *)param callBack:(void (^)(NSData *data,NSURLResponse *response, NSError *error))callback{

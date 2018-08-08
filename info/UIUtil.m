@@ -188,10 +188,10 @@
     [btn addTarget:tar action:action forControlEvents:UIControlEventTouchUpInside];
 }
 
-+(void)commonStrokeBtn:(UIButton *)btn tar:(id)tar action:(SEL)action shadowOpacity:(CGFloat)opa H:(CGFloat)H strokeColor:(UIColor*)strokeColor strokeHLColor:(UIColor*)HLstrokeColor strokeDisColor:(UIColor*)disstrokeColor corRad:(CGFloat)corRad{
-    UIImage *img=[[UIImage img4Color:[UIColor whiteColor] size:CGSizeMake(corRad*2, corRad*2)] roundImg:corRad*2 boderColor:strokeColor borderW:1].resizableStretchImg;
-    UIImage *hlimg=[[UIImage img4Color:iGlobalBG size:CGSizeMake(corRad*2, corRad*2)] roundImg:corRad*2 boderColor:HLstrokeColor borderW:1].resizableStretchImg;
-    UIImage *disimg=[[UIImage img4Color:[UIColor whiteColor] size:CGSizeMake(corRad*2, corRad*2)] roundImg:corRad*2 boderColor:disstrokeColor borderW:1].resizableStretchImg;
++(void)commonStrokeBtn:(UIButton *)btn tar:(id)tar action:(SEL)action shadowOpacity:(CGFloat)opa H:(CGFloat)H strokeColor:(UIColor*)strokeColor strokeHLColor:(UIColor*)HLstrokeColor strokeDisColor:(UIColor*)disstrokeColor  bgcolor:(UIColor*)bgcolor corRad:(CGFloat)corRad{
+    UIImage *img=[[UIImage img4Color:bgcolor size:CGSizeMake(corRad*2, corRad*2)] roundImg:corRad*2 boderColor:strokeColor borderW:1].resizableStretchImg;
+    UIImage *hlimg=[[UIImage img4Color:[bgcolor colorWithAlphaComponent:.8] size:CGSizeMake(corRad*2, corRad*2)] roundImg:corRad*2 boderColor:HLstrokeColor borderW:1].resizableStretchImg;
+    UIImage *disimg=[[UIImage img4Color:bgcolor size:CGSizeMake(corRad*2, corRad*2)] roundImg:corRad*2 boderColor:disstrokeColor borderW:1].resizableStretchImg;
     
     
     [btn setBackgroundImage:img forState:UIControlStateNormal];
@@ -202,7 +202,7 @@
 }
 
 +(void)commonStrokeBtn:(UIButton *)btn tar:(id)tar action:(SEL)action shadowOpacity:(CGFloat)opa H:(CGFloat)H{
-    [self commonStrokeBtn:btn tar:tar action:action shadowOpacity:opa H:H strokeColor:iGlobalFocusColor strokeHLColor:iGlobalHLFocusColor strokeDisColor:iGlobalDisableColor corRad:6];
+    [self commonStrokeBtn:btn tar:tar action:action shadowOpacity:opa H:H strokeColor:iGlobalFocusColor strokeHLColor:iGlobalHLFocusColor strokeDisColor:iGlobalDisableColor bgcolor:[UIColor whiteColor] corRad:6];
 }
 
 +(UIInterfaceOrientationMask)orientation2mask:(UIInterfaceOrientation)orientation{
@@ -218,7 +218,11 @@
 }
 
 +(BOOL)screenIsHorizontal{
+#ifdef PrefixHeader_pch
     return iApp.statusBarOrientation==UIInterfaceOrientationLandscapeLeft||iApp.statusBarOrientation==UIInterfaceOrientationLandscapeRight;
+#else
+    return NO;
+#endif
 }
 @end
 

@@ -27,7 +27,4 @@ extern NSString *const GETRECLISTNOTI;
 
 extern NSString *const APP_UPGRADE_VERSION_KEY;
 extern NSString *const APP_VERSION_KEY;
-extern NSInteger  const BC_NAME_TF_MAX_LEN;
 
-extern NSString *const APPSTORE_APPID;
-extern NSString *const APP_IDENNAME;

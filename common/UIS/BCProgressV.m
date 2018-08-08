@@ -7,7 +7,7 @@
 //
 
 #import "BCProgressV.h"
-
+#import "YFCate.h"
 @interface BCProgressV()
 {
     UIView *dots[3];
@@ -19,7 +19,7 @@
 #pragma mark - exported
 +(void)showAt:(UIView *)view{
     [BCProgressV.shared removeFromSuperview];
-    view=view?view:iApp.windows[iApp.windows.count-1];
+    view=view?view:frontestWindow();
     [view addSubview:BCProgressV.shared];
     [BCProgressV.shared mas_remakeConstraints:^(MASConstraintMaker *make) {
         make.edges.equalTo(@0);

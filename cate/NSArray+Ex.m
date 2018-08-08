@@ -4,6 +4,7 @@
 //
 
 #import "NSArray+Ex.h"
+#import "YFCate.h"
 
 @implementation NSArray (Ex)
 

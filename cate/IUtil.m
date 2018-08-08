@@ -9,6 +9,7 @@
 #import <mach/mach.h>
 #import <UIKit/UIKit.h>
 #import <sys/utsname.h>
+#import "YFCate.h"
 
 static void SystemWideNotiCallback(CFNotificationCenterRef center,
                                void *observer,
@@ -21,9 +22,16 @@ static void SystemWideNotiCallback(CFNotificationCenterRef center,
 }
 
 
+CGFloat dp2po(CGFloat dp){
+    CGFloat w = MIN(iScreenH,iScreenW);
+    return w*dp/375;
+}
 
 BOOL emptyStr(NSString *str){
     return !str||!str.length;
+}
+id nilID(void){
+    return nil;
 }
 BOOL nullObj(id obj){
     return obj==nil||[obj isKindOfClass:[NSNull class]];
@@ -433,6 +441,10 @@ BOOL nullObj(id obj){
 }
 
 
++(NSString *)deviceUUId{
+    return [[UIDevice currentDevice].identifierForVendor UUIDString];
+}
+
 
 
 
@@ -709,7 +721,6 @@ NSString * iphoneType() {
     return platform;
     
 }
-
 
 
 

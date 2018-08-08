@@ -4,7 +4,7 @@
 //
 
 #import "FileUtil.h"
-
+#import "YFCate.h"
 @implementation FileUtil
 
 +(long long)fileSizeAtPath:(NSString *)path{
@@ -38,7 +38,7 @@
     if(idx==0)
         return [NSString stringWithFormat:@"%lld%@",size,strs[idx]];
     else
-        return [NSString stringWithFormat:@"%.2f%@",resul,strs[idx]];
+        return [NSString stringWithFormat:@"%.1f%@",resul,strs[idx]];
 }
 
 +(NSString *)formatedFileSize2:(long long)size{

@@ -8,6 +8,7 @@
 //
 
 #import "YFMsgBanner.h"
+#import "YFCate.h"
 
 
 @interface YFMsgBanner()
@@ -15,19 +16,35 @@
 @property (nonatomic,strong)UILabel *msgLab;
 @property (nonatomic,assign)NSInteger countdown;
 @property (nonatomic,strong)NSString *iden;
+@property (nonatomic,strong)UIButton *disBtn;
+@property (nonatomic,strong)UIImageView *speakIcon;
+@property (nonatomic,assign)BOOL fullScreen;
+@property (nonatomic,strong)UIImage *disImg;
+@property (nonatomic,strong)UIImage *speakImg;
 @end
 
 @implementation YFMsgBanner
 
 +(instancetype)showAt:(UIView*)view withCountdown:(NSInteger)sec msg:(NSString *)msg iden:(NSString *)iden color:(UIColor *)textcolor{
+    return [self showAt:view withCountdown:sec msg:msg iden:iden color:textcolor fullScreen:NO];
+}
++(instancetype)showAt:(UIView*)view withCountdown:(NSInteger)sec msg:(NSString *)msg iden:(NSString *)iden color:(UIColor *)textcolor fullScreen:(BOOL)fullScreen{
     if(!view) return nil;
     YFMsgBanner *banner = [msgBanners() objectForKey:iden];
     if(!banner)
         banner = [[YFMsgBanner alloc]init];
     banner.countdown=sec;
     banner.msgLab.text=msg;
-    if(textcolor)
-        banner.msgLab.textColor=textcolor;
+    banner.disBtn.hidden=sec>=0;
+    banner.fullScreen=fullScreen;
+    if(textcolor){
+        [banner.speakIcon setImage: [banner.speakImg renderWithColor:textcolor]];
+        [banner.disBtn setImage:[banner.disImg renderWithColor:textcolor]  forState:0];
+//        banner.msgLab.textColor=textcolor;
+    }else{
+        [banner.speakIcon setImage: banner.speakImg];
+        [banner.disBtn setImage:banner.disImg forState:0];
+    }
     banner.iden=iden;
     [banner showAt:view];
     return banner;
@@ -42,28 +59,43 @@
         self.alpha=0;
         [view addSubview:self];
         [self mas_remakeConstraints:^(MASConstraintMaker *make) {
-            make.top.equalTo(view).offset(view.layoutMargins.top);
+            make.top.equalTo(view).offset(self.fullScreen?0: view.layoutMargins.top);
             make.leading.trailing.equalTo(@0);
         }];
         [self.msgLab mas_remakeConstraints:^(MASConstraintMaker *make) {
-            make.leading.equalTo(@15);
-            make.trailing.equalTo(@(-10));
+            make.leading.equalTo(self.speakIcon.mas_trailing).offset(dp2po(8));
+            make.trailing.equalTo(self.disBtn.mas_leading);
             make.top.equalTo(@0);
             make.bottom.equalTo(@0);
             make.height.equalTo(@0);
         }];
-        
+        [_disBtn mas_remakeConstraints:^(MASConstraintMaker *make) {
+            make.centerY.equalTo(@((self.fullScreen?iStBH*.5:0)));
+            make.width.height.equalTo(self.disBtn.hidden?@0 : @(dp2po(30)));
+            make.trailing.equalTo(@(-8));
+        }];
+        [self.speakIcon mas_remakeConstraints:^(MASConstraintMaker *make) {
+            make.leading.equalTo(@(dp2po(6)));
+            make.bottom.equalTo(self.mas_top);
+            make.height.width.equalTo(@18);
+        }];
         [view layoutIfNeeded];
     }
     [msgBanners() setObject:self forKey:self.iden];
 
     [self.msgLab mas_remakeConstraints:^(MASConstraintMaker *make) {
-        make.leading.equalTo(@15);
-        make.trailing.equalTo(@(-10));
-        make.top.equalTo(@12);
+        make.leading.equalTo(self.speakIcon.mas_trailing).offset(dp2po(8));
+        make.trailing.equalTo(self.disBtn.mas_leading);
+        make.top.equalTo(@(12+(self.fullScreen?iStBH:0)));
         make.bottom.equalTo(@-12);
     }];
     
+    [self.speakIcon mas_remakeConstraints:^(MASConstraintMaker *make) {
+        make.leading.equalTo(@(dp2po(6)));
+        make.centerY.equalTo(self.mas_top).offset(21);
+        make.height.width.equalTo(@18);
+    }];
+   
     [UIUtil commonAnimation:^{
         [view layoutIfNeeded];
         self.alpha=1;
@@ -92,11 +124,16 @@
     [IProUtil dispatchCancel:self];
     if(!self.superview)return;
     [self.msgLab mas_remakeConstraints:^(MASConstraintMaker *make) {
-        make.leading.equalTo(@15);
-        make.trailing.equalTo(@(-10));
+        make.leading.equalTo(self.speakIcon.mas_trailing).offset(dp2po(8));
+        make.trailing.equalTo(self.disBtn.mas_leading);
         make.top.equalTo(@0);
         make.bottom.equalTo(@0);
         make.height.equalTo(@0);
+    }];
+    [self.speakIcon mas_remakeConstraints:^(MASConstraintMaker *make) {
+        make.leading.equalTo(@(dp2po(6)));
+        make.bottom.equalTo(self.mas_top);
+        make.height.width.equalTo(@18);
     }];
     @weakRef(self)
     [UIUtil commonAnimationWithDuration:.25 cb:^{
@@ -118,18 +155,24 @@
 }
 -(void)initUI{
     self.clipsToBounds=NO;
-    self.backgroundColor=iColor(0xff, 0xf9, 0xd8, 1);
+    self.backgroundColor=iColor(0xff, 0xfa, 0xdc, 1);
     
-    self.msgLab=[IProUtil commonLab:iFont(14) color:iColor(0xff, 0x73, 0x0a, 1)];
+    self.msgLab=[IProUtil commonLab:iFont(14) color:iColor(0x5a, 0x55, 0x55, 1)];
     self.msgLab.numberOfLines=0;
-    self.msgLab.textAlignment=NSTextAlignmentCenter;
-
-    
+    self.msgLab.textAlignment=NSTextAlignmentLeft;
+    self.disBtn=[[UIButton alloc]init];
+    self.disImg=img(@"closed_con");
+    [self.disBtn setImage:self.disImg forState:0];
+    [self.disBtn addTarget:self action:@selector(dismiss) forControlEvents:UIControlEventTouchUpInside];
+    self.speakImg=img(@"voice_con");
+    self.speakIcon=[[UIImageView alloc]initWithImage:self.speakImg];
+    self.speakIcon.contentMode=UIViewContentModeCenter;
     [UIUtil commonShadow:self opacity:.06];
     
     // layout ------
     [self addSubview:self.msgLab];
-
+    [self addSubview:self.disBtn];
+    [self addSubview:self.speakIcon];
 }
 
 

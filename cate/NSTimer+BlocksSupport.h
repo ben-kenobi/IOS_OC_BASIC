@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "YFCate.h"
 
 @interface NSTimer (BlocksSupport)
 + (NSTimer*)timerWith:(NSTimeInterval)interval block:(void(^)(void))block repeats:(BOOL)repeats;

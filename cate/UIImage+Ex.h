@@ -35,8 +35,6 @@ CGMutablePathRef shapePath(CGRect rect,NSInteger count,NSInteger step,NSInteger 
 + (instancetype)roundStretchImg4Color:(UIColor *)color w:(CGFloat)w ;
 + (instancetype)roundStretchImg4Color:(UIColor *)color w:(CGFloat)w withBorder:(UIColor *)boderColor;
 +(instancetype)img4CVPixel:(CVPixelBufferRef)buf;
-+(instancetype)imgFromH264Data:(NSData *)data;
-+(instancetype)imgFromH264File:(NSString *)path;
 
 
 -(CGFloat)h;

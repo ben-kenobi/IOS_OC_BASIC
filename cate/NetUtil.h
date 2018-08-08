@@ -4,6 +4,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "YFCate.h"
 
 @interface NetUtil : NSObject
 

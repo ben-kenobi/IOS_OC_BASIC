@@ -6,7 +6,7 @@
 //  Copyright © 2017年 oceanwing. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
+#import "YFCate.h"
 @class MJRefreshBackNormalFooter,MJRefreshNormalHeader;
 @interface BCSlider:UISlider
 @end
@@ -41,7 +41,7 @@
 
 +(void)commonTexBtn:(UIButton *)btn tar:(id)tar action:(SEL)action shadowOpacity:(CGFloat)opa H:(CGFloat)H;
 +(void)commonStrokeBtn:(UIButton *)btn tar:(id)tar action:(SEL)action shadowOpacity:(CGFloat)opa H:(CGFloat)H;
-+(void)commonStrokeBtn:(UIButton *)btn tar:(id)tar action:(SEL)action shadowOpacity:(CGFloat)opa H:(CGFloat)H strokeColor:(UIColor*)strokeColor strokeHLColor:(UIColor*)HLstrokeColor strokeDisColor:(UIColor*)disstrokeColor corRad:(CGFloat)corRad;
++(void)commonStrokeBtn:(UIButton *)btn tar:(id)tar action:(SEL)action shadowOpacity:(CGFloat)opa H:(CGFloat)H strokeColor:(UIColor*)strokeColor strokeHLColor:(UIColor*)HLstrokeColor strokeDisColor:(UIColor*)disstrokeColor  bgcolor:(UIColor*)bgcolor corRad:(CGFloat)corRad;
 +(UIInterfaceOrientationMask)orientation2mask:(UIInterfaceOrientation)orientation;
 +(BOOL)screenIsHorizontal;
 @end

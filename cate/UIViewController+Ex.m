@@ -5,6 +5,7 @@
 
 #import "UIViewController+Ex.h"
 #import "objc/runtime.h"
+#import "YFCate.h"
 
 
 @implementation UIViewController (Ex)

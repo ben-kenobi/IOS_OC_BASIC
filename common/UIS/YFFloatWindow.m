@@ -7,164 +7,69 @@
 //
 
 #import "YFFloatWindow.h"
+#import "YFCate.h"
+static CGRect horrect = (CGRect){20,10,104,36};
+static CGRect verrect = (CGRect){15,iTopBarH+10,104,36};
+
+@interface YFFloatWindow ()
+@property (nonatomic,assign)CGRect showFrame;
+
+@end
 
 @implementation YFFloatWindow
--(id)initWithFrame:(CGRect)frame
-
+-(id)initWith:(BOOL)hor
 {
-    
+    CGRect frame = hor?horrect:verrect;
     self = [super initWithFrame:frame];
-    
-    
-    
     if (self) {
-        
+        self.showFrame=frame;
         self.backgroundColor = [UIColor clearColor];
-        
         self.windowLevel = UIWindowLevelAlert + 1;
-        
-        //******
-        
-        [self makeKeyAndVisible];
-        
-        
-        
-        _button = [UIButton buttonWithType:UIButtonTypeCustom];
-        
-        _button.backgroundColor = [UIColor grayColor];
-        
-        _button.frame = CGRectMake(0, 0, frame.size.width, frame.size.height);
-        
-        _button.layer.cornerRadius = frame.size.width/2;
-        
-        [_button addTarget:self action:@selector(choose) forControlEvents:UIControlEventTouchUpInside];
-        
-        [self addSubview:_button];
-        
-        
-        
-        //add a gesture
-        
-        UIPanGestureRecognizer *pan = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(changePostion:)];
-        
-        [_button addGestureRecognizer:pan];
-        
+
+        self.hidden=NO;
+        [self setShow:NO];
+//        [self makeKeyAndVisible];
     }
-    
     return self;
-    
 }
 
-
-
-
-
--(void)choose
-
-{
-    
-    NSLog(@"float btn be clicked");
-    
+-(UIView *)hitTest:(CGPoint)point withEvent:(UIEvent *)event{
+    if(!self.show)
+        return nil;
+    return [super hitTest:point withEvent:event];
 }
 
+-(void)setShow:(BOOL)show{
+    _show=show;
+    if(show){
+        self.frame=self.showFrame;
+    }else{
+        self.frame=CGRectZero;
+    }
+}
 
--(void)changePostion:(UIPanGestureRecognizer *)pan
+-(void)setShowFrame:(CGRect)showFrame{
+    _showFrame=showFrame;
+    if(self.show){
+        self.frame=showFrame;
+    }
+}
 
-{
-    
-    CGPoint point = [pan translationInView:self];
-    
-    
-    
-    CGFloat width = [UIScreen mainScreen].bounds.size.width;
-    
-    CGFloat height = [UIScreen mainScreen].bounds.size.height;
-    
-    
-    
-    CGRect originalFrame = self.frame;
-    
-    if (originalFrame.origin.x >= 0 && originalFrame.origin.x+originalFrame.size.width <= width) {
-        
-        originalFrame.origin.x += point.x;
-        
+-(void)setHor:(BOOL)hor{
+    [self setShowFrame:hor?horrect:verrect];
+}
+
+-(void)setOrientation:(UIInterfaceOrientation)orientation{
+    _orientation=orientation;
+    if(orientation==UIInterfaceOrientationPortrait){
+        self.hor=NO;
+    }else if(orientation==UIInterfaceOrientationPortraitUpsideDown){
+        self.hor=NO;
+    }else if(orientation==UIInterfaceOrientationLandscapeLeft){
+        self.hor=YES;
+    }else if(orientation==UIInterfaceOrientationLandscapeRight){
+        self.hor=YES;
     }
-    
-    if (originalFrame.origin.y >= 0 && originalFrame.origin.y+originalFrame.size.height <= height) {
-        
-        originalFrame.origin.y += point.y;
-        
-    }
-    
-    self.frame = originalFrame;
-    
-    [pan setTranslation:CGPointZero inView:self];
-    
-    
-    
-    if (pan.state == UIGestureRecognizerStateBegan) {
-        
-        _button.enabled = NO;
-        
-    }else if (pan.state == UIGestureRecognizerStateChanged){
-        
-        
-        
-    } else {
-        
-        
-        
-        CGRect frame = self.frame;
-        
-        //is out of boundary
-        
-        BOOL isOver = NO;
-        
-        
-        
-        if (frame.origin.x < 0) {
-            
-            frame.origin.x = 0;
-            
-            isOver = YES;
-            
-        } else if (frame.origin.x+frame.size.width > width) {
-            
-            frame.origin.x = width - frame.size.width;
-            
-            isOver = YES;
-            
-        }
-        
-        
-        
-        if (frame.origin.y < 0) {
-            
-            frame.origin.y = 0;
-            
-            isOver = YES;
-            
-        } else if (frame.origin.y+frame.size.height > height) {
-            
-            frame.origin.y = height - frame.size.height;
-            
-            isOver = YES;
-            
-        }
-        if (isOver) {
-            
-            [UIView animateWithDuration:0.3 animations:^{
-                
-                self.frame = frame;
-                
-            }];
-            
-        }
-        
-        _button.enabled = YES;
-        
-    }
-    
 }
 
 

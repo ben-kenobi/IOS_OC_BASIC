@@ -4,17 +4,14 @@
 
 //
 #import "AppDelegate.h"
-
+#import "YFCate.h"
 
 @interface AppDelegate ()
 @end
 
 @implementation AppDelegate
 
-
-
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-    self.sw=iScreenW;
     self.window=[[UIWindow alloc] initWithFrame:iScreen.bounds];
     
     self.window.rootViewController=[self setupMainVC];
