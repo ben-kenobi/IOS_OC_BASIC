@@ -218,11 +218,8 @@
 }
 
 +(BOOL)screenIsHorizontal{
-#ifdef IOS_MAIN_CONTAINER_FLAG
-    return iApp.statusBarOrientation==UIInterfaceOrientationLandscapeLeft||iApp.statusBarOrientation==UIInterfaceOrientationLandscapeRight;
-#else
-    return NO;
-#endif
+    UIApplication *app = mainApp();
+    return app.statusBarOrientation==UIInterfaceOrientationLandscapeLeft||app.statusBarOrientation==UIInterfaceOrientationLandscapeRight;
 }
 @end
 

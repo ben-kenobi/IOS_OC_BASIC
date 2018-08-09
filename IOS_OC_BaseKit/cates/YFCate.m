@@ -10,23 +10,20 @@ void myCleanupBlock(__strong void(^*block)(void)){
 
 
 UIWindow *frontestWindow(){
-#ifdef IOS_MAIN_CONTAINER_FLAG
+    UIApplication *app=  mainApp();
     if(iVersion>=11){
-        UIWindow *window = iApp.windows[0];
+        UIWindow *window = app.windows[0];
         if(CGRectEqualToRect(iScreen.bounds , window.bounds)){
             return window;
         }
-        return iApp.windows[1];
+        return app.windows[1];
     }else{
-        UIWindow *window = iApp.windows[iApp.windows.count-1];
+        UIWindow *window = app.windows[app.windows.count-1];
         if(CGRectEqualToRect(iScreen.bounds , window.bounds)){
             return window;
         }
-        return iApp.windows[iApp.windows.count-2];
+        return app.windows[app.windows.count-2];
     }
-#else
-    return nil;
-#endif
 }
 UIImage * i18nImg(NSString * name){
     UIImage *img = img(name);

@@ -173,6 +173,7 @@ typedef enum : NSUInteger {
 } BCHttpMethod;
 
 id nilID(void);
+UIApplication *mainApp();
 CGFloat dp2po(CGFloat dp);
 BOOL emptyStr(NSString *str);
 BOOL nullObj(id obj);

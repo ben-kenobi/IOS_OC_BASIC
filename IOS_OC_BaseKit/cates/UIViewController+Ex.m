@@ -12,8 +12,6 @@
 
 +(void)pushVC:(UIViewController *)vc{
 //   id obj= [objc_getAssociatedObject(iApp, iVCKey) navigationController];
-#ifdef IOS_MAIN_CONTAINER_FLAG
-
     runOnMain(^{
         UIViewController * obj=self.curVC;
         [obj showViewController:vc sender:nil];
@@ -26,37 +24,25 @@
         //        }
 
     });
-#else
-#endif
 }
 
 +(void)setVC:(UIViewController *)vc{
-#ifdef IOS_MAIN_CONTAINER_FLAG
-    objc_setAssociatedObject(iApp, iVCKey, vc, OBJC_ASSOCIATION_ASSIGN);
-#endif
+    objc_setAssociatedObject(mainApp(), iVCKey, vc, OBJC_ASSOCIATION_ASSIGN);
 }
 
 +(void)popVC{
-#ifdef IOS_MAIN_CONTAINER_FLAG
     dispatch_async(dispatch_get_main_queue(), ^{
-        UIViewController *obj=objc_getAssociatedObject(iApp, iVCKey);
+        UIViewController *obj=objc_getAssociatedObject(mainApp(), iVCKey);
         if([obj  isKindOfClass:[UINavigationController class]]){
             [(UINavigationController *)obj popViewControllerAnimated:YES];
         }else{
             [ [obj navigationController] popViewControllerAnimated:YES];
         }
     });
-#else
-#endif
 }
 
 +(instancetype)curVC{
-#ifdef IOS_MAIN_CONTAINER_FLAG
-
-   return  objc_getAssociatedObject(iApp, iVCKey);
-#else
-    return nil;
-#endif
+   return  objc_getAssociatedObject(mainApp(), iVCKey);
 }
 
 -(void)alert:(NSString *)title msg:(NSString *)msg{
@@ -67,9 +53,8 @@
 
 
 +(UIViewController *)topVC{
-#ifdef IOS_MAIN_CONTAINER_FLAG
 
-    UIWindow *window = [[UIApplication sharedApplication].delegate window];
+    UIWindow *window = [mainApp().delegate window];
     UIViewController *topViewController = [window rootViewController];
     while (true) {
         if (topViewController.presentedViewController) {
@@ -84,8 +69,6 @@
         }
     }
     return topViewController;
-#else
-    return nil;
-#endif
+
 }
 @end
