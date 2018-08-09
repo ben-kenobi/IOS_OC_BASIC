@@ -9,5 +9,5 @@
 #import <UIKit/UIKit.h>
 
 @interface BCUIAlertVC : UIAlertController
-@property (nonatomic,copy)void(^dismissCB)();
+@property (nonatomic,copy)void(^dismissCB)(void);
 @end

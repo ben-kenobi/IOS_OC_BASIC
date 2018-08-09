@@ -10,5 +10,5 @@
 #import "BCStyleSheetMod.h"
 @interface BCAlertStylesheetVC : UIViewController
 @property (nonatomic,strong)id<BCStyleSheetListDelegate> datas;
-@property (nonatomic,copy)void (^dismissCB)() ;
+@property (nonatomic,copy)void (^dismissCB)(void) ;
 @end

@@ -33,7 +33,7 @@ BOOL emptyStr(NSString *str){
 id nilID(void){
     return nil;
 }
-UIApplication *mainApp(){
+UIApplication *mainApp(void){
     static UIApplication *app=nil;
     if(!app){
         SEL selector = NSSelectorFromString(@"sharedApplication");
