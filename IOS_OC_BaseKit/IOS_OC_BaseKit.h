@@ -19,6 +19,7 @@
 
 
 #import <UIKit/UIKit.h>
+#import "YFCate.h"
 //! Project version number for IOS_OC_BaseKit.
 FOUNDATION_EXPORT double IOS_OC_BaseKitVersionNumber;
 

@@ -9,7 +9,7 @@
 //
 
 #import "YFCodecObj.h"
-
+#import "YFCate.h"
 @implementation YFCodecObj
 
 iBaseCodecNCopy
