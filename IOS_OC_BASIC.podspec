@@ -16,7 +16,7 @@ Pod::Spec.new do |s|
   #
 
   s.name         = "IOS_OC_BASIC"
-  s.version      = "1.1"
+  s.version      = "1.2"
   s.summary      = "IOS_OC_BASIC.  for Project start"
 
   # This description is used to generate tags and improve search results.
@@ -78,7 +78,7 @@ Pod::Spec.new do |s|
   #  Supports git, hg, bzr, svn and HTTP.
   #
 
-  s.source       = { :git => "https://github.com/ben-kenobi/IOS_OC_BASIC.git", :tag => "1.1" }
+  s.source       = { :git => "https://github.com/ben-kenobi/IOS_OC_BASIC.git", :tag => "1.2" }
 
 
   # ――― Source Code ―――――――――――――――――――――――――――――――――――――――――――――――――――――――――――――― #
@@ -89,7 +89,7 @@ Pod::Spec.new do |s|
   #  Not including the public_header_files will make all headers public.
   #
 
-  s.source_files  = "common/*"
+  s.source_files  = "IOS_OC_BaseKit/*"
   # s.exclude_files = "Classes/Exclude"
 
   # s.public_header_files = "Classes/**/*.h"
@@ -115,7 +115,7 @@ Pod::Spec.new do |s|
   #  the lib prefix of their name.
   #
 
-  s.framework  = "UIKit"
+  s.framework  = "UIKit" , "'AFNetworking', '~> 3.0'" , "RealReachability" , "Masonry" , "MJRefresh"
   # s.frameworks = "SomeFramework", "AnotherFramework"
 
   # s.library   = "iconv"
