@@ -9,6 +9,7 @@
 #import "BCAlertStylesheetVC.h"
 #import "BCStyleSheetCell.h"
 #import "M1GuidanceView.h"
+#import "YFCate.h"
 
 static CGFloat rowH = 57;
 static NSString *celliden = @"celliden";
@@ -24,7 +25,7 @@ static NSString *celliden = @"celliden";
 -(void)setDatas:(id<BCStyleSheetListDelegate>)datas{
     _datas=datas;
     [self.tv mas_updateConstraints:^(MASConstraintMaker *make) {
-        make.height.equalTo(@(_datas.count*(dp2po(rowH))));
+        make.height.equalTo(@(self.datas.count*(dp2po(rowH))));
     }];
     [self.tv reloadData];
 }
@@ -100,7 +101,7 @@ static NSString *celliden = @"celliden";
     [self.view addSubview:self.contentView];
     
     
-    self.cancelBtn=[IProUtil commonTextBtn:iFont(dp2po(20)) color:iGlobalFocusColor title:iStr(@"Cancel")];
+    self.cancelBtn=[IProUtil commonTextBtn:iFont(dp2po(20)) color:iGlobalFocusColor title:NSLocalizedString(@"Cancel", 0)];
     [self.cancelBtn setTitleColor:iColor(0xaa, 0xaa, 0xaa, 1) forState:UIControlStateHighlighted];
     [self.cancelBtn setBackgroundColor:[UIColor whiteColor]] ;
     self.cancelBtn.layer.cornerRadius=12;
@@ -145,7 +146,7 @@ static NSString *celliden = @"celliden";
         make.right.equalTo(@-10);
         make.bottom.equalTo(self.cancelBtn.mas_top).offset(-10);
         make.top.equalTo(@0);
-        make.height.equalTo(@(_datas.count*dp2po(rowH)));
+        make.height.equalTo(@(self.datas.count*dp2po(rowH)));
     }];
     
 }

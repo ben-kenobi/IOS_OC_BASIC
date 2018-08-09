@@ -7,7 +7,7 @@
 //
 
 #import "BCStyleSheetCell.h"
-
+#import "YFCate.h"
 @implementation BCStyleSheetCell
 
 -(void)updateUI{
@@ -18,16 +18,16 @@
             make.centerY.equalTo(@0);
             make.left.equalTo(self.imageView.mas_right).offset(35);
         }];
-        self.textLabel.textColor=iColor(0x55, 0x55, 0x55, 1);
-
+        self.textLabel.textColor=_mod.titleColor?_mod.titleColor : iColor(0x55, 0x55, 0x55, 1);
+        
     }else{
-        self.textLabel.textColor=iColor(0x33, 0x33, 0x33, 1);
+        self.textLabel.textColor=_mod.titleColor?_mod.titleColor : iColor(0x33, 0x33, 0x33, 1);
         [self.textLabel mas_remakeConstraints:^(MASConstraintMaker *make) {
             make.centerY.equalTo(@0);
             make.centerX.equalTo(@0);
         }];
     }
-
+    
 }
 
 -(void)setMod:(BCStyleSheetMod *)mod{
@@ -56,7 +56,7 @@
         make.centerY.equalTo(@0);
         make.left.equalTo(@35);
     }];
-   
+    
 }
 
 

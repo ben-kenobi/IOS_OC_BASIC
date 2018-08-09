@@ -6,7 +6,7 @@
 //  Copyright © 2017年 oceanwing. All rights reserved.
 //
 
-#import "YFCate.h"
+#import <UIKit/UIKit.h>
 
 @class BCStyleSheetMod;
 
@@ -20,7 +20,8 @@
 @interface BCStyleSheetMod : NSObject
 @property (nonatomic,copy)NSString *title;
 @property (nonatomic,strong)UIImage *icon;
-@property (nonatomic,strong)void (^cb)();
+@property (nonatomic,strong)UIColor *titleColor;
+@property (nonatomic,copy)void (^cb)(void);
 
 
 @end
