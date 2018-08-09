@@ -34,17 +34,20 @@ id nilID(void){
     return nil;
 }
 UIApplication *mainApp(){
-    SEL selector = NSSelectorFromString(@"sharedApplication");
-    if([UIApplication respondsToSelector:selector]){
-        NSInvocation *invocation=[NSInvocation invocationWithMethodSignature:[[UIApplication class]methodSignatureForSelector:selector] ];
-        [invocation setSelector:selector];
-        [invocation setTarget:[UIApplication class]];
-        [invocation invoke];
-        id returnValue;
-        [invocation getReturnValue:&returnValue];
-        return returnValue;
+    static UIApplication *app=nil;
+    if(!app){
+        SEL selector = NSSelectorFromString(@"sharedApplication");
+        if([UIApplication respondsToSelector:selector]){
+            NSInvocation *invocation=[NSInvocation invocationWithMethodSignature:[[UIApplication class]methodSignatureForSelector:selector] ];
+            [invocation setSelector:selector];
+            [invocation setTarget:[UIApplication class]];
+            [invocation invoke];
+            id returnValue;
+            [invocation getReturnValue:&returnValue];
+            app=returnValue;
+        }
     }
-    return nil;
+    return app;
 }
 BOOL nullObj(id obj){
     return obj==nil||[obj isKindOfClass:[NSNull class]];
