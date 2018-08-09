@@ -67,6 +67,8 @@
 
 
 +(UIViewController *)topVC{
+#ifdef IOS_MAIN_CONTAINER_FLAG
+
     UIWindow *window = [[UIApplication sharedApplication].delegate window];
     UIViewController *topViewController = [window rootViewController];
     while (true) {
@@ -82,5 +84,8 @@
         }
     }
     return topViewController;
+#else
+    return nil;
+#endif
 }
 @end
