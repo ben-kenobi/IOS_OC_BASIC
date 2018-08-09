@@ -12,24 +12,32 @@
 
 +(void)pushVC:(UIViewController *)vc{
 //   id obj= [objc_getAssociatedObject(iApp, iVCKey) navigationController];
-    dispatch_async(dispatch_get_main_queue(), ^{
-        UIViewController * obj=objc_getAssociatedObject(iApp, iVCKey);
+#ifdef IOS_MAIN_CONTAINER_FLAG
+
+    runOnMain(^{
+        UIViewController * obj=self.curVC;
         [obj showViewController:vc sender:nil];
-//        if([obj  isKindOfClass:[UINavigationController class]]){
-////            [(UINavigationController *)obj pushViewController:vc animated:YES];
-//            [(UINavigationController *)obj showViewController:vc sender:0];
-//        }else{
-//            [[obj navigationController] showViewController:vc sender:nil];
-////            [[obj navigationController] pushViewController:vc animated:YES];
-//        }
+        //        if([obj  isKindOfClass:[UINavigationController class]]){
+        ////            [(UINavigationController *)obj pushViewController:vc animated:YES];
+        //            [(UINavigationController *)obj showViewController:vc sender:0];
+        //        }else{
+        //            [[obj navigationController] showViewController:vc sender:nil];
+        ////            [[obj navigationController] pushViewController:vc animated:YES];
+        //        }
+
     });
+#else
+#endif
 }
 
 +(void)setVC:(UIViewController *)vc{
+#ifdef IOS_MAIN_CONTAINER_FLAG
     objc_setAssociatedObject(iApp, iVCKey, vc, OBJC_ASSOCIATION_ASSIGN);
+#endif
 }
 
 +(void)popVC{
+#ifdef IOS_MAIN_CONTAINER_FLAG
     dispatch_async(dispatch_get_main_queue(), ^{
         UIViewController *obj=objc_getAssociatedObject(iApp, iVCKey);
         if([obj  isKindOfClass:[UINavigationController class]]){
@@ -38,10 +46,17 @@
             [ [obj navigationController] popViewControllerAnimated:YES];
         }
     });
+#else
+#endif
 }
 
 +(instancetype)curVC{
+#ifdef IOS_MAIN_CONTAINER_FLAG
+
    return  objc_getAssociatedObject(iApp, iVCKey);
+#else
+    return nil;
+#endif
 }
 
 -(void)alert:(NSString *)title msg:(NSString *)msg{

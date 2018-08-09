@@ -15,7 +15,9 @@
 #ifdef  __OBJC__
 
 #endif
-
+#ifndef IOS_MAIN_CONTAINER_FLAG
+#define IOS_MAIN_CONTAINER_FLAG
+#endif
 
 
 

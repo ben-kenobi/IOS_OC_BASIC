@@ -10,7 +10,7 @@ void myCleanupBlock(__strong void(^*block)(void)){
 
 
 UIWindow *frontestWindow(){
-#ifdef PrefixHeader_pch
+#ifdef IOS_MAIN_CONTAINER_FLAG
     if(iVersion>=11){
         UIWindow *window = iApp.windows[0];
         if(CGRectEqualToRect(iScreen.bounds , window.bounds)){

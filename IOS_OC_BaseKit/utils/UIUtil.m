@@ -218,7 +218,7 @@
 }
 
 +(BOOL)screenIsHorizontal{
-#ifdef PrefixHeader_pch
+#ifdef IOS_MAIN_CONTAINER_FLAG
     return iApp.statusBarOrientation==UIInterfaceOrientationLandscapeLeft||iApp.statusBarOrientation==UIInterfaceOrientationLandscapeRight;
 #else
     return NO;
