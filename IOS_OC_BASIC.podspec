@@ -89,7 +89,7 @@ Pod::Spec.new do |s|
   #  Not including the public_header_files will make all headers public.
   #
 
-  s.source_files  = "IOS_OC_BaseKit/*"
+  s.source_files  = "IOS_OC_BaseKit/**/*"
   # s.exclude_files = "Classes/Exclude"
 
   # s.public_header_files = "Classes/**/*.h"
@@ -115,7 +115,7 @@ Pod::Spec.new do |s|
   #  the lib prefix of their name.
   #
 
-  s.framework  = "UIKit" , "'AFNetworking', '~> 3.0'" , "RealReachability" , "Masonry" , "MJRefresh"
+  s.framework  = "UIKit"
   # s.frameworks = "SomeFramework", "AnotherFramework"
 
   # s.library   = "iconv"
@@ -132,5 +132,9 @@ Pod::Spec.new do |s|
 
   # s.xcconfig = { "HEADER_SEARCH_PATHS" => "$(SDKROOT)/usr/include/libxml2" }
   # s.dependency "JSONKit", "~> 1.4"
+  s.dependency "AFNetworking", "~> 3.0"
+  s.dependency "RealReachability"
+  s.dependency "Masonry"
+  s.dependency "MJRefresh"
 
 end
