@@ -24,7 +24,7 @@ NSString *BaseUrlPrefSuitName=@"group.batterycam";
 #ifdef DEBUG
 //QA
 //static NSString * const BCBASEURL = @"http://10.1.113.32:8080/v1/";
-static NSString * const BCBASEURL = @"https://security-app-qa.eufylife.com/v1/";
+static NSString * const BCBASEURL = baseurl_us;
 //static NSString * const BCBASEURL = @"http://10.1.113.32:8080/v1/";
 
 //CI
@@ -34,7 +34,7 @@ static NSURLRequestCachePolicy CACHEPOLICY=NSURLRequestReloadIgnoringLocalCacheD
 static NSInteger TIMEOUT=10;
 #else
 
-static NSString * const BCBASEURL = @"https://security-app-qa.eufylife.com/v1/";
+static NSString * const BCBASEURL = baseurl_us;
 static NSURLRequestCachePolicy CACHEPOLICY=NSURLRequestUseProtocolCachePolicy;
 static NSInteger TIMEOUT=15;
 
@@ -495,11 +495,11 @@ static NSInteger TIMEOUT=15;
 //只在select为空的时候才查询获取auto地址，所以auto地址需要设置给select和auto两个key
 +(void)setAutoServerPathBy:(NSString *)couCode{
     NSString *url = nil;
-    if([couCode isEqualToString:@"US"]){
+    if([couCode.uppercaseString isEqualToString:@"US"]){
         url=baseurl_us;
-    }else if([couCode isEqualToString:@"HK"]){
+    }else if([couCode.uppercaseString isEqualToString:@"HK"]){
         url=baseurl_test;
-    }else if([couCode isEqualToString:@"EU"]){
+    }else if([couCode.uppercaseString isEqualToString:@"EU"]){
         url=baseurl_eu;
     }
     [self setSelectdServerPath:url];

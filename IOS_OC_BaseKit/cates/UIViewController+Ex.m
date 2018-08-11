@@ -14,7 +14,11 @@
 //   id obj= [objc_getAssociatedObject(iApp, iVCKey) navigationController];
     runOnMain(^{
         UIViewController * obj=self.curVC;
-        [obj showViewController:vc sender:nil];
+        if(obj.navigationController){
+            [obj.navigationController showViewController:vc sender:nil];
+        }else{
+            [obj showViewController:vc sender:nil];
+        }
         //        if([obj  isKindOfClass:[UINavigationController class]]){
         ////            [(UINavigationController *)obj pushViewController:vc animated:YES];
         //            [(UINavigationController *)obj showViewController:vc sender:0];
