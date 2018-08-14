@@ -25,7 +25,7 @@ static CGRect verrect = (CGRect){15,iTopBarH+10,104,36};
         self.showFrame=frame;
         self.backgroundColor = [UIColor clearColor];
         self.windowLevel = UIWindowLevelAlert + 1;
-
+        self.layer.masksToBounds=YES;
         self.hidden=NO;
         [self setShow:NO];
 //        [self makeKeyAndVisible];
