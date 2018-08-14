@@ -82,7 +82,7 @@ static  NSInteger BC_MAX_TEXT_LEN=1000;
         [self addSubview:_topline];
         _topline.backgroundColor=iTfLineColoe;
         [_topline mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.left.right.top.equalTo(@0);
+            make.leading.trailing.top.equalTo(@0);
             make.height.equalTo(@(dp2po(1)));
         }];
     }
@@ -206,7 +206,7 @@ static  NSInteger BC_MAX_TEXT_LEN=1000;
     }];
     [self.rightView addSubview:self.delBtn];
     [self.delBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.top.bottom.equalTo(@0);
+        make.leading.top.bottom.equalTo(@0);
         make.width.equalTo(@(dp2po(38)));
     }];
     if(_isPwd){
@@ -214,14 +214,14 @@ static  NSInteger BC_MAX_TEXT_LEN=1000;
         [self.showPwd mas_makeConstraints:^(MASConstraintMaker *make) {
             make.top.bottom.equalTo(@0);
             make.width.equalTo(@(dp2po(35)));
-            make.right.equalTo(@(-self->_rightPad));
+            make.trailing.equalTo(@(-self->_rightPad));
         }];
     }else if(_showArrow){
         [self.rightView addSubview:self.arrowBtn];
         [self.arrowBtn mas_makeConstraints:^(MASConstraintMaker *make) {
             make.top.bottom.equalTo(@0);
             make.width.equalTo(@(dp2po(35)));
-            make.right.equalTo(@(-self->_rightPad));
+            make.trailing.equalTo(@(-self->_rightPad));
         }];
     }
     self.rightViewMode = self.showArrow? UITextFieldViewModeAlways:UITextFieldViewModeWhileEditing;
@@ -257,7 +257,7 @@ static  NSInteger BC_MAX_TEXT_LEN=1000;
 
 -(void)setupLayout{
     [self.bottomLine mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.right.bottom.equalTo(@0);
+        make.leading.trailing.bottom.equalTo(@0);
         make.height.equalTo(@(dp2po(1)));
     }];
 }

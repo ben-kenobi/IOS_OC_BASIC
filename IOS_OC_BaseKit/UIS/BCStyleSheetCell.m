@@ -16,7 +16,7 @@
     if(_mod.icon){
         [self.textLabel mas_remakeConstraints:^(MASConstraintMaker *make) {
             make.centerY.equalTo(@0);
-            make.left.equalTo(self.imageView.mas_right).offset(35);
+            make.leading.equalTo(self.imageView.mas_trailing).offset(35);
         }];
         self.textLabel.textColor=_mod.titleColor?_mod.titleColor : iColor(0x55, 0x55, 0x55, 1);
         
@@ -50,11 +50,11 @@
     self.textLabel.font=iFont(dp2po(17));
     self.textLabel.textColor=iColor(0x55, 0x55, 0x55, 1);
     [self.contentView  mas_remakeConstraints:^(MASConstraintMaker *make) {
-        make.left.right.top.bottom.equalTo(@0);
+        make.leading.trailing.top.bottom.equalTo(@0);
     }];
     [self.imageView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerY.equalTo(@0);
-        make.left.equalTo(@35);
+        make.leading.equalTo(@35);
     }];
     
 }

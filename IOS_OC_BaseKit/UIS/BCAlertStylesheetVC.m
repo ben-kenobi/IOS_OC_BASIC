@@ -37,7 +37,7 @@ static NSString *celliden = @"celliden";
     if(self.dismissCB)
         self.dismissCB();
     [self.contentView mas_remakeConstraints:^(MASConstraintMaker *make) {
-        make.left.right.equalTo(@0);
+        make.leading.trailing.equalTo(@0);
         make.top.equalTo(self.view.mas_bottom);
     }];
     [UIView animateWithDuration:.25 delay:0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
@@ -53,7 +53,7 @@ static NSString *celliden = @"celliden";
     [super viewWillAppear:animated];
     [self.view layoutIfNeeded];
     [self.contentView mas_remakeConstraints:^(MASConstraintMaker *make) {
-        make.left.right.bottom.equalTo(@0);
+        make.leading.trailing.bottom.equalTo(@0);
     }];
     
     [UIView animateWithDuration:.25 delay:0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
@@ -133,17 +133,17 @@ static NSString *celliden = @"celliden";
 //    }];
     
     [self.contentView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.right.equalTo(@0);
+        make.leading.trailing.equalTo(@0);
         make.top.equalTo(self.view.mas_bottom);
     }];
     [self.cancelBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.bottom.right.equalTo(@-10);
-        make.left.equalTo(@10);
+        make.bottom.trailing.equalTo(@-10);
+        make.leading.equalTo(@10);
         make.height.equalTo(@(dp2po(rowH)));
     }];
     [self.tv mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(@10);
-        make.right.equalTo(@-10);
+        make.leading.equalTo(@10);
+        make.trailing.equalTo(@-10);
         make.bottom.equalTo(self.cancelBtn.mas_top).offset(-10);
         make.top.equalTo(@0);
         make.height.equalTo(@(self.datas.count*dp2po(rowH)));

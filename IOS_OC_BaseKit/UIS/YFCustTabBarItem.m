@@ -28,7 +28,7 @@
                             UIImageView *iv = (UIImageView *)subv3;
                             iv.image=img(@"personal_red_point_con");
                             [iv mas_remakeConstraints:^(MASConstraintMaker *make) {
-                                make.left.equalTo(@1.5);
+                                make.leading.equalTo(@1.5);
                                 make.centerY.equalTo(@-3.5);
                             }];
                         }
