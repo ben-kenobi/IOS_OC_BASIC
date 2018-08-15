@@ -18,6 +18,10 @@ extern NSString *BaseUrlPrefSuitName;
 
 @interface BCBaseHttpClient : AFHTTPSessionManager
 + (instancetype)shared;
+
+//优先使用手动选择，为空则使用auto地址，最后使用默认地址
++(NSString *)fullUrl:(NSString *)url;
+
 +(NSURLSessionTask *)bcJsonPost:(NSString *)url param:(NSDictionary *)param callBack:(void (^)(NSInteger code, id data, NSString* msg))callback;
 +(NSURLSessionTask *)bcPost:(NSString *)url param:(NSDictionary *)param callBack:(void (^)(NSInteger code, id data,NSString* msg))callback;
 +(NSURLSessionTask *)bcGet:(NSString *)url param:(NSDictionary *)param callBack:(void (^)(NSInteger code, id data,NSString* msg))callback;
