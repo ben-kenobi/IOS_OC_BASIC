@@ -140,14 +140,14 @@
     [BCProgressV dismiss];
 }
 
-+(void)toastAt:(UIView *)view msg:(NSString *)msg color:(UIColor *)textColor{
++(void)toastAt:(UIView *)view msg:(NSString *)msg color:(UIColor *)textColor icon:(UIImage *)icon{
     runOnMain(^{
-        [YFMsgBanner showAt:view withCountdown:4 msg:msg iden:@"msg" color:textColor];
+        [YFMsgBanner showAt:view withCountdown:4 msg:msg iden:@"msg" color:textColor icon:icon];
     });
 }
-+(void)showAt:(UIView *)view msg:(NSString *)msg color:(UIColor *)textColor iden:(NSString *)iden{
++(void)showAt:(UIView *)view msg:(NSString *)msg color:(UIColor *)textColor icon:(UIImage *)icon iden:(NSString *)iden{
     runOnMain(^{
-        [YFMsgBanner showAt:view withCountdown:-1 msg:msg iden:iden color:textColor];
+        [YFMsgBanner showAt:view withCountdown:-1 msg:msg iden:iden color:textColor icon:icon];
     });
 }
 

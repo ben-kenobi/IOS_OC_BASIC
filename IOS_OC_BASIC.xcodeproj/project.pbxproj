@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		0F55E00E3F81EA42E7976566 /* Pods_IOS_OC_BASIC.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C41181EEE9A2DBBFC1EB5D9 /* Pods_IOS_OC_BASIC.framework */; };
 		A6E43EF0B0FCD6C7B6207DD8 /* Pods_IOS_OC_BASIC.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C41181EEE9A2DBBFC1EB5D9 /* Pods_IOS_OC_BASIC.framework */; };
+		B816EAF8212C13B600EB5C58 /* closed_con@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = B816EAED212C0CB200EB5C58 /* closed_con@2x.png */; };
+		B816EAF9212C13B600EB5C58 /* closed_con@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = B816EAE8212C0CB100EB5C58 /* closed_con@3x.png */; };
 		B8DED581211AED4200234903 /* IOS_OC_BaseKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B8DED57A211AED4200234903 /* IOS_OC_BaseKit.framework */; };
 		B8DED582211AED4200234903 /* IOS_OC_BaseKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = B8DED57A211AED4200234903 /* IOS_OC_BaseKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		B8DED683211B2C8A00234903 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B8DED633211B2C8900234903 /* LaunchScreen.storyboard */; };
@@ -100,6 +102,8 @@
 /* Begin PBXFileReference section */
 		54E83663B648419A594ACE8B /* Pods-IOS_OC_BASIC.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-IOS_OC_BASIC.release.xcconfig"; path = "Pods/Target Support Files/Pods-IOS_OC_BASIC/Pods-IOS_OC_BASIC.release.xcconfig"; sourceTree = "<group>"; };
 		9C41181EEE9A2DBBFC1EB5D9 /* Pods_IOS_OC_BASIC.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_IOS_OC_BASIC.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		B816EAE8212C0CB100EB5C58 /* closed_con@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "closed_con@3x.png"; sourceTree = "<group>"; };
+		B816EAED212C0CB200EB5C58 /* closed_con@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "closed_con@2x.png"; sourceTree = "<group>"; };
 		B85407FB2105E7C7001E931A /* IOS_OC_BASIC.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = IOS_OC_BASIC.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B8DED57A211AED4200234903 /* IOS_OC_BaseKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = IOS_OC_BaseKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B8DED632211B2C8900234903 /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -251,11 +255,22 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		B816EAE7212C0C7100EB5C58 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				B816EAED212C0CB200EB5C58 /* closed_con@2x.png */,
+				B816EAE8212C0CB100EB5C58 /* closed_con@3x.png */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
 		B85407F22105E7C7001E931A = {
 			isa = PBXGroup;
 			children = (
 				B8DED631211B2C8900234903 /* info */,
+				B8DED63E211B2C8900234903 /* Utils */,
 				B8DED6EC211BD47900234903 /* IOS_OC_BaseKit */,
+				B816EAE7212C0C7100EB5C58 /* Resources */,
 				B8DED64F211B2C8900234903 /* IOS_OC_BASIC */,
 				B85407FC2105E7C7001E931A /* Products */,
 				3CF78A4EAC0E9BF6789655C1 /* Pods */,
@@ -284,12 +299,11 @@
 				B8DED63B211B2C8900234903 /* Podfile */,
 				B8DED63C211B2C8900234903 /* Info.plist */,
 				B8DED63D211B2C8900234903 /* mystring.strings */,
-				B8DED63E211B2C8900234903 /* summary */,
 			);
 			path = info;
 			sourceTree = "<group>";
 		};
-		B8DED63E211B2C8900234903 /* summary */ = {
+		B8DED63E211B2C8900234903 /* Utils */ = {
 			isa = PBXGroup;
 			children = (
 				B8DED712211BD47900234903 /* UIImage+AV.h */,
@@ -302,7 +316,7 @@
 				B8DED64D211B2C8900234903 /* cons.plist */,
 				B8DED64E211B2C8900234903 /* PrefixHeader.pch */,
 			);
-			path = summary;
+			path = Utils;
 			sourceTree = "<group>";
 		};
 		B8DED64F211B2C8900234903 /* IOS_OC_BASIC */ = {
@@ -596,11 +610,13 @@
 				B8DED685211B2C8A00234903 /* InfoPlist.strings in Resources */,
 				B8DED693211B2C8A00234903 /* cons.plist in Resources */,
 				B8DED68D211B2C8A00234903 /* conf.plist in Resources */,
+				B816EAF9212C13B600EB5C58 /* closed_con@3x.png in Resources */,
 				B8DED68A211B2C8A00234903 /* mystring.strings in Resources */,
 				B8DED694211B2C8A00234903 /* IOS_OC_BASIC.podspec in Resources */,
 				B8DED683211B2C8A00234903 /* LaunchScreen.storyboard in Resources */,
 				B8DED688211B2C8A00234903 /* Podfile in Resources */,
 				B8DED755211BD47900234903 /* license in Resources */,
+				B816EAF8212C13B600EB5C58 /* closed_con@2x.png in Resources */,
 				B8DED695211B2C8A00234903 /* Assets.xcassets in Resources */,
 				B8DED77A211BD47900234903 /* Info.plist in Resources */,
 			);
@@ -879,7 +895,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 6U96F6BXWV;
-				GCC_PREFIX_HEADER = info/summary/PrefixHeader.pch;
+				GCC_PREFIX_HEADER = Utils/PrefixHeader.pch;
 				INFOPLIST_FILE = "$(SRCROOT)/info/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -898,7 +914,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 6U96F6BXWV;
-				GCC_PREFIX_HEADER = info/summary/PrefixHeader.pch;
+				GCC_PREFIX_HEADER = Utils/PrefixHeader.pch;
 				INFOPLIST_FILE = "$(SRCROOT)/info/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",

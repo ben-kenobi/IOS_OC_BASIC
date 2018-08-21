@@ -42,7 +42,7 @@
 }
 +(void)toastWarn:(NSString*)msg{
     if(!msg)return;
-    [UIUtil toastAt:[UIViewController curVC].view msg:msg color:iWarnTipColor];
+    [UIUtil toastAt:[UIViewController topVC].view msg:msg color:iWarnTipColor icon:img(@"warning_icon")];
     
     //    runOnMain(^{
     //        //        iApp.windows[iApp.windows.count-1].makeToast(msg)
@@ -51,11 +51,11 @@
 }
 +(void)toastSuc:(NSString *)msg{
     if(!msg)return;
-    [UIUtil toastAt:[UIViewController curVC].view msg:msg color:iSucTipColor];
+    [UIUtil toastAt:[UIViewController topVC].view msg:msg color:iSucTipColor icon:[img(@"voice_con") renderWithColor:iSucTipColor]];
 }
 +(void)toastInfo:(NSString *)msg{
     if(!msg)return;
-    [UIUtil toastAt:[UIViewController curVC].view msg:msg color:iInfoTipColor];
+    [UIUtil toastAt:[UIViewController topVC].view msg:msg color:iInfoTipColor icon:[img(@"voice_con") renderWithColor:iInfoTipColor]];
 }
 
 +(void)bannerWarn:(NSString*)msg{
@@ -70,15 +70,15 @@
 
 +(void)bannerWarn:(NSString*)msg iden:(NSString *)iden{
     if(!msg)return;
-    [UIUtil showAt:[UIViewController curVC].view msg:msg color:iWarnTipColor iden:iden];
+    [UIUtil showAt:[UIViewController topVC].view msg:msg color:iInfoTipColor icon:img(@"voice_con")  iden:iden];
 }
 +(void)bannerSuc:(NSString *)msg iden:(NSString *)iden{
     if(!msg)return;
-    [UIUtil showAt:[UIViewController curVC].view msg:msg color:iSucTipColor iden:iden];
+    [UIUtil showAt:[UIViewController topVC].view msg:msg color:iInfoTipColor icon:[img(@"voice_con") renderWithColor:iSucTipColor]  iden:iden];
 }
 +(void)bannerInfo:(NSString *)msg iden:(NSString *)iden{
     if(!msg)return;
-    [UIUtil showAt:[UIViewController curVC].view msg:msg color:iInfoTipColor  iden:iden];
+    [UIUtil showAt:[UIViewController topVC].view msg:msg color:iInfoTipColor icon:[img(@"voice_con") renderWithColor:iInfoTipColor]  iden:iden];
 }
 @end
 

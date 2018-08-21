@@ -9,8 +9,8 @@
 #import <UIKit/UIKit.h>
 
 @interface YFMsgBanner : UIView
-+(instancetype)showAt:(UIView*)view withCountdown:(NSInteger)sec msg:(NSString *)msg iden:(NSString *)iden color:(UIColor *)textcolor;
-+(instancetype)showAt:(UIView*)view withCountdown:(NSInteger)sec msg:(NSString *)msg iden:(NSString *)iden color:(UIColor *)textcolor fullScreen:(BOOL)fullScreen;
++(instancetype)showAt:(UIView*)view withCountdown:(NSInteger)sec msg:(NSString *)msg iden:(NSString *)iden color:(UIColor *)textcolor icon:(UIImage *)icon;
++(instancetype)showAt:(UIView*)view withCountdown:(NSInteger)sec msg:(NSString *)msg iden:(NSString *)iden color:(UIColor *)textcolor icon:(UIImage *)icon fullScreen:(BOOL)fullScreen;
 +(void)dismiss:(NSString *)iden;
 -(void)dismiss;
 @end

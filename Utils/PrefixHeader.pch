@@ -14,6 +14,9 @@
 
 #ifdef  __OBJC__
 
+#import "YFCate.h"
+#import "AppDelegate.h"
+#import "YFUtil.h"
 #endif
 #ifndef IOS_MAIN_CONTAINER_FLAG
 #define IOS_MAIN_CONTAINER_FLAG

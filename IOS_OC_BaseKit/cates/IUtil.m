@@ -26,6 +26,13 @@ CGFloat dp2po(CGFloat dp){
     CGFloat w = MIN(iScreenH,iScreenW);
     return w*dp/375;
 }
+int scale(void){
+    int scale = iScreen.scale;
+    return scale==3?3:2;
+}
+NSString *scaledImgName(NSString * name,NSString *ext){
+    return iFormatStr(@"%@@%dx.%@",name,scale(),ext);
+}
 
 BOOL emptyStr(NSString *str){
     return !str||!str.length;

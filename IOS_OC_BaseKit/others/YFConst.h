@@ -14,9 +14,11 @@
 
 #define iTfLineColoe iColor(0xdd,0xdd,0xdd,1)
 
-#define iWarnTipColor iColor(0xff, 0x73, 0x0a, 1)
-#define iInfoTipColor iColor(0x88,0x88,0x88,1)
+#define iWarnTipColor iColor(0xfa, 0x78, 0x50, 1)
+#define iInfoTipColor iColor(0x5a,0x55,0x55,1)
 #define iSucTipColor iColor(33,197,180,1)
+
+#define iTipBGColor iColor(0xff, 0xfa, 0xe5, 1)
 
 
 extern NSString *const ANOTI;

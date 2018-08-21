@@ -6,8 +6,8 @@
 //  Copyright © 2018年 oceanwing. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
-#import "YFCate.h"
+#import <UIKit/UIKit.h>
+#import "YFUtil.h"
 
 
 @interface iPop : NSObject

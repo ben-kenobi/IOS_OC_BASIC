@@ -175,6 +175,8 @@ typedef enum : NSUInteger {
 id nilID(void);
 UIApplication *mainApp(void);
 CGFloat dp2po(CGFloat dp);
+int scale(void);
+NSString *scaledImgName(NSString * name,NSString *ext);
 BOOL emptyStr(NSString *str);
 BOOL nullObj(id obj);
 

@@ -20,15 +20,14 @@
 @property (nonatomic,strong)UIImageView *speakIcon;
 @property (nonatomic,assign)BOOL fullScreen;
 @property (nonatomic,strong)UIImage *disImg;
-@property (nonatomic,strong)UIImage *speakImg;
 @end
 
 @implementation YFMsgBanner
 
-+(instancetype)showAt:(UIView*)view withCountdown:(NSInteger)sec msg:(NSString *)msg iden:(NSString *)iden color:(UIColor *)textcolor{
-    return [self showAt:view withCountdown:sec msg:msg iden:iden color:textcolor fullScreen:NO];
++(instancetype)showAt:(UIView*)view withCountdown:(NSInteger)sec msg:(NSString *)msg iden:(NSString *)iden color:(UIColor *)textcolor icon:(UIImage *)icon{
+    return [self showAt:view withCountdown:sec msg:msg iden:iden color:textcolor icon:icon fullScreen:NO];
 }
-+(instancetype)showAt:(UIView*)view withCountdown:(NSInteger)sec msg:(NSString *)msg iden:(NSString *)iden color:(UIColor *)textcolor fullScreen:(BOOL)fullScreen{
++(instancetype)showAt:(UIView*)view withCountdown:(NSInteger)sec msg:(NSString *)msg iden:(NSString *)iden color:(UIColor *)textcolor icon:(UIImage *)icon fullScreen:(BOOL)fullScreen{
     if(!view) return nil;
     YFMsgBanner *banner = [msgBanners() objectForKey:iden];
     if(!banner)
@@ -37,13 +36,9 @@
     banner.msgLab.text=msg;
     banner.disBtn.hidden=sec>=0;
     banner.fullScreen=fullScreen;
+    [banner.speakIcon setImage:icon];
     if(textcolor){
-        [banner.speakIcon setImage: [banner.speakImg renderWithColor:textcolor]];
-        [banner.disBtn setImage:[banner.disImg renderWithColor:textcolor]  forState:0];
-//        banner.msgLab.textColor=textcolor;
-    }else{
-        [banner.speakIcon setImage: banner.speakImg];
-        [banner.disBtn setImage:banner.disImg forState:0];
+        banner.msgLab.textColor=textcolor;
     }
     banner.iden=iden;
     [banner showAt:view];
@@ -155,17 +150,18 @@
 }
 -(void)initUI{
     self.clipsToBounds=NO;
-    self.backgroundColor=iColor(0xff, 0xfa, 0xdc, 1);
+    self.backgroundColor=iTipBGColor;
     
     self.msgLab=[IProUtil commonLab:iFont(14) color:iColor(0x5a, 0x55, 0x55, 1)];
     self.msgLab.numberOfLines=0;
     self.msgLab.textAlignment=NSTextAlignmentLeft;
     self.disBtn=[[UIButton alloc]init];
-    self.disImg=img(@"closed_con");
+    NSString *closeImgResPath =[[NSBundle bundleForClass:self.class] pathForResource:scaledImgName(@"closed_con", @"png") ofType:0];
+    UIImage *closeImg = imgFromF(closeImgResPath);
+    self.disImg=closeImg;
     [self.disBtn setImage:self.disImg forState:0];
     [self.disBtn addTarget:self action:@selector(dismiss) forControlEvents:UIControlEventTouchUpInside];
-    self.speakImg=img(@"voice_con");
-    self.speakIcon=[[UIImageView alloc]initWithImage:self.speakImg];
+    self.speakIcon=[[UIImageView alloc]init];
     self.speakIcon.contentMode=UIViewContentModeCenter;
     [UIUtil commonShadow:self opacity:.06];
     

@@ -31,8 +31,8 @@
 +(UIView *)dashView:(CGFloat)wid;
 +(CAShapeLayer *)dashCompactLayer:(CGFloat)wid;
 +(void)showProgAt:(UIView *)view;
-+(void)toastAt:(UIView *)view msg:(NSString *)msg color:(UIColor *)textcolor;
-+(void)showAt:(UIView *)view msg:(NSString *)msg color:(UIColor *)textColor iden:(NSString *)iden;
++(void)toastAt:(UIView *)view msg:(NSString *)msg color:(UIColor *)textcolor icon:(UIImage *)icon;
++(void)showAt:(UIView *)view msg:(NSString *)msg color:(UIColor *)textColor icon:(UIImage *)icon iden:(NSString *)iden;
 +(void)dismissProg;
 +(void)commonTransiWith:(UIView *)view blo:(void(^)(void))blo;
 +(void)commonTransiWith:(UIView *)view blo:(void(^)(void))blo dura:(CGFloat)dura;
