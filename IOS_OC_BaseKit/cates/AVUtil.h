@@ -7,6 +7,9 @@
 #import <AVFoundation/AVFoundation.h>
 @interface AVUtil : NSObject
 
-+(void)playAudio:(NSURL  *)url;
++(void)playAlertAudio:(NSURL  *)url;
++(void)playSystemAudio:(NSURL  *)url;
++(void)playAlertAudioOnce:(NSURL  *)url;//播发音频，不缓存
++(void)playSystemAudioOnce:(NSURL  *)url;//播发音频，不缓存
 
 @end
