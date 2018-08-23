@@ -181,9 +181,9 @@
     [btn setBackgroundImage:[UIImage roundStretchImg4Color:iGlobalFocusColor w:cornerRad*2] forState:0];
     [btn setBackgroundImage:[UIImage roundStretchImg4Color:iGlobalHLFocusColor w:cornerRad*2] forState:UIControlStateHighlighted];
     [btn setBackgroundImage:[UIImage roundStretchImg4Color:[iGlobalDisableColor colorWithAlphaComponent:1] w:cornerRad*2] forState:UIControlStateDisabled];
-    [UIUtil commonShadowWithColor:iColor(0, 0, 0, 1) Radius:5 size:CGSizeMake(0, 2) view:btn opacity:.15];
+    [UIUtil commonShadowWithColor:iColor(0, 0, 0, 1) Radius:5 size:CGSizeMake(0, 2) view:btn opacity:.1];
     
-    [btn setTitleColor:iColor(0x3e, 0x3e, 0x3e, 1) forState:UIControlStateDisabled];
+    [btn setTitleColor:[UIColor whiteColor] forState:UIControlStateDisabled];
     
     [btn addTarget:tar action:action forControlEvents:UIControlEventTouchUpInside];
 }
@@ -202,7 +202,7 @@
 }
 
 +(void)commonStrokeBtn:(UIButton *)btn tar:(id)tar action:(SEL)action shadowOpacity:(CGFloat)opa H:(CGFloat)H{
-    [self commonStrokeBtn:btn tar:tar action:action shadowOpacity:opa H:H strokeColor:iGlobalFocusColor strokeHLColor:iGlobalHLFocusColor strokeDisColor:iGlobalDisableColor bgcolor:[UIColor whiteColor] corRad:6];
+    [self commonStrokeBtn:btn tar:tar action:action shadowOpacity:opa H:H strokeColor:iColor(0x9b, 0xa0, 0xa5, 1) strokeHLColor:iGlobalHLFocusColor strokeDisColor:iGlobalDisableColor bgcolor:[UIColor whiteColor] corRad:6];
 }
 
 +(UIInterfaceOrientationMask)orientation2mask:(UIInterfaceOrientation)orientation{

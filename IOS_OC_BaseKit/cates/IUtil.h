@@ -100,7 +100,7 @@ return na2;\
 //#define iGlobalFocusColor iColor(0x00, 0xD2, 0xc3, 1)
 #define iGlobalFocusColor iColor(0x2b, 0x92, 0xf9, 1)
 #define iGlobalHLFocusColor iColor(40, 138, 237, 1)
-#define iGlobalDisableColor iColor(0xd0, 0xd0, 0xd0, 1)
+#define iGlobalDisableColor iColor(0xdc, 0xe1, 0xe6, 1)
 #define iGlobalErrorColor iColor(0xff, 0x4f, 0x4f, 1)
 
 
