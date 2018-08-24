@@ -1,13 +1,13 @@
 //
-//  AVUtil.m
+//  YFAVUtil.m
 //Created by apple on 17/07/21.
 //
 
-#import "AVUtil.h"
+#import "YFAVUtil.h"
 
 static NSMutableDictionary *_sounddict;
 
-@implementation AVUtil
+@implementation YFAVUtil
 
 
 +(void)initialize{

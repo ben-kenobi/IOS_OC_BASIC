@@ -20,7 +20,7 @@
 #import "IProUtil.h"
 #import <UIKit/UIKit.h>
 #import "YFConst.h"
-#import "AVUtil.h"
+#import "YFAVUtil.h"
 
 typedef void (^defBlock)(void);
 

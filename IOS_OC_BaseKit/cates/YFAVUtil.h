@@ -5,7 +5,7 @@
 
 #import <Foundation/Foundation.h>
 #import <AVFoundation/AVFoundation.h>
-@interface AVUtil : NSObject
+@interface YFAVUtil : NSObject
 
 +(void)playAlertAudio:(NSURL  *)url;
 +(void)playSystemAudio:(NSURL  *)url;
