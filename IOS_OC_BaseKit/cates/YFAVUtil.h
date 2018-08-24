@@ -4,7 +4,6 @@
 //
 
 #import <Foundation/Foundation.h>
-#import <AVFoundation/AVFoundation.h>
 @interface YFAVUtil : NSObject
 
 +(void)playAlertAudio:(NSURL  *)url;

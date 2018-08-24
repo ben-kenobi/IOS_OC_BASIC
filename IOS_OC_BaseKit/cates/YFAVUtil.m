@@ -4,6 +4,7 @@
 //
 
 #import "YFAVUtil.h"
+#import <AVFoundation/AVFoundation.h>
 
 static NSMutableDictionary *_sounddict;
 
