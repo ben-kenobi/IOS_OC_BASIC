@@ -75,9 +75,9 @@ static NSString *celliden = @"celliden";
     return cell;
 }
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    [self dismissViewControllerAnimated:YES completion:nil];
     if([self.datas get:indexPath.row].cb)
         [self.datas get:indexPath.row].cb();
-    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 #pragma mark - UI
