@@ -34,6 +34,7 @@ static NSString *celliden = @"celliden";
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 -(void)dismissViewControllerAnimated:(BOOL)flag completion:(void (^)(void))completion{
+    [super dismissViewControllerAnimated:NO completion:nil];
     if(self.dismissCB)
         self.dismissCB();
     [self.contentView mas_remakeConstraints:^(MASConstraintMaker *make) {
@@ -45,7 +46,6 @@ static NSString *celliden = @"celliden";
 //        self.ev.alpha=0;
         self.view.backgroundColor=iColor(0, 0, 0, 0);
     } completion:^(BOOL finished) {
-        [super dismissViewControllerAnimated:NO completion:nil];
     }];
 }
 
