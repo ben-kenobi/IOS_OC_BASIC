@@ -17,18 +17,16 @@ NSInteger const BC_NETWORKERR=-9999;
 NSString *const baseurl_us=@"https://security-app.eufylife.com/v1/";
 NSString *const baseurl_eu=@"https://security-app-eu.eufylife.com/v1/";
 NSString *const baseurl_test=@"https://security-app-qa.eufylife.com/v1/";
-NSString *const baseurl_ci=@"http://security-app-ci.eufylife.com/v1/";
+NSString *const baseurl_ci=@"https://security-app-ci.eufylife.com/v1/";
 
 NSString *BaseUrlPrefSuitName=@"group.batterycam";
 
 #ifdef DEBUG
 //QA
-//static NSString * const BCBASEURL = @"http://10.1.113.32:8080/v1/";
+
 static NSString * const BCBASEURL = baseurl_us;
-//static NSString * const BCBASEURL = @"http://10.1.113.32:8080/v1/";
 
 //CI
-//static NSString * const BCBASEURL = @"http://54.149.203.16:7075/v1/";
 
 static NSURLRequestCachePolicy CACHEPOLICY=NSURLRequestReloadIgnoringLocalCacheData;
 static NSInteger TIMEOUT=10;
