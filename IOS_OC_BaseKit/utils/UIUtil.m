@@ -27,7 +27,7 @@
 }
 +(void)commonAnimationWithDuration:(CGFloat)dura cb:(void (^)(void))cb{
     [self commonAnimationWithDuration:dura cb:cb comp:nil];
-
+    
 }
 +(void)commonAnimationWithDuration:(CGFloat)dura cb:(void (^)(void))cb comp:(void (^)(BOOL finish))comp{
     [UIView animateWithDuration:dura delay:0 options:(UIViewAnimationOptionCurveEaseInOut) animations:cb completion:comp];
@@ -152,7 +152,7 @@
 }
 
 +(void)commonTransiWith:(UIView *)view blo:(void(^)(void))blo dura:(CGFloat)dura{
-//    blo();
+    //    blo();
     [UIView transitionWithView:view duration:dura options:(UIViewAnimationOptionTransitionCrossDissolve|UIViewAnimationOptionShowHideTransitionViews|UIViewAnimationOptionAllowAnimatedContent|UIViewAnimationOptionCurveEaseInOut) animations:^{
         blo();
     } completion:nil];
@@ -176,19 +176,24 @@
     bar.barTintColor=bartintcolor;
 }
 
-+(void)commonTexBtn:(UIButton *)btn tar:(id)tar action:(SEL)action shadowOpacity:(CGFloat)opa H:(CGFloat)H{
++(void)commonTexBtn:(UIButton *)btn tar:(id)tar action:(SEL)action{
     CGFloat cornerRad = 6;
+    CGFloat opa = .1;
+    [self commonTexBtn:btn tar:tar action:action shadowOpacity:opa rad:cornerRad];
+}
+
++(void)commonTexBtn:(UIButton *)btn tar:(id)tar action:(SEL)action shadowOpacity:(CGFloat)opa rad:(CGFloat)cornerRad{
     [btn setBackgroundImage:[UIImage roundStretchImg4Color:iGlobalFocusColor w:cornerRad*2] forState:0];
     [btn setBackgroundImage:[UIImage roundStretchImg4Color:iGlobalHLFocusColor w:cornerRad*2] forState:UIControlStateHighlighted];
     [btn setBackgroundImage:[UIImage roundStretchImg4Color:[iGlobalDisableColor colorWithAlphaComponent:1] w:cornerRad*2] forState:UIControlStateDisabled];
-    [UIUtil commonShadowWithColor:iColor(0, 0, 0, 1) Radius:5 size:CGSizeMake(0, 2) view:btn opacity:.1];
+    [UIUtil commonShadowWithColor:iColor(0, 0, 0, 1) Radius:5 size:CGSizeMake(0, 2) view:btn opacity:opa];
     
     [btn setTitleColor:[UIColor whiteColor] forState:UIControlStateDisabled];
     
     [btn addTarget:tar action:action forControlEvents:UIControlEventTouchUpInside];
 }
 
-+(void)commonStrokeBtn:(UIButton *)btn tar:(id)tar action:(SEL)action shadowOpacity:(CGFloat)opa H:(CGFloat)H strokeColor:(UIColor*)strokeColor strokeHLColor:(UIColor*)HLstrokeColor strokeDisColor:(UIColor*)disstrokeColor  bgcolor:(UIColor*)bgcolor corRad:(CGFloat)corRad{
++(void)commonStrokeBtn:(UIButton *)btn tar:(id)tar action:(SEL)action shadowOpacity:(CGFloat)opa strokeColor:(UIColor*)strokeColor strokeHLColor:(UIColor*)HLstrokeColor strokeDisColor:(UIColor*)disstrokeColor  bgcolor:(UIColor*)bgcolor corRad:(CGFloat)corRad{
     UIImage *img=[[UIImage img4Color:bgcolor size:CGSizeMake(corRad*2, corRad*2)] roundImg:corRad*2 boderColor:strokeColor borderW:1].resizableStretchImg;
     UIImage *hlimg=[[UIImage img4Color:[bgcolor colorWithAlphaComponent:.8] size:CGSizeMake(corRad*2, corRad*2)] roundImg:corRad*2 boderColor:HLstrokeColor borderW:1].resizableStretchImg;
     UIImage *disimg=[[UIImage img4Color:bgcolor size:CGSizeMake(corRad*2, corRad*2)] roundImg:corRad*2 boderColor:disstrokeColor borderW:1].resizableStretchImg;
@@ -201,8 +206,8 @@
     [btn addTarget:tar action:action forControlEvents:UIControlEventTouchUpInside];
 }
 
-+(void)commonStrokeBtn:(UIButton *)btn tar:(id)tar action:(SEL)action shadowOpacity:(CGFloat)opa H:(CGFloat)H{
-    [self commonStrokeBtn:btn tar:tar action:action shadowOpacity:opa H:H strokeColor:iColor(0x9b, 0xa0, 0xa5, 1) strokeHLColor:iGlobalHLFocusColor strokeDisColor:iGlobalDisableColor bgcolor:[UIColor whiteColor] corRad:6];
++(void)commonStrokeBtn:(UIButton *)btn tar:(id)tar action:(SEL)action{
+    [self commonStrokeBtn:btn tar:tar action:action shadowOpacity:.1  strokeColor:iColor(0x9b, 0xa0, 0xa5, 1) strokeHLColor:iGlobalHLFocusColor strokeDisColor:iGlobalDisableColor bgcolor:[UIColor whiteColor] corRad:6];
 }
 
 +(UIInterfaceOrientationMask)orientation2mask:(UIInterfaceOrientation)orientation{
