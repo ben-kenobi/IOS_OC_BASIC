@@ -455,7 +455,11 @@ static NSInteger TIMEOUT=15;
     NSString *desc=[err.userInfo[@"NSUnderlyingError"] description] ;
     printf("\n--------err begin----------\n%s\n%s\n----------err end---------------------\n",[err.userInfo[@"NSLocalizedDescription"] UTF8String],[(desc.length>200?[desc substringToIndex:200]:desc) UTF8String]);
     //    return [NSString stringWithFormat:@"%ld",err.code];
-    return err.userInfo[@"NSLocalizedDescription"];
+    NSString *errstr =  err.userInfo[@"NSLocalizedDescription"];
+    if([errstr containsString:@"A server with the specified hostname could not be found."]){
+        return NSLocalizedString(@"Can't connect to the backend. Please try again later.", 0);
+    }
+    return errstr;
 }
 
 
