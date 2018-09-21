@@ -149,34 +149,30 @@
     return [pred evaluateWithObject:str];
 }
 +(BOOL)isSignupPwd:(NSString*)str{
-//    static NSString * emailRegex = @"^[\\x21-\\x7E]{8,20}$";
-//    static NSPredicate *pred=nil;
-//    static dispatch_once_t onceToken;
-//    dispatch_once(&onceToken, ^{
-//        pred=[NSPredicate predicateWithFormat:@"SELF MATCHES %@",emailRegex];
-//    });
-//    return [pred evaluateWithObject:str];
+    //    static NSString * emailRegex = @"^[\\x21-\\x7E]{8,20}$";
+    //    static NSPredicate *pred=nil;
+    //    static dispatch_once_t onceToken;
+    //    dispatch_once(&onceToken, ^{
+    //        pred=[NSPredicate predicateWithFormat:@"SELF MATCHES %@",emailRegex];
+    //    });
+    //    return [pred evaluateWithObject:str];
     
     if(!str||str.length<8||str.length>20) return NO;
-  
-    static NSPredicate *pred=nil;
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        
-        NSString *REGEX_PASSWORD_LENGTH = @"^.{8,20}$";
-        
-        NSString *REGEX_PASSWORD_NUM = @"^.*[0-9]+.*$";
-        
-        NSString *REGEX_PASSWORD_UPPER_LETTER = @"^.*[A-Z]+.*$";
-        
-        NSString *REGEX_PASSWORD_LOWER_LETTER = @"^.*[a-z]+.*$";
-        
-//        NSString *REGEX_PASSWORD_SPE_CHARACTERS = @"^.*[~'!@#￥$%^&*()-+_=:/{/}/[/]/./?]+.*$";
-        
-        pred=[NSPredicate predicateWithFormat:@"SELF MATCHES %@  AND SELF MATCHES %@ AND SELF MATCHES %@ AND SELF MATCHES %@ AND SELF MATCHES %@",REGEX_PASSWORD_LENGTH,REGEX_PASSWORD_NUM,REGEX_PASSWORD_UPPER_LETTER,REGEX_PASSWORD_LOWER_LETTER];
-    });
-    return [pred evaluateWithObject:str];
     
+    NSPredicate *pred=nil;
+    
+    NSString *REGEX_PASSWORD_LENGTH = @"^.{8,20}$";
+    
+    NSString *REGEX_PASSWORD_NUM = @"^.*[0-9]+.*$";
+    
+    NSString *REGEX_PASSWORD_UPPER_LETTER = @"^.*[A-Z]+.*$";
+    
+    NSString *REGEX_PASSWORD_LOWER_LETTER = @"^.*[a-z]+.*$";
+    
+    //        NSString *REGEX_PASSWORD_SPE_CHARACTERS = @"^.*[~'!@#￥$%^&*()-+_=:/{/}/[/]/./?]+.*$";
+    
+    pred=[NSPredicate predicateWithFormat:@"SELF MATCHES %@  AND SELF MATCHES %@ AND SELF MATCHES %@ AND SELF MATCHES %@ AND SELF MATCHES %@",REGEX_PASSWORD_LENGTH,REGEX_PASSWORD_NUM,REGEX_PASSWORD_UPPER_LETTER,REGEX_PASSWORD_LOWER_LETTER];
+    return [pred evaluateWithObject:str];
 }
 
 
