@@ -18,7 +18,7 @@ static NSMutableDictionary *_sounddict;
 
 +(void)playAlertAudio:(NSURL  *)url{
     SystemSoundID soundid = [_sounddict[url.absoluteString] intValue];
-    [self pauseBackgroundSoundWithError:nil];
+//    [self pauseBackgroundSoundWithError:nil];
     
     if(!soundid){
         // unsupport audio longer than 30 secs
@@ -28,13 +28,13 @@ static NSMutableDictionary *_sounddict;
     
     // with shake effect
     AudioServicesPlayAlertSoundWithCompletion(soundid, ^{
-        [self resumeBackgroundSoundWithError:nil];
+//        [self resumeBackgroundSoundWithError:nil];
     });
     
 }
 +(void)playSystemAudio:(NSURL  *)url{
     SystemSoundID soundid = [_sounddict[url.absoluteString] intValue];
-    [self pauseBackgroundSoundWithError:nil];
+//    [self pauseBackgroundSoundWithError:nil];
     
     if(!soundid){
         // unsupport audio longer than 30 secs
@@ -42,12 +42,12 @@ static NSMutableDictionary *_sounddict;
         _sounddict[url.absoluteString]=@(soundid);
     }
     AudioServicesPlaySystemSoundWithCompletion(soundid, ^{
-        [self resumeBackgroundSoundWithError:nil];
+//        [self resumeBackgroundSoundWithError:nil];
     });
 }
 +(void)playAlertAudioOnce:(NSURL  *)url{
     SystemSoundID soundid = 0;
-    [self pauseBackgroundSoundWithError:nil];
+//    [self pauseBackgroundSoundWithError:nil];
     
     // unsupport audio longer than 30 secs
     AudioServicesCreateSystemSoundID((__bridge CFURLRef _Nonnull)url, &soundid);
@@ -55,13 +55,13 @@ static NSMutableDictionary *_sounddict;
     // with shake effect
     AudioServicesPlayAlertSoundWithCompletion(soundid, ^{
         AudioServicesDisposeSystemSoundID(soundid);
-        [self resumeBackgroundSoundWithError:nil];
+//        [self resumeBackgroundSoundWithError:nil];
         
     });
     
 }
 +(void)playSystemAudioOnce:(NSURL  *)url{
-    [self pauseBackgroundSoundWithError:nil];
+//    [self pauseBackgroundSoundWithError:nil];
     
     SystemSoundID soundid = 0;
     // unsupport audio longer than 30 secs
@@ -69,7 +69,7 @@ static NSMutableDictionary *_sounddict;
     
     AudioServicesPlaySystemSoundWithCompletion(soundid,^{
         AudioServicesDisposeSystemSoundID(soundid);
-        [self resumeBackgroundSoundWithError:nil];
+//        [self resumeBackgroundSoundWithError:nil];
         
     });
     
