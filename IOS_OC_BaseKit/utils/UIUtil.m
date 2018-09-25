@@ -154,7 +154,7 @@
 +(void)dismissBannerBy:(NSString *)iden{
     runOnMain(^{
         [YFMsgBanner dismiss:iden];
-    }
+    });
 }
 
 +(void)commonTransiWith:(UIView *)view blo:(void(^)(void))blo dura:(CGFloat)dura{
