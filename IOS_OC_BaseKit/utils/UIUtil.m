@@ -151,6 +151,12 @@
     });
 }
 
++(void)dismissBannerBy:(NSString *)iden{
+    runOnMain(^{
+        [YFMsgBanner dismiss:iden];
+    }
+}
+
 +(void)commonTransiWith:(UIView *)view blo:(void(^)(void))blo dura:(CGFloat)dura{
     //    blo();
     [UIView transitionWithView:view duration:dura options:(UIViewAnimationOptionTransitionCrossDissolve|UIViewAnimationOptionShowHideTransitionViews|UIViewAnimationOptionAllowAnimatedContent|UIViewAnimationOptionCurveEaseInOut) animations:^{
