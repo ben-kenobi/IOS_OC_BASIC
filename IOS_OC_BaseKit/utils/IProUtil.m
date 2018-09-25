@@ -165,13 +165,11 @@
     
     NSString *REGEX_PASSWORD_NUM = @"^.*[0-9]+.*$";
     
-    NSString *REGEX_PASSWORD_UPPER_LETTER = @"^.*[A-Z]+.*$";
-    
-    NSString *REGEX_PASSWORD_LOWER_LETTER = @"^.*[a-z]+.*$";
+    NSString *REGEX_PASSWORD_LETTER = @"^.*[A-Za-z]+.*$";
     
     //        NSString *REGEX_PASSWORD_SPE_CHARACTERS = @"^.*[~'!@#￥$%^&*()-+_=:/{/}/[/]/./?]+.*$";
     
-    pred=[NSPredicate predicateWithFormat:@"SELF MATCHES %@  AND SELF MATCHES %@ AND SELF MATCHES %@ AND SELF MATCHES %@ AND SELF MATCHES %@",REGEX_PASSWORD_LENGTH,REGEX_PASSWORD_NUM,REGEX_PASSWORD_UPPER_LETTER,REGEX_PASSWORD_LOWER_LETTER];
+    pred=[NSPredicate predicateWithFormat:@"SELF MATCHES %@  AND SELF MATCHES %@ AND SELF MATCHES %@",REGEX_PASSWORD_LENGTH,REGEX_PASSWORD_NUM,REGEX_PASSWORD_LETTER];
     return [pred evaluateWithObject:str];
 }
 

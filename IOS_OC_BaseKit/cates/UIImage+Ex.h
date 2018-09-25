@@ -19,6 +19,7 @@ CGMutablePathRef shapePath(CGRect rect,NSInteger count,NSInteger step,NSInteger 
 -(instancetype)squareBy:(CGFloat)ratio;
 - (UIImage *)fixOrientation ;
 -(void)imgToCVPixel:(CVPixelBufferRef *)bufp;
+-(CVPixelBufferRef) pixelBufferRef;
 -(UIImage *)scaleImg2size:(CGSize)size;
 -(UIImage *)rotate4Angle:(CGFloat)angle;
 -(UIImage *)rotate4Angle2:(CGFloat)angle;
