@@ -14,10 +14,10 @@
 NSInteger const BC_NETWORKERR=-9999;
 
 
-NSString *const baseurl_us=@"https://security-app.eufylife.com/v1/";
-NSString *const baseurl_eu=@"https://security-app-eu.eufylife.com/v1/";
-NSString *const baseurl_test=@"https://security-app-qa.eufylife.com/v1/";
-NSString *const baseurl_ci=@"https://security-app-ci.eufylife.com/v1/";
+NSString *const baseurl_us=@"https://security-app.eufylife.com";
+NSString *const baseurl_eu=@"https://security-app-eu.eufylife.com";
+NSString *const baseurl_test=@"https://security-app-qa.eufylife.com";
+NSString *const baseurl_ci=@"https://security-app-ci.eufylife.com";
 
 NSString *BaseUrlPrefSuitName=@"group.batterycam";
 
@@ -253,7 +253,8 @@ static NSInteger TIMEOUT=15;
     NSString *baseurl=[self prefServerPath];
     if(!baseurl)
         baseurl=BCBASEURL;
-    return [NSString stringWithFormat:@"%@%@",baseurl,url];
+    
+    return [NSString stringWithFormat:@"%@/v1/%@",baseurl,url];
 }
 
 +(void)setOnNetworkStatusChange:(void (^)(BOOL wifi,BOOL cellular))cb{
