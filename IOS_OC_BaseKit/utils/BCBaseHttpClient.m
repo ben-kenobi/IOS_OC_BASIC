@@ -471,13 +471,16 @@ static NSInteger TIMEOUT=15;
 /**
  selected:按照手动选择的区域判断服务器地址
  auto:按照查询区域返回的地区判断服务器地址
- //优先使用手动选择，为空则使用auto地址，最后使用默认地址
- 在没有选中的服务器地址时，则启动应用查询一次，然后设置选中和auto值，防止重复查询
+ serverSpecify:默认服务器指定的域名
+ //优先使用手动选择，为空则使用auto地址，还空则使用默认的服务器指定的域名
+ 在没有选中的服务器地址时,则登录完后查询服务器一次
  */
 +(NSString *)prefServerPath{
     NSString *path = [self selectedServerPath];
-    if(!path)
+    if(emptyStr(path))
         path = [self autoServerPath];
+    if(emptyStr(path))
+        path = [self serverSpecifiedPath];
     return path;
 }
 +(NSString *)selectedServerPath{
@@ -508,6 +511,8 @@ static NSInteger TIMEOUT=15;
     [self setSelectdServerPath:url];
     [self setAutoServerPath:url];
 }
-
++(NSString *)serverSpecifiedPath{
+    return nil;
+}
 
 @end
