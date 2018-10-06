@@ -251,11 +251,14 @@ static NSInteger TIMEOUT=15;
     if([url hasPrefix:@"http://"]||[url hasPrefix:@"https://"])
         return url;
     NSString *baseurl=[self prefServerPath];
-    if(!baseurl)
+    if(emptyStr(baseurl))
         baseurl=BCBASEURL;
     return [NSString stringWithFormat:@"https://%@/v1/%@",baseurl,url];
 }
-
++(BOOL)isDefaultDomain{
+    NSString *domain = [self prefServerPath];
+    return emptyStr(domain)||[domain isEqualToString:BCBASEURL];
+}
 +(void)setOnNetworkStatusChange:(void (^)(BOOL wifi,BOOL cellular))cb{
     [[AFNetworkReachabilityManager sharedManager] setReachabilityStatusChangeBlock:^(AFNetworkReachabilityStatus status) {
         NSLog(@"Reachability: %@", AFStringFromNetworkReachabilityStatus(status));
