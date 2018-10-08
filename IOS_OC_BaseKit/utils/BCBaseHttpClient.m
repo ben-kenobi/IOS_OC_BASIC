@@ -486,17 +486,17 @@ static NSInteger TIMEOUT=15;
     return path;
 }
 +(NSString *)selectedServerPath{
-    return [iPref(BaseUrlPrefSuitName) stringForKey:@"selectedServerPath"];
+    return [iPref(BaseUrlPrefSuitName) stringForKey:@"selectedServerDomain"];
 }
 +(NSString *)autoServerPath{
-    return [iPref(BaseUrlPrefSuitName) stringForKey:@"autoServerPath"];
+    return [iPref(BaseUrlPrefSuitName) stringForKey:@"autoServerDomain"];
 }
 +(void)setSelectdServerPath:(NSString *)path{
-    [iPref(BaseUrlPrefSuitName) setObject:path forKey:@"selectedServerPath"];
+    [iPref(BaseUrlPrefSuitName) setObject:path forKey:@"selectedServerDomain"];
     [iPref(BaseUrlPrefSuitName) synchronize];
 }
 +(void)setAutoServerPath:(NSString *)path{
-    [iPref(BaseUrlPrefSuitName) setObject:path forKey:@"autoServerPath"];
+    [iPref(BaseUrlPrefSuitName) setObject:path forKey:@"autoServerDomain"];
     [iPref(BaseUrlPrefSuitName) synchronize];
 }
 
@@ -512,6 +512,16 @@ static NSInteger TIMEOUT=15;
     }
     [self setSelectdServerPath:url];
     [self setAutoServerPath:url];
+}
+
++(NSString *)countryCodeBy:(NSString *)domain{
+    NSString *countryCode = @"US";
+    if([domain isEqualToString:baseurl_test]){
+        countryCode=@"HK";
+    }else if([domain isEqualToString:baseurl_eu]){
+        countryCode=@"EU";
+    }
+    return countryCode;
 }
 +(NSString *)serverSpecifiedPath{
     return nil;

@@ -51,6 +51,7 @@ extern NSString *BaseUrlPrefSuitName;
 +(void)setSelectdServerPath:(NSString *)path;
 +(NSString *)selectedServerPath;
 +(void)setAutoServerPathBy:(NSString *)couCode;
++(NSString *)countryCodeBy:(NSString *)domain;
 +(void)setAutoServerPath:(NSString *)path;
 
 
