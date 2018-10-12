@@ -523,8 +523,12 @@ static NSInteger TIMEOUT=15;
     }
     return countryCode;
 }
-+(NSString *)serverSpecifiedPath{
-    return nil;
-}
 
++(NSString *)serverSpecifiedPath{
+    return [iPref(BaseUrlPrefSuitName) stringForKey:@"serverSpecifiedDomain"];
+}
++(void)setServerSpecifiedPath:(NSString *)domain{
+    [iPref(BaseUrlPrefSuitName) setObject:domain forKey:@"serverSpecifiedDomain"];
+    [iPref(BaseUrlPrefSuitName) synchronize];
+}
 @end

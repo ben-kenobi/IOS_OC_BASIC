@@ -54,7 +54,8 @@ extern NSString *BaseUrlPrefSuitName;
 +(NSString *)countryCodeBy:(NSString *)domain;
 +(void)setAutoServerPath:(NSString *)path;
 
-
++(void)setServerSpecifiedPath:(NSString *)domain;
 #pragma mark - implement by subclass
 +(NSString *)serverSpecifiedPath;
+
 @end
