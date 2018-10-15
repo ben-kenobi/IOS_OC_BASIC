@@ -55,6 +55,7 @@ extern NSString *BaseUrlPrefSuitName;
 +(void)setAutoServerPath:(NSString *)path;
 
 +(void)setServerSpecifiedPath:(NSString *)domain;
++(void)setServerAuthToken:(NSString *)token;
 #pragma mark - implement by subclass
 +(NSString *)serverSpecifiedPath;
 

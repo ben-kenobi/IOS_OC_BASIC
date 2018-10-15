@@ -287,6 +287,8 @@ static NSInteger TIMEOUT=15;
     NSString *abbreviation = [NSTimeZone systemTimeZone].abbreviation;
     [request setValue:abbreviation forHTTPHeaderField:@"timezone"];
     [request setValue:[NSString stringWithFormat:@"%ld",timeOffset()] forHTTPHeaderField:@"timeOffset"];
+    [request setValue:self.serverAuthToken forHTTPHeaderField:@"X-Auth-Token"];
+
 }
 
 
@@ -529,6 +531,15 @@ static NSInteger TIMEOUT=15;
 }
 +(void)setServerSpecifiedPath:(NSString *)domain{
     [iPref(BaseUrlPrefSuitName) setObject:domain forKey:@"serverSpecifiedDomain"];
+    [iPref(BaseUrlPrefSuitName) synchronize];
+}
++(NSString *)serverAuthToken{
+    NSString *token =  [iPref(BaseUrlPrefSuitName) stringForKey:@"serverAuthToken"];
+    if(!token)return @"";
+    return token;
+}
++(void)setServerAuthToken:(NSString *)token{
+    [iPref(BaseUrlPrefSuitName) setObject:token forKey:@"serverAuthToken"];
     [iPref(BaseUrlPrefSuitName) synchronize];
 }
 @end
