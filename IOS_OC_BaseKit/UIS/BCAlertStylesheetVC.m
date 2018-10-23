@@ -152,4 +152,15 @@ static NSString *celliden = @"celliden";
 }
 
 
+
+#pragma mark - ratation
+-(BOOL)shouldAutorotate {
+    return self.presentingViewController.shouldAutorotate;
+}
+-(UIInterfaceOrientationMask)supportedInterfaceOrientations {
+    return self.presentingViewController.supportedInterfaceOrientations;
+    
+}
+
+
 @end
