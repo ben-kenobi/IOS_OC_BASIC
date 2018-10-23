@@ -55,7 +55,8 @@
         [view addSubview:self];
         [self mas_remakeConstraints:^(MASConstraintMaker *make) {
             make.top.equalTo(view).offset(self.fullScreen?0: view.layoutMargins.top);
-            make.leading.trailing.equalTo(@0);
+            make.leading.equalTo(@0);
+            make.width.equalTo(view);
         }];
         [self.msgLab mas_remakeConstraints:^(MASConstraintMaker *make) {
             make.leading.equalTo(self.speakIcon.mas_trailing).offset(dp2po(8));
