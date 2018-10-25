@@ -70,15 +70,15 @@
 
 +(void)bannerWarn:(NSString*)msg iden:(NSString *)iden{
     if(!msg)return;
-    [UIUtil showAt:[UIViewController topVC].view msg:msg color:iInfoTipColor icon:img(@"voice_con")  iden:iden];
+    [UIUtil showMsgAt:[UIViewController topVC].view msg:msg color:iInfoTipColor icon:img(@"voice_con")  iden:iden];
 }
 +(void)bannerSuc:(NSString *)msg iden:(NSString *)iden{
     if(!msg)return;
-    [UIUtil showAt:[UIViewController topVC].view msg:msg color:iInfoTipColor icon:[img(@"voice_con") renderWithColor:iSucTipColor]  iden:iden];
+    [UIUtil showMsgAt:[UIViewController topVC].view msg:msg color:iInfoTipColor icon:[img(@"voice_con") renderWithColor:iSucTipColor]  iden:iden];
 }
 +(void)bannerInfo:(NSString *)msg iden:(NSString *)iden{
     if(!msg)return;
-    [UIUtil showAt:[UIViewController topVC].view msg:msg color:iInfoTipColor icon:[img(@"voice_con") renderWithColor:iInfoTipColor]  iden:iden];
+    [UIUtil showMsgAt:[UIViewController topVC].view msg:msg color:iInfoTipColor icon:[img(@"voice_con") renderWithColor:iInfoTipColor]  iden:iden];
 }
 @end
 

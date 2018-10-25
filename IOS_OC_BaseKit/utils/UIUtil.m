@@ -145,11 +145,18 @@
         [YFMsgBanner showAt:view withCountdown:4 msg:msg iden:@"msg" color:textColor icon:icon];
     });
 }
-+(void)showAt:(UIView *)view msg:(NSString *)msg color:(UIColor *)textColor icon:(UIImage *)icon iden:(NSString *)iden{
+
++(void)showMsgAt:(UIView *)view msg:(NSString *)msg color:(UIColor *)textColor icon:(UIImage *)icon iden:(NSString *)iden{
     runOnMain(^{
         [YFMsgBanner showAt:view withCountdown:-1 msg:msg iden:iden color:textColor icon:icon];
     });
 }
++(void)alwaysShowMsgAt:(UIView *)view msg:(NSString *)msg color:(UIColor *)textColor icon:(UIImage *)icon iden:(NSString *)iden{
+    runOnMain(^{
+        [YFMsgBanner showAt:view withCountdown:-2 msg:msg iden:iden color:textColor icon:icon];
+    });
+}
+
 
 +(void)dismissBannerBy:(NSString *)iden{
     runOnMain(^{

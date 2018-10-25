@@ -24,6 +24,17 @@
 
 @implementation YFMsgBanner
 
+/**
+ 
+
+ @param view 需要在其上显示的视图
+ @param sec 自动消失的时间，小于0则不消失，-1则显示取消按钮
+ @param msg 显示的消息
+ @param iden 作为全局标志的banner id
+ @param textcolor 文字颜色
+ @param icon 消息图标
+ @return return value description
+ */
 +(instancetype)showAt:(UIView*)view withCountdown:(NSInteger)sec msg:(NSString *)msg iden:(NSString *)iden color:(UIColor *)textcolor icon:(UIImage *)icon{
     return [self showAt:view withCountdown:sec msg:msg iden:iden color:textcolor icon:icon fullScreen:NO];
 }
@@ -34,7 +45,7 @@
         banner = [[YFMsgBanner alloc]init];
     banner.countdown=sec;
     banner.msgLab.text=msg;
-    banner.disBtn.hidden=sec>=0;
+    banner.disBtn.hidden=sec!=-1;
     banner.fullScreen=fullScreen;
     [banner.speakIcon setImage:icon];
     if(textcolor){
