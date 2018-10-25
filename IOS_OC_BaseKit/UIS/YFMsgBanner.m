@@ -99,8 +99,14 @@
     
     [self.speakIcon mas_remakeConstraints:^(MASConstraintMaker *make) {
         make.leading.equalTo(@(dp2po(6)));
-        make.centerY.equalTo(self.msgLab.mas_top).offset(9);
-        make.height.width.equalTo(@18);
+        UIImage *img =  self.speakIcon.image;
+        make.centerY.equalTo(self.msgLab.mas_top).offset(img.h*.5);
+        if(img){
+            make.height.equalTo(@(img.h));
+            make.width.equalTo(@(img.w));
+        }else{
+            make.height.width.equalTo(@0);
+        }
     }];
    
     [UIUtil commonAnimation:^{

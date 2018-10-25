@@ -38,6 +38,8 @@
     UIImage *img3=[UIImage img4CVPixel:bufref2];
     self.iv3.image=img3;
 //    //    self.iv4.image=img;
+    [iPop bannerWarn:NSLocalizedString(@"The face angle is incorrect. Please retake the face with front view angle.", 0)];
+//     [UIUtil alwaysShowMsgAt:self.view msg:NSLocalizedString(@"The face angle is incorrect. Please retake the face with front view angle.", 0) color:iGlobalErrorColor icon:0 iden:NSStringFromClass(self.class)];
 }
 
 
