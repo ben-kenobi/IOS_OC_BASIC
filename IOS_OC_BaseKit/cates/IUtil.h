@@ -172,6 +172,8 @@ typedef enum : NSUInteger {
     BCHttpMethodPut
 } BCHttpMethod;
 
+typedef void(^iBaseBlock)(void);
+
 id nilID(void);
 UIApplication *mainApp(void);
 CGFloat dp2po(CGFloat dp);
