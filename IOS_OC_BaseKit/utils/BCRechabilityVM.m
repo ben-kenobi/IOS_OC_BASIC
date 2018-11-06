@@ -26,9 +26,17 @@ NSString *const BC_NETWORK_WIFI=@"BCN_ETWORK_WIFI";
 +(void)checkNetworkStatus{
     [BCRechabilityVM.shared checkNetworkStatus];
 }
-+(NSString *)curNetworkStatus{
++(NSString *)curNetworkStatusDesc{
+    return [BCRechabilityVM.shared curNetworkStatusDesc];
+}
++(NetworkStatus)curNetworkStatus{
     return [BCRechabilityVM.shared curNetworkStatus];
 }
++(BOOL)curNetworkNormal{
+    return [self curNetworkStatus] != NotReachable;
+}
+
+
 +(void)listenNetWorkingStatus2{
     [BCRechabilityVM.shared listenNetWorkingStatus2];
 }
@@ -103,8 +111,8 @@ NSString *const BC_NETWORK_WIFI=@"BCN_ETWORK_WIFI";
     //    [self realNetworkingStatus:status];
     [self updateInterfaceWithReachability:self.internetReachability];
 }
--(NSString *)curNetworkStatus{
-    NetworkStatus status = self.internetReachability.currentReachabilityStatus;
+-(NSString *)curNetworkStatusDesc{
+    NetworkStatus status = self.curNetworkStatus;
     switch(status){
         case NotReachable:
             return @"No Network";
@@ -116,6 +124,9 @@ NSString *const BC_NETWORK_WIFI=@"BCN_ETWORK_WIFI";
             break;
     }
     return @"Unknow Network";
+}
+-(NetworkStatus)curNetworkStatus{
+    return self.internetReachability.currentReachabilityStatus;
 }
 #pragma mark - network  realReachability
 -(void)listenNetWorkingStatus{
