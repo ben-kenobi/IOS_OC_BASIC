@@ -24,6 +24,9 @@
     //    [IUtil setterValues:dict forObj:self];
     [IUtil setValues:dict forObj:self];
 }
+-(void)setterDict:(NSDictionary *)dict{
+    return [IUtil setterValues:dict forObj:self];
+}
 
 -(NSDictionary *)dict{
     return [self dictionaryWithValuesForKeys:[IUtil prosWithClz:self.class]];
