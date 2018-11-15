@@ -250,10 +250,14 @@ static NSInteger TIMEOUT=15;
 +(NSString *)fullUrl:(NSString *)url{
     if([url hasPrefix:@"http://"]||[url hasPrefix:@"https://"])
         return url;
+    return [NSString stringWithFormat:@"https://%@/v1/%@",[self usingDomain],url];
+}
+//当前使用中的域名
++(NSString *)usingDomain{
     NSString *baseurl=[self prefServerPath];
     if(emptyStr(baseurl))
         baseurl=BCBASEURL;
-    return [NSString stringWithFormat:@"https://%@/v1/%@",baseurl,url];
+    return baseurl;
 }
 +(BOOL)isDefaultDomain{
     NSString *domain = [self prefServerPath];

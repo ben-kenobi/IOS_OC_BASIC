@@ -22,6 +22,8 @@ extern NSString *BaseUrlPrefSuitName;
 //优先使用手动选择，为空则使用auto地址，最后使用默认地址
 +(NSString *)fullUrl:(NSString *)url;
 +(BOOL)isDefaultDomain;
+//当前使用中的域名
++(NSString *)usingDomain;
 
 +(NSURLSessionTask *)bcJsonPost:(NSString *)url param:(NSDictionary *)param callBack:(void (^)(NSInteger code, id data, NSString* msg))callback;
 +(NSURLSessionTask *)bcPost:(NSString *)url param:(NSDictionary *)param callBack:(void (^)(NSInteger code, id data,NSString* msg))callback;
