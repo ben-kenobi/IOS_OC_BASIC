@@ -289,6 +289,8 @@
 		B8DED63E211B2C8900234903 /* Utils */ = {
 			isa = PBXGroup;
 			children = (
+				B8DED72C211BD47900234903 /* BCBaseHttpClient.h */,
+				B8DED732211BD47900234903 /* BCBaseHttpClient.m */,
 				B8DED712211BD47900234903 /* UIImage+AV.h */,
 				B8DED6EF211BD47900234903 /* UIImage+AV.m */,
 				B8DED64B211B2C8900234903 /* H264VideoParser.h */,
@@ -455,13 +457,11 @@
 			children = (
 				B8DED72A211BD47900234903 /* Reachability.m */,
 				B8DED72B211BD47900234903 /* UIUtil.h */,
-				B8DED72C211BD47900234903 /* BCBaseHttpClient.h */,
 				B8DED72D211BD47900234903 /* BCRechabilityVM.h */,
 				B8DED72E211BD47900234903 /* IProUtil.m */,
 				B8DED72F211BD47900234903 /* UIUtil.m */,
 				B8DED730211BD47900234903 /* Reachability.h */,
 				B8DED731211BD47900234903 /* BCRechabilityVM.m */,
-				B8DED732211BD47900234903 /* BCBaseHttpClient.m */,
 				B8DED733211BD47900234903 /* IProUtil.h */,
 			);
 			path = utils;
