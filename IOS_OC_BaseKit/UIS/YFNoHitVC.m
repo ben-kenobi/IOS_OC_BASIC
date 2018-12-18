@@ -10,6 +10,7 @@
 
 #import "YFNoHitVC.h"
 #import "YFNoHitView.h"
+#import "YFCate.h"
 
 
 @implementation YFNoHitVC
