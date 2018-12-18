@@ -8,7 +8,7 @@
 
 #import "YFNoHitWin.h"
 #import "YFNoHitVC.h"
-
+#import "YFCate.h"
 
 @implementation YFNoHitWin
 
@@ -37,4 +37,6 @@
     return nil;
 }
 
+
+#
 @end
