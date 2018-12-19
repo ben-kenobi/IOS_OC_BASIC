@@ -35,14 +35,14 @@
             NSInteger result = -self.timeIntervalSinceNow;
             
             if (result < 60) {
-                return NSLocalizedString(@"a moment ago",0);
+                return NSLocalizedString(@"bc.other.a_moment_ago",0);
             }else if (result < 60 * 60) {
-                return iFormatStr(@"%d %@",result/60,NSLocalizedString(@"minutes ago",0));
+                return iFormatStr(@"%ld %@",result/60,NSLocalizedString(@"bc.other.minutes_ago",0));
             }else{
                 fm.dateFormat = @"HH:mm";
             }
         }else if (self.isYesterday) {
-            fm.dateFormat = @"'Yesterday' HH:mm";
+            fm.dateFormat = iFormatStr(@"'%@' HH:mm",NSLocalizedString(@"bc.other.yesterday",0));
         }else{
             fm.dateFormat = @"MM-dd HH:mm";
         }
