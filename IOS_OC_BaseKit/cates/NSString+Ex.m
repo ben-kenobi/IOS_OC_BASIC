@@ -5,6 +5,7 @@
 
 #import "NSString+Ex.h"
 #import <UIKit/UIKit.h>
+#import "IUtil.h"
 
 @implementation NSString (Ex)
 
