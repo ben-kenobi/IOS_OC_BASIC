@@ -25,18 +25,20 @@ static  NSInteger BC_MAX_TEXT_LEN=1000;
 }
 #pragma mark - actions
 -(void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSKeyValueChangeKey,id> *)change context:(void *)context{
-    [self updateDelBtn];
-    if(self.onTextChange)
-        self.onTextChange(self);
+   [self onContentChange];
 }
 
 
 -(void)changeNoti:(NSNotification *)noti{
-    [self updateDelBtn];
     [self updateTextContentByMaxLen];
+    [self onContentChange];
+}
+-(void)onContentChange{
+    [self updateDelBtn];
     if(self.onTextChange)
         self.onTextChange(self);
 }
+
 -(void)updateTextContentByMaxLen{
     NSString *text = self.text;
     NSData *data=[text dataUsingEncoding:4];
