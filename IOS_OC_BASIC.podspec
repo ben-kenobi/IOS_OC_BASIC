@@ -16,7 +16,7 @@ Pod::Spec.new do |s|
   #
 
   s.name         = "IOS_OC_BASIC"
-  s.version      = "6.4"
+  s.version      = "6.5"
   s.summary      = "IOS_OC_BASIC.  for Project start"
 
   # This description is used to generate tags and improve search results.
