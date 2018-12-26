@@ -45,4 +45,10 @@
     return [self boundingRectWithSize:size options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName:font} context:nil].size;
 }
 
+-(NSAttributedString *)h5Str{
+    if(emptyStr(self))return nil;
+    NSAttributedString *astr = [[NSAttributedString alloc]initWithData:[self dataUsingEncoding:4] options:@{NSDocumentTypeDocumentAttribute:NSHTMLTextDocumentType,NSCharacterEncodingDocumentAttribute:@(4)} documentAttributes:nil error:0];
+    return astr;
+}
+
 @end
