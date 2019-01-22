@@ -38,7 +38,7 @@
 
 +(void)popVC{
     dispatch_async(dispatch_get_main_queue(), ^{
-        UIViewController *obj=objc_getAssociatedObject(mainApp(), iVCKey);
+        UIViewController *obj=[self curVC];
         if([obj  isKindOfClass:[UINavigationController class]]){
             [(UINavigationController *)obj popViewControllerAnimated:YES];
         }else{
