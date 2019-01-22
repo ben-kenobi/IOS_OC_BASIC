@@ -8,6 +8,7 @@
 #import "YFCate.h"
 
 
+
 @implementation UIViewController (Ex)
 
 +(void)pushVC:(UIViewController *)vc{
@@ -31,7 +32,8 @@
 }
 
 +(void)setVC:(UIViewController *)vc{
-    objc_setAssociatedObject(mainApp(), iVCKey, vc, OBJC_ASSOCIATION_ASSIGN);
+    YFWeakRef *ref = [YFWeakRef refWith:vc];
+    objc_setAssociatedObject(mainApp(), iVCKey, ref, OBJC_ASSOCIATION_RETAIN);
 }
 
 +(void)popVC{
@@ -46,7 +48,7 @@
 }
 
 +(instancetype)curVC{
-   return  objc_getAssociatedObject(mainApp(), iVCKey);
+   return  ((YFWeakRef*)(objc_getAssociatedObject(mainApp(), iVCKey))).obj;
 }
 
 -(void)alert:(NSString *)title msg:(NSString *)msg{

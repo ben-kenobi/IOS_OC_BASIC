@@ -21,6 +21,7 @@
 #import <UIKit/UIKit.h>
 #import "YFConst.h"
 #import "YFAVUtil.h"
+#import "YFWeakRef.h"
 
 typedef void (^defBlock)(void);
 
