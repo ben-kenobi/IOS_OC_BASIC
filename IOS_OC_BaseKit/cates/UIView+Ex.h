@@ -4,9 +4,16 @@
 //
 
 #import <UIKit/UIKit.h>
+
+#ifdef __cplusplus
+extern "C" {
+#endif
 UIView * layoutView(UIView *sup,NSArray *subs,NSInteger colNum,BOOL full);
 UIView * layoutViewWithSize(UIView *sup,NSArray *subs,NSInteger colNum,BOOL full,CGSize size);
-
+#ifdef __cplusplus
+}
+#endif
+    
 @interface UIView (Ex)
 
 @property (nonatomic,assign)CGFloat x;

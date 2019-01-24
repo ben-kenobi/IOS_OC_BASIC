@@ -5,7 +5,15 @@
 
 #import <UIKit/UIKit.h>
 
+#ifdef __cplusplus
+extern "C" {
+#endif
 CGMutablePathRef shapePath(CGRect rect,NSInteger count,NSInteger step,NSInteger multi,CGFloat from);
+#ifdef __cplusplus
+}
+#endif
+    
+    
 @interface UIImage (Ex)
 +(instancetype)shapeImgWithSize:(CGSize)size color:(UIColor *)color count:(NSInteger)count multi:(NSInteger)multi step:(NSInteger)step drawType:(int)type;
 -(instancetype)resizableStretchImg;

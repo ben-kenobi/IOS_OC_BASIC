@@ -164,6 +164,11 @@ __strong void(^block)(void) __attribute__((cleanup(myCleanupBlock), unused)) = ^
 #define LogoutNoti @"LogoutNoti"
 #define usernamekey @"usernamekey"
 #define pwdkey @"pwdkey"
+
+
+#ifdef __cplusplus
+extern "C" {
+#endif
 typedef enum : NSUInteger {
     BCHttpMethodGet,
     BCHttpMethodPost,
@@ -182,6 +187,10 @@ NSString *scaledImgName(NSString * name,NSString *ext);
 BOOL emptyStr(NSString *str);
 BOOL nullObj(id obj);
 
+#ifdef __cplusplus
+}
+#endif
+    
 @interface IUtil : NSObject
 +(NSString *)getTimestamp;
 +(void)broadcast:(NSString *)mes info:(NSDictionary *)info;

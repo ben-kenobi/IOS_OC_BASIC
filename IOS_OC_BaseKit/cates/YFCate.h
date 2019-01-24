@@ -23,17 +23,19 @@
 #import "YFAVUtil.h"
 #import "YFWeakRef.h"
 
+
+#ifdef __cplusplus
+extern "C" {
+#endif
 typedef void (^defBlock)(void);
-
-
-
-
 
 UIWindow *frontestWindow(void);
 UIImage * i18nImg(NSString *name);
 void myCleanupBlock(__strong void(^*block)(void));
 
-
+#ifdef __cplusplus
+}
+#endif
 
 @interface iDialog : NSObject
 +(void)dialogWith:(NSString*)title msg:(NSString*)msg actions:(NSArray *)actions vc:(UIViewController*)vc;
