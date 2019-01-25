@@ -28,6 +28,14 @@ CGMutablePathRef shapePath(CGRect rect,NSInteger count,NSInteger step,NSInteger 
 - (UIImage *)fixOrientation ;
 -(void)imgToCVPixel:(CVPixelBufferRef *)bufp;
 -(CVPixelBufferRef) pixelBufferRef;
+
+
+- (unsigned char *) convertToBMRGBA8:(int *)oWidth oHeight:(int *)oHeight;
++ (CGContextRef) newBMRGBA8ContextFrom:(CGImageRef) imgRef;
+
++ (instancetype) imgFromBMBuf:(unsigned char *) buffer
+                                withWidth:(int) width
+                               withHeight:(int) height;
 -(UIImage *)scaleImg2size:(CGSize)size;
 -(UIImage *)rotate4Angle:(CGFloat)angle;
 -(UIImage *)rotate4Angle2:(CGFloat)angle;
