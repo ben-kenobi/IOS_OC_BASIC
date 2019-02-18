@@ -23,7 +23,12 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
   
-    [self testBMBuf];
+    [self testLocale];
+}
+
+-(void)testLocale{
+    NSLocale *loc = [NSLocale currentLocale];
+    NSLog(@"%@\n\n\n%@\n\n\n%@\n\n\n",localeLanguage(),localeCountry(),[NSLocale preferredLanguages]);
 }
 
 -(void)testBMBuf{
