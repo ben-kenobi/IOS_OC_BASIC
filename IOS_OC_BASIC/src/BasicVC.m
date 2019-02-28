@@ -33,8 +33,8 @@
     [btn mas_makeConstraints:^(MASConstraintMaker *make) {
         make.center.equalTo(@0);
     }];
-    [IProUtil addClickActiononTar:btn withBlock:^{
-        NSLog(@"%@",loc);
+    [IProUtil addClickActiononTar:btn withBlock:^(UIControl *tar) {
+        NSLog(@"%@--%@",tar,loc);
     }];
 }
 

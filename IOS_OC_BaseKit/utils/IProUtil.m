@@ -220,14 +220,14 @@
     };
 }
 
-+(void)addClickActiononTar:(UIControl *)tar withBlock:(defBlock)block{
++(void)addClickActiononTar:(UIControl *)tar withBlock:(void (^)(UIControl *tar))block{
     objc_setAssociatedObject(tar, "blockClickActionKey", block, OBJC_ASSOCIATION_COPY);
     [tar addTarget:self action:@selector(blockActionCB:) forControlEvents:UIControlEventTouchUpInside];
 }
-+(void)blockActionCB:(id)sender{
-    defBlock blo = objc_getAssociatedObject(sender, "blockClickActionKey");
++(void)blockActionCB:(UIControl *)sender{
+    void (^blo)(UIControl *tar) = objc_getAssociatedObject(sender, "blockClickActionKey");
     if(blo)
-        blo();
+        blo(sender);
 }
 
 @end
