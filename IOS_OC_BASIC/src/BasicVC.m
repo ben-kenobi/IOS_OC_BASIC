@@ -22,8 +22,20 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-  
-    [self testLocale];
+    [self testBlockAction];
+    
+}
+-(void)testBlockAction{
+    NSLocale *loc = [NSLocale currentLocale];
+    UIButton *btn = [IProUtil commonTextBtn:iFont(18) color:iColor(0xff, 0xff, 0xff, 1) title:@"blockActionTest"];
+    btn.backgroundColor=iGlobalFocusColor;
+    [self.view addSubview:btn];
+    [btn mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.center.equalTo(@0);
+    }];
+    [IProUtil addClickActiononTar:btn withBlock:^{
+        NSLog(@"%@",loc);
+    }];
 }
 
 -(void)testLocale{

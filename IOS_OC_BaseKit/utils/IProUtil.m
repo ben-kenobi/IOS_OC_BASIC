@@ -219,6 +219,17 @@
         objc_setAssociatedObject(tar,iden.UTF8String, nil, OBJC_ASSOCIATION_ASSIGN);
     };
 }
+
++(void)addClickActiononTar:(UIControl *)tar withBlock:(defBlock)block{
+    objc_setAssociatedObject(tar, "blockClickActionKey", block, OBJC_ASSOCIATION_COPY);
+    [tar addTarget:self action:@selector(blockActionCB:) forControlEvents:UIControlEventTouchUpInside];
+}
++(void)blockActionCB:(id)sender{
+    defBlock blo = objc_getAssociatedObject(sender, "blockClickActionKey");
+    if(blo)
+        blo();
+}
+
 @end
 
 @implementation BCDisableNoShadowBtn
