@@ -111,6 +111,18 @@ CGMutablePathRef shapePath(CGRect rect,NSInteger count,NSInteger step,NSInteger 
     UIGraphicsEndImageContext();
     return image.resizableStretchImg;
 }
++ (instancetype)dotImg4Color:(UIColor *)color rad:(CGFloat)rad imgSize:(CGSize)size{
+    CGRect rect = CGRectMake(0, 0, size.width, size.height);
+    UIGraphicsBeginImageContextWithOptions(rect.size,NO,iScreen.scale);
+    CGContextRef context = UIGraphicsGetCurrentContext();
+    CGContextAddArc(context, size.width*.5, size.height*.5, rad, 0, 2 * M_PI, 0);
+    CGContextClip(context);
+    CGContextSetFillColorWithColor(context, [color CGColor]);
+    CGContextFillRect(context, rect);
+    UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    return image;
+}
 
 +(instancetype)img4CVPixel:(CVPixelBufferRef)buf{
     UIImage *img = [UIImage imageWithCIImage:[CIImage imageWithCVPixelBuffer:buf]];

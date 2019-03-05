@@ -22,8 +22,13 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    [self testBlockAction];
+    [self test];
     
+}
+-(void)test{
+    UIImageView *iv = [[UIImageView alloc]initWithImage:[UIImage dotImg4Color:[UIColor randColor] rad:10 imgSize:CGSizeMake(50, 35)]];
+    [self.view addSubview:iv];
+    iv.backgroundColor = [UIColor grayColor];
 }
 -(void)testBlockAction{
     NSLocale *loc = [NSLocale currentLocale];
