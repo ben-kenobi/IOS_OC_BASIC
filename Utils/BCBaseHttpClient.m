@@ -11,15 +11,18 @@
 #import "BCBaseHttpClient.h"
 #import "IUtil.h"
 
-NSInteger const BC_NETWORKERR=-9999;
 
+NSInteger const BC_NETWORKERR = -9999;
+NSInteger const BC_INVALID_TOKEN = 401;
+
+
+NSString *const APP_GROUP_ID = @"APP_GROUP_ID";
 
 NSString *const baseurl_us=@"security-app.eufylife.com";
 NSString *const baseurl_eu=@"security-app-eu.eufylife.com";
 NSString *const baseurl_test=@"security-app-qa.eufylife.com";
 NSString *const baseurl_ci=@"security-app-ci.eufylife.com";
 
-NSString *BaseUrlPrefSuitName=@"group.batterycam";
 
 #ifdef DEBUG
 //QA
@@ -50,13 +53,15 @@ static NSInteger TIMEOUT=15;
         fm.dateFormat=@"yyyyMMddHHmmss";
     }
     NSString *avatarsufix = [fm stringFromDate:[NSDate date]];
+    NSString *token = [self serverAuthToken];
     [IUtil upload:data name:@"avatar" filename:iFormatStr(@"avatar%@",avatarsufix) toURL:iURL([self fullUrl:url]) setupReq:^(NSMutableURLRequest *req) {
         [self setupCommonHearder:req];
         
         
     } callBack:^(NSData *rawdata, NSURLResponse *response, NSError *error) {
-        if(error){
-            NSString *str = [self handleError:error code:((NSHTTPURLResponse *)response).statusCode];
+        
+        if(error||((NSHTTPURLResponse *)response).statusCode==BC_INVALID_TOKEN){
+            NSString *str = [self handleError:error code:((NSHTTPURLResponse *)response).statusCode datas:rawdata token:token];
             if(callback)
                 callback(BC_NETWORKERR,nil,str);
         }else{
@@ -69,6 +74,8 @@ static NSInteger TIMEOUT=15;
     }];
 }
 +(NSURLSessionUploadTask *)mulitiUpload:(NSString *)url files:(NSArray<NSString *> *)files datas:(NSArray<NSData *>*)datas param:(NSDictionary *)param callBack:(void (^)(NSInteger code, id data, NSString* msg))callback prog:(void(^)(NSProgress *prog))progcb{
+    NSString *token = [self serverAuthToken];
+    
     //将字典参数转换成json数据，放入key为body的数据段
     NSDictionary * dict=@{@"body":[NSJSONSerialization dataWithJSONObject:param options:0 error:0] };
     //创建multipartRequest
@@ -88,8 +95,9 @@ static NSInteger TIMEOUT=15;
     
     //处理回调block
     void (^cb)(NSURLResponse *,id , NSError *) = ^(NSURLResponse *response,id data, NSError *error){
-        if(error){
-            NSString *str = [self handleError:error code:((NSHTTPURLResponse *)response).statusCode];
+        
+        if(error||((NSHTTPURLResponse *)response).statusCode==BC_INVALID_TOKEN){
+            NSString *str = [self handleError:error code:((NSHTTPURLResponse *)response).statusCode datas:data token:token];
             if(callback)
                 callback(BC_NETWORKERR,nil,str);
         }else{
@@ -107,6 +115,46 @@ static NSInteger TIMEOUT=15;
     [task resume];
     return task;
     
+}
+
++(NSURLSessionUploadTask *)videoUpload:(NSString *)url files:(NSArray<NSString *> *)files  datas:(NSArray<NSData *>*)datas param:(NSDictionary *)param callBack:(void (^)(NSInteger code, id data, NSString* msg))callback prog:(void(^)(NSProgress *prog))progcb{
+    NSString *token = [self serverAuthToken];
+    //创建multipartRequest
+    NSMutableURLRequest *request=[[AFJSONRequestSerializer serializer] multipartFormRequestWithMethod:@"POST" URLString:[self fullUrl:url] parameters:nil constructingBodyWithBlock:^(id<AFMultipartFormData>  _Nonnull formData) {
+        [files enumerateObjectsUsingBlock:^(NSString * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+            //将文件拼接于表单数据段
+            //            [formData appendPartWithFileURL:[NSURL fileURLWithPath:obj] name:@"files[]" error:0];
+            [formData appendPartWithFileData:iData4F(obj) name:@"video[]" fileName:obj.lastPathComponent mimeType:@""];
+        }];
+        [datas enumerateObjectsUsingBlock:^(NSData * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+            [formData appendPartWithFileData:obj name:@"video[]" fileName:@"XXX" mimeType:@""];
+        }];
+    } error:nil];
+    [request setTimeoutInterval:TIMEOUT];
+    [self setupCommonHearder:request];
+    
+    
+    //处理回调block
+    void (^cb)(NSURLResponse *,id , NSError *) = ^(NSURLResponse *response,id data, NSError *error){
+        
+        if(error||((NSHTTPURLResponse *)response).statusCode==BC_INVALID_TOKEN){
+            NSString *str = [self handleError:error code:((NSHTTPURLResponse *)response).statusCode datas:data token:token];
+            if(callback)
+                callback(BC_NETWORKERR,nil,str);
+        }else{
+            NSInteger code=-1;
+            NSString *msg = [self parseBCResponseCode:data url:url code:&code];
+            if(callback)
+                callback(code,data,msg);
+        }
+    };
+    //使用uploadTaskWithStreamedRequest方法上传
+    NSURLSessionUploadTask *task=[BCBaseHttpClient.shared uploadTaskWithStreamedRequest:request progress:^(NSProgress * _Nonnull uploadProgress) {
+        if(progcb)
+            progcb(uploadProgress);
+    } completionHandler:cb];
+    [task resume];
+    return task;
 }
 
 
@@ -131,9 +179,11 @@ static NSInteger TIMEOUT=15;
 
 
 +(NSURLSessionTask *)bcHttpMethod:(BCHttpMethod)method url:(NSString *)url param:(NSDictionary *)param callBack:(void (^)(NSInteger code, id data,NSString* msg))callback{
+    NSString *token = [self serverAuthToken];
     void (^cb)(NSURLResponse *,id , NSError *) = ^(NSURLResponse *response,id data, NSError *error){
-        if(error){
-            NSString *str = [self handleError:error code:((NSHTTPURLResponse *)response).statusCode];
+        
+        if(error||((NSHTTPURLResponse *)response).statusCode==BC_INVALID_TOKEN){
+            NSString *str = [self handleError:error code:((NSHTTPURLResponse *)response).statusCode datas:data token:token];
             if(callback)
                 callback(BC_NETWORKERR,nil,str);
         }else{
@@ -248,7 +298,7 @@ static NSInteger TIMEOUT=15;
 
 //优先使用手动选择，为空则使用auto地址，最后使用默认地址
 +(NSString *)fullUrl:(NSString *)url{
-    if([url hasPrefix:@"http://"]||[url hasPrefix:@"https://"])
+    if([url containsString:@"://"])
         return url;
     return [NSString stringWithFormat:@"https://%@/v1/%@",[self usingDomain],url];
 }
@@ -292,7 +342,7 @@ static NSInteger TIMEOUT=15;
     [request setValue:abbreviation forHTTPHeaderField:@"timezone"];
     [request setValue:[NSString stringWithFormat:@"%ld",timeOffset()] forHTTPHeaderField:@"timeOffset"];
     [request setValue:self.serverAuthToken forHTTPHeaderField:@"X-Auth-Token"];
-
+    iLog(@"X-Auth-Token:%@", self.serverAuthToken);
 }
 
 
@@ -459,14 +509,15 @@ static NSInteger TIMEOUT=15;
     printf("\n---response begin----url = %s----\ncode=%ld,msg=%s\n----------response end---------------------\n",[url UTF8String],code,[msg UTF8String]);
     return msg;
 }
-+(NSString *)handleError:(NSError *)err code:(NSInteger)code{
++(NSString *)handleError:(NSError *)err code:(NSInteger)code datas:(id)datas token:(NSString *)token{
+    if(!err) return nil;
     if(err.code==-999)return nil;
     NSString *desc=[err.userInfo[@"NSUnderlyingError"] description] ;
     printf("\n--------err begin----------\n%s\n%s\n----------err end---------------------\n",[err.userInfo[@"NSLocalizedDescription"] UTF8String],[(desc.length>200?[desc substringToIndex:200]:desc) UTF8String]);
     //    return [NSString stringWithFormat:@"%ld",err.code];
     NSString *errstr =  err.userInfo[@"NSLocalizedDescription"];
     if([errstr containsString:@"A server with the specified hostname could not be found."]){
-        return NSLocalizedString(@"Can't connect to the backend. Please try again later.", 0);
+        return NSLocalizedString(@"bc.other.cannot_connect_server_tip", 0);
     }
     return errstr;
 }
@@ -492,18 +543,18 @@ static NSInteger TIMEOUT=15;
     return path;
 }
 +(NSString *)selectedServerPath{
-    return [iPref(BaseUrlPrefSuitName) stringForKey:@"selectedServerDomain"];
+    return [iPref(APP_GROUP_ID) stringForKey:@"selectedServerDomain"];
 }
 +(NSString *)autoServerPath{
-    return [iPref(BaseUrlPrefSuitName) stringForKey:@"autoServerDomain"];
+    return [iPref(APP_GROUP_ID) stringForKey:@"autoServerDomain"];
 }
 +(void)setSelectdServerPath:(NSString *)path{
-    [iPref(BaseUrlPrefSuitName) setObject:path forKey:@"selectedServerDomain"];
-    [iPref(BaseUrlPrefSuitName) synchronize];
+    [iPref(APP_GROUP_ID) setObject:path forKey:@"selectedServerDomain"];
+    [iPref(APP_GROUP_ID) synchronize];
 }
 +(void)setAutoServerPath:(NSString *)path{
-    [iPref(BaseUrlPrefSuitName) setObject:path forKey:@"autoServerDomain"];
-    [iPref(BaseUrlPrefSuitName) synchronize];
+    [iPref(APP_GROUP_ID) setObject:path forKey:@"autoServerDomain"];
+    [iPref(APP_GROUP_ID) synchronize];
 }
 
 //只在select为空的时候才查询获取auto地址，所以auto地址需要设置给select和auto两个key
@@ -531,19 +582,19 @@ static NSInteger TIMEOUT=15;
 }
 
 +(NSString *)serverSpecifiedPath{
-    return [iPref(BaseUrlPrefSuitName) stringForKey:@"serverSpecifiedDomain"];
+    return [iPref(APP_GROUP_ID) stringForKey:@"serverSpecifiedDomain"];
 }
 +(void)setServerSpecifiedPath:(NSString *)domain{
-    [iPref(BaseUrlPrefSuitName) setObject:domain forKey:@"serverSpecifiedDomain"];
-    [iPref(BaseUrlPrefSuitName) synchronize];
+    [iPref(APP_GROUP_ID) setObject:domain forKey:@"serverSpecifiedDomain"];
+    [iPref(APP_GROUP_ID) synchronize];
 }
 +(NSString *)serverAuthToken{
-    NSString *token =  [iPref(BaseUrlPrefSuitName) stringForKey:@"serverAuthToken"];
+    NSString *token =  [iPref(APP_GROUP_ID) stringForKey:@"serverAuthToken"];
     if(!token)return @"";
     return token;
 }
 +(void)setServerAuthToken:(NSString *)token{
-    [iPref(BaseUrlPrefSuitName) setObject:token forKey:@"serverAuthToken"];
-    [iPref(BaseUrlPrefSuitName) synchronize];
+    [iPref(APP_GROUP_ID) setObject:token forKey:@"serverAuthToken"];
+    [iPref(APP_GROUP_ID) synchronize];
 }
 @end

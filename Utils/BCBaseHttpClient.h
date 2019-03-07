@@ -9,12 +9,12 @@
 #import <Foundation/Foundation.h>
 #import <AFNetworking/AFNetworking.h>
 extern NSInteger const BC_NETWORKERR;
+extern NSInteger const BC_INVALID_TOKEN;
 
 extern NSString *const baseurl_us;
 extern NSString *const baseurl_eu;
 extern NSString *const baseurl_test;
 extern NSString *const baseurl_ci;
-extern NSString *BaseUrlPrefSuitName;
 
 @interface BCBaseHttpClient : AFHTTPSessionManager
 + (instancetype)shared;
@@ -35,12 +35,12 @@ extern NSString *BaseUrlPrefSuitName;
 
 +(NSURLSessionUploadTask *)mulitiUpload:(NSString *)url files:(NSArray<NSString *> *)files  datas:(NSArray<NSData *>*)datas param:(NSDictionary *)param callBack:(void (^)(NSInteger code, id data, NSString* msg))callback prog:(void(^)(NSProgress *prog))progcb;
 
++(NSURLSessionUploadTask *)videoUpload:(NSString *)url files:(NSArray<NSString *> *)files  datas:(NSArray<NSData *>*)datas param:(NSDictionary *)param callBack:(void (^)(NSInteger code, id data, NSString* msg))callback prog:(void(^)(NSProgress *prog))progcb;
 
 
 #pragma mark - override by subclass
 +(void)setupCommonHearder:(NSMutableURLRequest *)request;
-+(NSString *)handleError:(NSError *)err code:(NSInteger)code;
-
++(NSString *)handleError:(NSError *)err code:(NSInteger)code datas:(id)datas token:(NSString *)token;
 #pragma mark - serverPath
 /**
  selected:按照手动选择的区域判断服务器地址
