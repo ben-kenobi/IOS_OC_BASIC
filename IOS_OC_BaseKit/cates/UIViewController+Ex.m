@@ -8,6 +8,7 @@
 #import "YFCate.h"
 
 
+
 @implementation UIViewController (Ex)
 
 +(void)pushVC:(UIViewController *)vc{
@@ -31,12 +32,13 @@
 }
 
 +(void)setVC:(UIViewController *)vc{
-    objc_setAssociatedObject(mainApp(), iVCKey, vc, OBJC_ASSOCIATION_ASSIGN);
+    YFWeakRef *ref = [YFWeakRef refWith:vc];
+    objc_setAssociatedObject(mainApp(), iVCKey, ref, OBJC_ASSOCIATION_RETAIN);
 }
 
 +(void)popVC{
     dispatch_async(dispatch_get_main_queue(), ^{
-        UIViewController *obj=objc_getAssociatedObject(mainApp(), iVCKey);
+        UIViewController *obj=[self curVC];
         if([obj  isKindOfClass:[UINavigationController class]]){
             [(UINavigationController *)obj popViewControllerAnimated:YES];
         }else{
@@ -46,7 +48,7 @@
 }
 
 +(instancetype)curVC{
-   return  objc_getAssociatedObject(mainApp(), iVCKey);
+   return  ((YFWeakRef*)(objc_getAssociatedObject(mainApp(), iVCKey))).obj;
 }
 
 -(void)alert:(NSString *)title msg:(NSString *)msg{

@@ -101,7 +101,7 @@ static NSString *celliden = @"celliden";
     [self.view addSubview:self.contentView];
     
     
-    self.cancelBtn=[IProUtil commonTextBtn:iFont(dp2po(20)) color:iGlobalFocusColor title:NSLocalizedString(@"Cancel", 0)];
+    self.cancelBtn=[IProUtil commonTextBtn:iFont(dp2po(20)) color:iGlobalFocusColor title:NSLocalizedString(@"bc.common.cancel", 0)];
     [self.cancelBtn setTitleColor:iColor(0xaa, 0xaa, 0xaa, 1) forState:UIControlStateHighlighted];
     [self.cancelBtn setBackgroundColor:[UIColor whiteColor]] ;
     self.cancelBtn.layer.cornerRadius=12;

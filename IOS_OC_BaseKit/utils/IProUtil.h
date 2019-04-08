@@ -34,5 +34,6 @@
 +(void)dispatchCancel:(id)tar;
 +(void)dispatchAfter:(CGFloat)secs tar:(id)tar iden:(NSString *)iden bloc:(void(^)(void))bloc;
 +(void)dispatchCancel:(id)tar iden:(NSString *)iden;
++(void)addClickActiononTar:(UIControl *)tar withBlock:(void (^)(UIControl *tar))block;
 @end
 

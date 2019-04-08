@@ -111,6 +111,18 @@ CGMutablePathRef shapePath(CGRect rect,NSInteger count,NSInteger step,NSInteger 
     UIGraphicsEndImageContext();
     return image.resizableStretchImg;
 }
++ (instancetype)dotImg4Color:(UIColor *)color rad:(CGFloat)rad imgSize:(CGSize)size{
+    CGRect rect = CGRectMake(0, 0, size.width, size.height);
+    UIGraphicsBeginImageContextWithOptions(rect.size,NO,iScreen.scale);
+    CGContextRef context = UIGraphicsGetCurrentContext();
+    CGContextAddArc(context, size.width*.5, size.height*.5, rad, 0, 2 * M_PI, 0);
+    CGContextClip(context);
+    CGContextSetFillColorWithColor(context, [color CGColor]);
+    CGContextFillRect(context, rect);
+    UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    return image;
+}
 
 +(instancetype)img4CVPixel:(CVPixelBufferRef)buf{
     UIImage *img = [UIImage imageWithCIImage:[CIImage imageWithCVPixelBuffer:buf]];
@@ -190,6 +202,194 @@ CGMutablePathRef shapePath(CGRect rect,NSInteger count,NSInteger step,NSInteger 
     
     return pxbuffer;
 }
+
+
+
+- (unsigned char *) convertToBMRGBA8:(int *)oWidth oHeight:(int *)oHeight {
+    
+    CGImageRef imgRef = self.CGImage;
+    
+    // Create a bitmap context to draw the uiimage into
+    CGContextRef context = [UIImage newBMRGBA8ContextFrom:imgRef];
+    
+    if(!context) {
+        return NULL;
+    }
+    
+    size_t width = CGImageGetWidth(imgRef);
+    size_t height = CGImageGetHeight(imgRef);
+    
+    CGRect rect = CGRectMake(0, 0, width, height);
+    
+    // Draw image into the context to get the raw image data
+    CGContextDrawImage(context, rect, imgRef);
+    
+    // Get a pointer to the data
+    unsigned char *bitmapData = (unsigned char *)CGBitmapContextGetData(context);
+    
+    // Copy the data and release the memory (return memory allocated with new)
+    size_t bytesPerRow = CGBitmapContextGetBytesPerRow(context);
+    size_t bufferLength = bytesPerRow * height;
+    *oWidth = (int)(bytesPerRow / 4);
+    *oHeight = (int)height;
+    
+    unsigned char *newBitmap = NULL;
+    
+    if(bitmapData) {
+        newBitmap = (unsigned char *)malloc(sizeof(unsigned char) * bytesPerRow * height);
+        
+        if(newBitmap) {    // Copy the data
+            for(int i = 0; i < bufferLength; ++i) {
+                newBitmap[i] = bitmapData[i];
+            }
+        }
+        
+        free(bitmapData);
+        
+    } else {
+        NSLog(@"Error getting bitmap pixel data\n");
+    }
+    
+    CGContextRelease(context);
+    
+    return newBitmap;
+}
+
++ (CGContextRef) newBMRGBA8ContextFrom:(CGImageRef) imgRef {
+    CGContextRef context = NULL;
+    CGColorSpaceRef colorSpace;
+    uint32_t *bitmapData;
+    
+    
+    size_t bitsPerComponent = 8;
+    size_t bytesPerPixel = 4;
+    
+    size_t width = CGImageGetWidth(imgRef);
+    size_t height = CGImageGetHeight(imgRef);
+    
+    size_t bytesPerRow = width * bytesPerPixel;
+    size_t bufferLength = bytesPerRow * height;
+    
+    colorSpace = CGColorSpaceCreateDeviceRGB();
+    
+    if(!colorSpace) {
+        NSLog(@"Error allocating color space RGB\n");
+        return NULL;
+    }
+    
+    // Allocate memory for image data
+    bitmapData = (uint32_t *)malloc(bufferLength);
+    
+    if(!bitmapData) {
+        NSLog(@"Error allocating memory for bitmap\n");
+        CGColorSpaceRelease(colorSpace);
+        return NULL;
+    }
+    
+    //Create bitmap context
+    
+    context = CGBitmapContextCreate(bitmapData,
+                                    width,
+                                    height,
+                                    bitsPerComponent,
+                                    bytesPerRow,
+                                    colorSpace,
+                                    kCGImageAlphaPremultipliedLast);    // RGBA
+    if(!context) {
+        free(bitmapData);
+        NSLog(@"Bitmap context not created");
+    }
+    
+    CGColorSpaceRelease(colorSpace);
+
+    return context;
+}
+
++ (instancetype) imgFromBMBuf:(unsigned char *) buffer
+                                withWidth:(int) width
+                               withHeight:(int) height {
+    
+    
+    size_t bufferLength = width * height * 4;
+    CGDataProviderRef provider = CGDataProviderCreateWithData(NULL, buffer, bufferLength, NULL);
+    size_t bitsPerComponent = 8;
+    size_t bitsPerPixel = 32;
+    size_t bytesPerRow = 4 * width;
+    
+    CGColorSpaceRef colorSpaceRef = CGColorSpaceCreateDeviceRGB();
+    if(colorSpaceRef == NULL) {
+        NSLog(@"Error allocating color space");
+        CGDataProviderRelease(provider);
+        return nil;
+    }
+    
+    CGBitmapInfo bitmapInfo = kCGBitmapByteOrderDefault | kCGImageAlphaPremultipliedLast;
+    CGColorRenderingIntent renderingIntent = kCGRenderingIntentDefault;
+    
+    CGImageRef iref = CGImageCreate(width,
+                                    height,
+                                    bitsPerComponent,
+                                    bitsPerPixel,
+                                    bytesPerRow,
+                                    colorSpaceRef,
+                                    bitmapInfo,
+                                    provider,    // data provider
+                                    NULL,        // decode
+                                    YES,            // should interpolate
+                                    renderingIntent);
+    
+    uint32_t* pixels = (uint32_t*)malloc(bufferLength);
+    
+    if(pixels == NULL) {
+        NSLog(@"Error: Memory not allocated for bitmap");
+        CGDataProviderRelease(provider);
+        CGColorSpaceRelease(colorSpaceRef);
+        CGImageRelease(iref);
+        return nil;
+    }
+    
+    CGContextRef context = CGBitmapContextCreate(pixels,
+                                                 width,
+                                                 height,
+                                                 bitsPerComponent,
+                                                 bytesPerRow,
+                                                 colorSpaceRef,
+                                                 bitmapInfo);
+    
+    if(context == NULL) {
+        NSLog(@"Error context not created");
+        free(pixels);
+    }
+    
+    UIImage *image = nil;
+    if(context) {
+        
+        CGContextDrawImage(context, CGRectMake(0.0f, 0.0f, width, height), iref);
+        
+        CGImageRef imageRef = CGBitmapContextCreateImage(context);
+        
+        // Support both iPad 3.2 and iPhone 4 Retina displays with the correct scale
+        if([UIImage respondsToSelector:@selector(imageWithCGImage:scale:orientation:)]) {
+            float scale = [[UIScreen mainScreen] scale];
+            image = [UIImage imageWithCGImage:imageRef scale:scale orientation:UIImageOrientationUp];
+        } else {
+            image = [UIImage imageWithCGImage:imageRef];
+        }
+        
+        CGImageRelease(imageRef);
+        CGContextRelease(context);
+    }
+    
+    CGColorSpaceRelease(colorSpaceRef);
+    CGImageRelease(iref);
+    CGDataProviderRelease(provider);
+    
+    if(pixels) {
+        free(pixels);
+    }
+    return image;
+}
+
 
 - (UIImage *)fixOrientation {
     

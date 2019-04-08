@@ -14,6 +14,7 @@
 		B8332F9121C93A260062AEB6 /* YFNoHitView.m in Sources */ = {isa = PBXBuildFile; fileRef = B8332F8C21C93A260062AEB6 /* YFNoHitView.m */; };
 		B8332F9221C93A260062AEB6 /* YFNoHitVC.m in Sources */ = {isa = PBXBuildFile; fileRef = B8332F8E21C93A260062AEB6 /* YFNoHitVC.m */; };
 		B8332F9321C93A260062AEB6 /* YFNoHitWin.m in Sources */ = {isa = PBXBuildFile; fileRef = B8332F9021C93A260062AEB6 /* YFNoHitWin.m */; };
+		B883BEAD21F73AD200CDDCAC /* YFWeakRef.m in Sources */ = {isa = PBXBuildFile; fileRef = B883BEAC21F73AD200CDDCAC /* YFWeakRef.m */; };
 		B8CEBAE3215645B9005E8F4E /* AAPLEAGLLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = B8CEBAE2215645B9005E8F4E /* AAPLEAGLLayer.m */; };
 		B8CEBAE521565FE5005E8F4E /* camera-device_008.png in Resources */ = {isa = PBXBuildFile; fileRef = B8CEBAE421565FE5005E8F4E /* camera-device_008.png */; };
 		B8CEBAE72156617B005E8F4E /* voice_s_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = B8CEBAE62156617B005E8F4E /* voice_s_icon.png */; };
@@ -103,6 +104,8 @@
 		B8332F8F21C93A260062AEB6 /* YFNoHitView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YFNoHitView.h; sourceTree = "<group>"; };
 		B8332F9021C93A260062AEB6 /* YFNoHitWin.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = YFNoHitWin.m; sourceTree = "<group>"; };
 		B85407FB2105E7C7001E931A /* IOS_OC_BASIC.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = IOS_OC_BASIC.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		B883BEAB21F73AD200CDDCAC /* YFWeakRef.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = YFWeakRef.h; sourceTree = "<group>"; };
+		B883BEAC21F73AD200CDDCAC /* YFWeakRef.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = YFWeakRef.m; sourceTree = "<group>"; };
 		B8B7B7DB212F9C1500DF3D87 /* YFAVUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = YFAVUtil.h; sourceTree = "<group>"; };
 		B8CEBAE1215645B9005E8F4E /* AAPLEAGLLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AAPLEAGLLayer.h; sourceTree = "<group>"; };
 		B8CEBAE2215645B9005E8F4E /* AAPLEAGLLayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AAPLEAGLLayer.m; sourceTree = "<group>"; };
@@ -457,6 +460,8 @@
 				B8DED726211BD47900234903 /* YFConst.m */,
 				B8DED727211BD47900234903 /* YFCodecObj.h */,
 				B8DED728211BD47900234903 /* YFConst.h */,
+				B883BEAB21F73AD200CDDCAC /* YFWeakRef.h */,
+				B883BEAC21F73AD200CDDCAC /* YFWeakRef.m */,
 			);
 			path = others;
 			sourceTree = "<group>";
@@ -660,6 +665,7 @@
 				B8DED68C211B2C8A00234903 /* YFUtil.m in Sources */,
 				B8DED765211BD47900234903 /* NSString+Emoji.m in Sources */,
 				B8DED774211BD47900234903 /* M1GuidanceView.m in Sources */,
+				B883BEAD21F73AD200CDDCAC /* YFWeakRef.m in Sources */,
 				B8DED769211BD47900234903 /* Reachability.m in Sources */,
 				B8DED763211BD47900234903 /* UIView+LSCore.m in Sources */,
 				B8DED75C211BD47900234903 /* NetUtil.m in Sources */,

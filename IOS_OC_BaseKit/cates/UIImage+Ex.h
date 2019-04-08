@@ -5,7 +5,15 @@
 
 #import <UIKit/UIKit.h>
 
+#ifdef __cplusplus
+extern "C" {
+#endif
 CGMutablePathRef shapePath(CGRect rect,NSInteger count,NSInteger step,NSInteger multi,CGFloat from);
+#ifdef __cplusplus
+}
+#endif
+    
+    
 @interface UIImage (Ex)
 +(instancetype)shapeImgWithSize:(CGSize)size color:(UIColor *)color count:(NSInteger)count multi:(NSInteger)multi step:(NSInteger)step drawType:(int)type;
 -(instancetype)resizableStretchImg;
@@ -20,6 +28,14 @@ CGMutablePathRef shapePath(CGRect rect,NSInteger count,NSInteger step,NSInteger 
 - (UIImage *)fixOrientation ;
 -(void)imgToCVPixel:(CVPixelBufferRef *)bufp;
 -(CVPixelBufferRef) pixelBufferRef;
+
+
+- (unsigned char *) convertToBMRGBA8:(int *)oWidth oHeight:(int *)oHeight;
++ (CGContextRef) newBMRGBA8ContextFrom:(CGImageRef) imgRef;
+
++ (instancetype) imgFromBMBuf:(unsigned char *) buffer
+                                withWidth:(int) width
+                               withHeight:(int) height;
 -(UIImage *)scaleImg2size:(CGSize)size;
 -(UIImage *)rotate4Angle:(CGFloat)angle;
 -(UIImage *)rotate4Angle2:(CGFloat)angle;
@@ -35,6 +51,7 @@ CGMutablePathRef shapePath(CGRect rect,NSInteger count,NSInteger step,NSInteger 
 + (instancetype)img4Color:(UIColor *)color size:(CGSize)size ;
 + (instancetype)roundStretchImg4Color:(UIColor *)color w:(CGFloat)w ;
 + (instancetype)roundStretchImg4Color:(UIColor *)color w:(CGFloat)w withBorder:(UIColor *)boderColor;
++ (instancetype)dotImg4Color:(UIColor *)color rad:(CGFloat)rad imgSize:(CGSize)size;
 +(instancetype)img4CVPixel:(CVPixelBufferRef)buf;
 
 

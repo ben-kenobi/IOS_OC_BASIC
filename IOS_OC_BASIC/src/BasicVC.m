@@ -22,8 +22,47 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    [self test];
+    
+}
+-(void)test{
+    UIImageView *iv = [[UIImageView alloc]initWithImage:[UIImage dotImg4Color:[UIColor randColor] rad:10 imgSize:CGSizeMake(50, 35)]];
+    [self.view addSubview:iv];
+    iv.backgroundColor = [UIColor grayColor];
+}
+-(void)testBlockAction{
+    NSLocale *loc = [NSLocale currentLocale];
+    UIButton *btn = [IProUtil commonTextBtn:iFont(18) color:iColor(0xff, 0xff, 0xff, 1) title:@"blockActionTest"];
+    btn.backgroundColor=iGlobalFocusColor;
+    [self.view addSubview:btn];
+    [btn mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.center.equalTo(@0);
+    }];
+    [IProUtil addClickActiononTar:btn withBlock:^(UIControl *tar) {
+        NSLog(@"%@--%@",tar,loc);
+    }];
+}
+
+-(void)testLocale{
+    NSLocale *loc = [NSLocale currentLocale];
+    NSLog(@"%@\n\n\n%@\n\n\n%@\n\n\n",localeLanguage(),localeCountry(),[NSLocale preferredLanguages]);
+}
+
+-(void)testBMBuf{
+    
     [self initUI];
     
+    UIImage *img = img(@"voice_con");
+    self.iv1.image=img;
+    int width , height;
+    unsigned char * buf = [img convertToBMRGBA8:&width oHeight:&height];
+   UIImage *img2 = [UIImage imgFromBMBuf:buf withWidth:width withHeight:height];
+    self.iv2.image = img2;
+    free(buf);
+}
+-(void)testCVPixel{
+    
+    [self initUI];
 
     UIImage *img = imgFromF(iRes(@"edit_blue_icon.png"));
     self.iv1.image=img;
@@ -31,17 +70,16 @@
     [img imgToCVPixel:&bufref];
     
     
-
+    
     UIImage *img2=[UIImage img4CVPixel:bufref];
     self.iv2.image=img2;
     CVPixelBufferRef bufref2 = [img pixelBufferRef];
     UIImage *img3=[UIImage img4CVPixel:bufref2];
     self.iv3.image=img3;
-//    //    self.iv4.image=img;
-    [iPop bannerWarn:NSLocalizedString(@"The face angle is incorrect. Please retake the face with front view angle.", 0)];
-//     [UIUtil alwaysShowMsgAt:self.view msg:NSLocalizedString(@"The face angle is incorrect. Please retake the face with front view angle.", 0) color:iGlobalErrorColor icon:0 iden:NSStringFromClass(self.class)];
+    //    //    self.iv4.image=img;
+    //    [iPop bannerWarn:NSLocalizedString(@"The face angle is incorrect. Please retake the face with front view angle.", 0)];
+    //     [UIUtil alwaysShowMsgAt:self.view msg:NSLocalizedString(@"The face angle is incorrect. Please retake the face with front view angle.", 0) color:iGlobalErrorColor icon:0 iden:NSStringFromClass(self.class)];
 }
-
 
 
 #pragma mark - UI

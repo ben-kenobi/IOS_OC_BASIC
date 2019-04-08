@@ -164,6 +164,11 @@ __strong void(^block)(void) __attribute__((cleanup(myCleanupBlock), unused)) = ^
 #define LogoutNoti @"LogoutNoti"
 #define usernamekey @"usernamekey"
 #define pwdkey @"pwdkey"
+
+
+#ifdef __cplusplus
+extern "C" {
+#endif
 typedef enum : NSUInteger {
     BCHttpMethodGet,
     BCHttpMethodPost,
@@ -182,6 +187,28 @@ NSString *scaledImgName(NSString * name,NSString *ext);
 BOOL emptyStr(NSString *str);
 BOOL nullObj(id obj);
 
+    
+#pragma mark - from cate
+    
+NSLocale * prefLocale(void);
+NSString * localeLanguage(void);
+NSString * localeCountry(void);
+NSInteger  timeOffset(void);//时差，单位秒
+
+NSTimer * iTimer(CGFloat inteval,id tar,SEL sel,id userinfo);
+
+CADisplayLink *iDLink(id tar,SEL sel);
+void runOnMain(void (^blo)(void));
+void runOnGlobal(void (^blo)(void));
+
+NSString * iphoneType(void) ;
+BOOL isRightToLeft(void);
+
+    
+#ifdef __cplusplus
+}
+#endif
+    
 @interface IUtil : NSObject
 +(NSString *)getTimestamp;
 +(void)broadcast:(NSString *)mes info:(NSDictionary *)info;
@@ -235,24 +262,6 @@ BOOL nullObj(id obj);
 +(double)GetCpuUsage ;
 + (NSInteger)GetMemoryStatistics ;
 +(NSString *)deviceUUId;
-
-
-
-#pragma mark - from cate
-
-NSLocale * prefLocale(void);
-NSString * localeLanguage(void);
-NSString * localeCountry(void);
-NSInteger  timeOffset(void);//时差，单位秒
-
-NSTimer * iTimer(CGFloat inteval,id tar,SEL sel,id userinfo);
-
-CADisplayLink *iDLink(id tar,SEL sel);
-void runOnMain(void (^blo)(void));
-void runOnGlobal(void (^blo)(void));
-
-NSString * iphoneType(void) ;
-BOOL isRightToLeft(void);
 
 @end
 

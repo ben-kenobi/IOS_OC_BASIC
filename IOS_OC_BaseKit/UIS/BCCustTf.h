@@ -25,4 +25,5 @@
 @property (nonatomic,copy)void(^onArrowClick)(UIButton *arrowBtn,BCCustTf *tf);
 -(void)onShowArrow;
 -(void)updateTextContentByMaxLen;// 判断文字长度是否超过最大限制
+-(void)onContentChange;// 文字内容变化，此方法内不可在修改文字内容
 @end

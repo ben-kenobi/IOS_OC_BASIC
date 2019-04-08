@@ -158,19 +158,32 @@
     //    return [pred evaluateWithObject:str];
     
     if(!str||str.length<8||str.length>20) return NO;
-    
     NSPredicate *pred=nil;
-    
-    NSString *REGEX_PASSWORD_LENGTH = @"^.{8,20}$";
-    
-    NSString *REGEX_PASSWORD_NUM = @"^.*[0-9]+.*$";
-    
-    NSString *REGEX_PASSWORD_LETTER = @"^.*[A-Za-z]+.*$";
-    
-    //        NSString *REGEX_PASSWORD_SPE_CHARACTERS = @"^.*[~'!@#￥$%^&*()-+_=:/{/}/[/]/./?]+.*$";
-    
-    pred=[NSPredicate predicateWithFormat:@"SELF MATCHES %@  AND SELF MATCHES %@ AND SELF MATCHES %@",REGEX_PASSWORD_LENGTH,REGEX_PASSWORD_NUM,REGEX_PASSWORD_LETTER];
+    //    NSString *REGEX_PASSWORD_LENGTH = @"^[\\x21-\\x7E]{8,20}+$";
+    //    NSString *REGEX_PASSWORD_LENGTH = @"^[0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ`~!@#$%^&*()_-=+\\|[{]}/?.>,\'\";:]{8,20}$";
+    NSString *REGEX_PASSWORD_LENGTH =@"^[a-zA-Z0-9`~!@#%&()_=/>,\'\";:\\|\\\\\\^\\$\\*\\+\\?\\.\\{\\}\\-\\[\\]]{8,20}$";
+    pred=[NSPredicate predicateWithFormat:@"SELF MATCHES %@",REGEX_PASSWORD_LENGTH];
     return [pred evaluateWithObject:str];
+    
+    
+    /*
+     if(!str||str.length<8||str.length>20) return NO;
+     
+     NSPredicate *pred=nil;
+     
+     NSString *REGEX_PASSWORD_LENGTH = @"^.{8,20}$";
+     
+     NSString *REGEX_PASSWORD_NUM = @"^.*[0-9]+.*$";
+     
+     NSString *REGEX_PASSWORD_LETTER = @"^.*[A-Za-z]+.*$";
+     
+     //    NSString *REGEX_PASSWORD_SPE_CHARACTERS = @"^.*[~'!@#￥$%^&*()-+_=:/{/}/[/]/./?]+.*$";
+     
+     pred=[NSPredicate predicateWithFormat:@"SELF MATCHES %@  AND SELF MATCHES %@ AND SELF MATCHES %@",REGEX_PASSWORD_LENGTH,REGEX_PASSWORD_NUM,REGEX_PASSWORD_LETTER];
+     
+     //    pred=[NSPredicate predicateWithFormat:@"SELF MATCHES %@  AND SELF MATCHES %@ AND SELF MATCHES %@ AND SELF MATCHES %@",REGEX_PASSWORD_LENGTH,REGEX_PASSWORD_NUM,REGEX_PASSWORD_LETTER,REGEX_PASSWORD_SPE_CHARACTERS];
+     return [pred evaluateWithObject:str];
+     */
 }
 
 
@@ -206,6 +219,17 @@
         objc_setAssociatedObject(tar,iden.UTF8String, nil, OBJC_ASSOCIATION_ASSIGN);
     };
 }
+
++(void)addClickActiononTar:(UIControl *)tar withBlock:(void (^)(UIControl *tar))block{
+    objc_setAssociatedObject(tar, "blockClickActionKey", block, OBJC_ASSOCIATION_COPY);
+    [tar addTarget:self action:@selector(blockActionCB:) forControlEvents:UIControlEventTouchUpInside];
+}
++(void)blockActionCB:(UIControl *)sender{
+    void (^blo)(UIControl *tar) = objc_getAssociatedObject(sender, "blockClickActionKey");
+    if(blo)
+        blo(sender);
+}
+
 @end
 
 @implementation BCDisableNoShadowBtn

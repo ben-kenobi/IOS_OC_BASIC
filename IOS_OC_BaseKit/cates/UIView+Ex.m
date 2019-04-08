@@ -146,14 +146,29 @@
 
 
 
-UIView *layoutViewWithSize(UIView *sup,NSArray *subs,NSInteger colNum,BOOL full,CGSize size){
+UIView *layoutViewWithSize(UIView *sup,NSArray *subs,NSInteger colNum,BOOL veritcalFull,CGSize size){
     for(UIView *v in subs){
         v.size=size;
     }
-    return layoutView(sup, subs, colNum, full);
+    return layoutView(sup, subs, colNum, veritcalFull);
 }
 
-UIView *layoutView(UIView *sup,NSArray *subs,NSInteger colNum,BOOL full){
+UIView *layoutView(UIView *sup,NSArray *subs,NSInteger colNum,BOOL veritcalFull){
+    return layoutViewWithParam(sup,subs,colNum,veritcalFull,NO,NO,-1);
+}
+
+/**
+ 
+ @param sup layout所在的父view，可以是scrollview
+ @param subs 被layout的子views
+ @param colNum 排列的列数
+ @param veritcalFull 是否垂直方向铺满，即垂直间距动态拉长
+ @param sizeToFit 使用子view本身动态适配的size
+ @param horizonScrollable 是否水平方向可滑动，只在sup为scrollview时生效
+ @param horgap 水平方向间距
+ @return 返回最后一个子views
+ */
+UIView *layoutViewWithParam(UIView *sup,NSArray *subs,NSInteger colNum,bool veritcalFull,bool sizeToFit,bool horizonScrollable,CGFloat horgap){
     if(!subs.count||!colNum) return 0;
     if(colNum>subs.count)
         colNum=subs.count;
@@ -162,7 +177,8 @@ UIView *layoutView(UIView *sup,NSArray *subs,NSInteger colNum,BOOL full){
         [sup addSubview:content];
         [content mas_makeConstraints:^(MASConstraintMaker *make) {
             make.edges.equalTo(@0);
-            make.width.equalTo(sup);
+            if(!horizonScrollable)
+                make.width.equalTo(sup);
         }];
         sup=content;
         
@@ -181,6 +197,8 @@ UIView *layoutView(UIView *sup,NSArray *subs,NSInteger colNum,BOOL full){
                 make.leading.equalTo(lastv?lastv.mas_trailing:@0);
                 if(col)
                     make.width.equalTo([ary[col-1] mas_width]);
+                else if(horgap>0)
+                    make.width.equalTo(@(horgap));
             }];
             [ary addObject:gap];
         }
@@ -189,9 +207,9 @@ UIView *layoutView(UIView *sup,NSArray *subs,NSInteger colNum,BOOL full){
             [sup addSubview:gap];
             [gap mas_makeConstraints:^(MASConstraintMaker *make) {
                 make.top.equalTo(lastv?lastv.mas_bottom:@0);
-                if(full&&row)
+                if(veritcalFull&&row)
                     make.height.equalTo([vary[row-1] mas_height]);
-                else if(!full)
+                else if(!veritcalFull)
                     make.height.equalTo([ary[0] mas_width]);
             }];
             [vary addObject:gap];
@@ -202,9 +220,11 @@ UIView *layoutView(UIView *sup,NSArray *subs,NSInteger colNum,BOOL full){
         [sup addSubview:v];
         [v mas_makeConstraints:^(MASConstraintMaker *make) {
             make.leading.equalTo([ary[col] mas_trailing]);
-            make.width.equalTo(@(v.w));
-            make.height.equalTo(@(v.h));
             make.top.equalTo([vary[row] mas_bottom]);
+            if(!sizeToFit){
+                make.width.equalTo(@(v.w));
+                make.height.equalTo(@(v.h));
+            }
         }];
         lastv=v;
         
@@ -219,7 +239,7 @@ UIView *layoutView(UIView *sup,NSArray *subs,NSInteger colNum,BOOL full){
             [ary addObject:gap];
         }
     }
-    if(full){
+    if(veritcalFull){
         UIView *gap=[[UIView alloc] init];
         [sup addSubview:gap];
         [gap mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -235,11 +255,7 @@ UIView *layoutView(UIView *sup,NSArray *subs,NSInteger colNum,BOOL full){
         make.bottom.greaterThanOrEqualTo(lastv.mas_bottom);
     }];
     return lastv;
-    
-    
 }
-
-
 
 -(void)measurePriority:(float)level hor:(BOOL)hor{
     UILayoutConstraintAxis axis = hor?UILayoutConstraintAxisHorizontal:UILayoutConstraintAxisVertical;
